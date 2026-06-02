@@ -16,7 +16,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
 
-/* HEADER */
+/* ── HEADER ── */
 .hdr{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
 .hdr-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--navy);flex-shrink:0;}
 .hdr-info{flex:1;}
@@ -25,15 +25,16 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .hdr-btn{background:none;border:1px solid var(--border);color:var(--gold);font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .hdr-btn:hover{background:var(--gold);color:var(--navy);}
 
-/* CONTENT */
+/* ── CONTENT ── */
 .content{flex:1;padding:20px;max-width:520px;margin:0 auto;width:100%;}
 
-/* HOME */
+/* ── HERO ── */
 .hero{text-align:center;padding:28px 0 20px;}
 .hero-logo{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;box-shadow:0 8px 32px rgba(201,168,76,.25);}
 .hero-title{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:1px;}
 .hero-sub{font-size:13px;color:var(--muted);margin-top:5px;}
 
+/* ── BANNER ── */
 .banner{margin:14px 0;padding:12px 16px;border-radius:10px;border-left:4px solid var(--gold);background:var(--card);display:flex;align-items:center;gap:12px;}
 .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .dot.on{background:var(--success);box-shadow:0 0 8px var(--success);}
@@ -42,6 +43,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .ban-text{font-size:12px;color:var(--white);}
 .ban-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--gold);}
 
+/* ── ROOM GRID ── */
 .sec-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:18px 0 10px;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
 .room-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
@@ -58,7 +60,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .rc-badge.none{background:var(--muted);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* FORM */
+/* ── FORM ── */
 .form-sec{margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .form-sec-hdr{padding:11px 16px;background:rgba(201,168,76,.08);border-bottom:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;}
 .f-row{display:grid;grid-template-columns:1fr 76px;align-items:center;padding:9px 16px;border-bottom:1px solid rgba(201,168,76,.05);gap:10px;}
@@ -71,56 +73,78 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .sup-field{padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);}
 .sup-field:last-child{border-bottom:none;}
 .sup-field label{font-size:10px;color:var(--muted);letter-spacing:1px;display:block;margin-bottom:5px;}
-.sup-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);font-size:13px;padding:4px 0;outline:none;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;}
+.sup-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);font-size:13px;padding:4px 0;outline:none;font-family:'Source Sans 3',sans-serif;}
 .sup-input:focus{border-color:var(--gold);}
 .cmt-area{width:100%;padding:11px 16px;background:transparent;border:none;color:var(--white);font-family:'Source Sans 3',sans-serif;font-size:13px;resize:none;outline:none;min-height:70px;}
 .cmt-area::placeholder{color:var(--muted);}
-
-/* SHIFT PILLS */
 .s-pills{display:flex;gap:6px;margin-bottom:16px;}
 .s-pill{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);text-align:center;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:var(--card);}
 .s-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
 
-/* BUTTONS */
-.btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;margin-top:0;}
+/* ── GPS BADGE ── */
+.gps-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:16px;border:1px solid var(--border);}
+.gps-badge.ok{background:rgba(62,184,124,.08);border-color:rgba(62,184,124,.3);}
+.gps-badge.warn{background:rgba(240,160,64,.08);border-color:rgba(240,160,64,.3);}
+.gps-badge.err{background:rgba(224,82,82,.08);border-color:rgba(224,82,82,.3);}
+.gps-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.gps-dot.ok{background:var(--success);}
+.gps-dot.warn{background:var(--warning);}
+.gps-dot.err{background:var(--danger);}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
 .btn-gold:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
 .btn-gold:active{transform:scale(.98);}
 .btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:linear-gradient(135deg,#e05252,#c04040);color:white;}
 .btn-wa{background:linear-gradient(135deg,#25d366,#128c3e);color:white;display:flex;align-items:center;justify-content:center;gap:10px;}
 
-/* OTP POPUP MODAL */
-.otp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px;}
+/* ── PASSWORD SCREEN ── */
+.pwd-wrap{text-align:center;padding:40px 20px;}
+.pwd-icon{font-size:52px;margin-bottom:16px;}
+.pwd-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.pwd-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.pwd-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px;}
+.pwd-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all .2s;}
+.pwd-dot.filled{background:var(--gold);border-color:var(--gold);}
+.pwd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:240px;margin:0 auto;}
+.pwd-key{padding:18px 10px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--white);cursor:pointer;transition:all .2s;text-align:center;}
+.pwd-key:hover{border-color:var(--gold);color:var(--gold);}
+.pwd-key:active{transform:scale(.93);}
+.pwd-key.del{font-size:16px;color:var(--muted);}
+.pwd-err{color:var(--danger);font-size:12px;margin-top:12px;min-height:18px;}
+
+/* ── OTP POPUP ── */
+.otp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px;}
 .otp-overlay.open{display:flex;}
 .otp-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn .35s cubic-bezier(.34,1.56,.64,1);}
 @keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
-.otp-pop-icon{font-size:44px;margin-bottom:12px;}
-.otp-pop-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px;}
-.otp-pop-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
-.otp-code-display{
-  font-family:'Rajdhani',sans-serif;
-  font-size:48px;font-weight:700;
-  color:var(--gold);letter-spacing:14px;
-  background:rgba(201,168,76,.07);
-  border:2px dashed var(--gold);
-  border-radius:14px;
-  padding:16px 10px;
-  margin-bottom:8px;
-  text-indent:14px;
-}
+.otp-icon{font-size:44px;margin-bottom:12px;}
+.otp-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.otp-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.otp-code{font-family:'Rajdhani',sans-serif;font-size:48px;font-weight:700;color:var(--gold);letter-spacing:14px;background:rgba(201,168,76,.07);border:2px dashed var(--gold);border-radius:14px;padding:16px 10px;margin-bottom:8px;text-indent:14px;}
 .otp-timer{font-size:11px;color:var(--muted);margin-bottom:22px;}
 .otp-timer span{color:var(--warning);font-weight:600;}
-.otp-input-row{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
-.otp-digit{width:52px;height:60px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
-.otp-digit:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
-.otp-err{color:var(--danger);font-size:12px;margin-bottom:12px;display:none;}
+.otp-inputs{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
+.otp-d{width:52px;height:60px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
+.otp-d:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
+.otp-err-msg{color:var(--danger);font-size:12px;margin-bottom:12px;display:none;}
 .otp-resend{font-size:11px;color:var(--muted);margin-top:10px;cursor:pointer;}
 .otp-resend:hover{color:var(--gold);}
 .otp-resend.disabled{opacity:.4;pointer-events:none;}
 
-/* SUCCESS */
+/* ── GPS GATE MODAL ── */
+.gps-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:700;align-items:center;justify-content:center;padding:20px;}
+.gps-overlay.open{display:flex;}
+.gps-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn .3s ease;}
+.gps-box-icon{font-size:52px;margin-bottom:14px;}
+.gps-box-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;}
+.gps-box-sub{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+
+/* ── SUCCESS ── */
 .succ-wrap{text-align:center;padding:36px 0;}
 .succ-icon{width:80px;height:80px;background:rgba(62,184,124,.15);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;animation:popIn .4s ease;}
 .succ-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--success);}
@@ -129,20 +153,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .sd-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.05);font-size:12px;}
 .sd-row:last-child{border-bottom:none;}
 .sd-row span:first-child{color:var(--muted);}
-.sd-row span:last-child{color:var(--white);font-weight:600;}
 
-/* ADMIN */
+/* ── ADMIN ── */
 .atabs{display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .atab{flex:1;padding:10px 4px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
 .atab.active{background:rgba(201,168,76,.12);color:var(--gold);}
 .acard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
 .acard-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;}
 .atable{width:100%;border-collapse:collapse;font-size:11px;}
-.atable th{color:var(--muted);padding:6px 6px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
+.atable th{color:var(--muted);padding:6px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
 .atable td{padding:7px 6px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);vertical-align:top;}
 .atable tr:last-child td{border-bottom:none;}
 
-/* WA MODAL */
+/* ── WA MODAL ── */
 .wa-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
 .wa-overlay.open{display:flex;}
 .wa-sheet{background:var(--navy-mid);border:1px solid var(--border);border-bottom:none;border-radius:18px 18px 0 0;padding:20px;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease;}
@@ -152,22 +175,19 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .wa-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
 .wa-prev{background:#1a2f1a;border:1px solid #25d366;border-radius:10px;padding:13px;font-size:12px;color:#d4ffd4;line-height:1.7;margin-bottom:14px;white-space:pre-wrap;}
 
-/* TAGS */
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
-.tag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
-.tag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
-
-/* CLOUD STATUS */
+/* ── CLOUD BAR ── */
 .cloud-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;font-size:11px;margin-bottom:14px;border:1px solid var(--border);background:var(--card);}
 .c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .c-dot.ok{background:var(--success);box-shadow:0 0 5px var(--success);}
 .c-dot.warn{background:var(--warning);}
 .c-dot.err{background:var(--danger);}
 
-/* SPINNER */
+/* ── MISC ── */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
+.tag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
+.tag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:rotate .6s linear infinite;vertical-align:middle;margin-right:6px;}
 @keyframes rotate{to{transform:rotate(360deg)}}
-
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
 .toast.show{display:block;}
 .mt10{margin-top:10px;}
@@ -175,8 +195,47 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 </head>
 <body>
 
+<!-- ══ PASSWORD SCREEN ══ -->
+<div class="screen active" id="s-pwd">
+  <div class="hdr">
+    <div class="hdr-logo">ABC</div>
+    <div class="hdr-info">
+      <div class="hdr-title">Restroom Inspection</div>
+      <div class="hdr-sub">ABC Verdun Mall — Secure Access</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="pwd-wrap">
+      <div class="pwd-icon">🔒</div>
+      <div class="pwd-title">ENTER ACCESS CODE</div>
+      <div class="pwd-sub">This system is restricted to authorized<br>mall supervisors only.</div>
+      <div class="pwd-dots" id="pwd-dots">
+        <div class="pwd-dot" id="pd0"></div>
+        <div class="pwd-dot" id="pd1"></div>
+        <div class="pwd-dot" id="pd2"></div>
+        <div class="pwd-dot" id="pd3"></div>
+      </div>
+      <div class="pwd-grid">
+        <div class="pwd-key" onclick="pwdKey('1')">1</div>
+        <div class="pwd-key" onclick="pwdKey('2')">2</div>
+        <div class="pwd-key" onclick="pwdKey('3')">3</div>
+        <div class="pwd-key" onclick="pwdKey('4')">4</div>
+        <div class="pwd-key" onclick="pwdKey('5')">5</div>
+        <div class="pwd-key" onclick="pwdKey('6')">6</div>
+        <div class="pwd-key" onclick="pwdKey('7')">7</div>
+        <div class="pwd-key" onclick="pwdKey('8')">8</div>
+        <div class="pwd-key" onclick="pwdKey('9')">9</div>
+        <div class="pwd-key" style="visibility:hidden"></div>
+        <div class="pwd-key" onclick="pwdKey('0')">0</div>
+        <div class="pwd-key del" onclick="pwdDel()">⌫</div>
+      </div>
+      <div class="pwd-err" id="pwd-err"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ HOME ══ -->
-<div class="screen active" id="s-home">
+<div class="screen" id="s-home">
   <div class="hdr">
     <div class="hdr-logo">ABC</div>
     <div class="hdr-info">
@@ -211,6 +270,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
   </div>
   <div class="content">
     <div class="s-pills" id="form-pills"></div>
+    <div id="gps-form-badge"></div>
     <div class="form-sec">
       <div class="form-sec-hdr">🔧 Equipment Description</div>
       <div id="eq-rows"></div>
@@ -267,7 +327,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
     <button class="hdr-btn" onclick="goHome()">← BACK</button>
     <div class="hdr-info">
       <div class="hdr-title">Admin Panel</div>
-      <div class="hdr-sub">Logs & Settings</div>
+      <div class="hdr-sub">Logs & Reports</div>
     </div>
   </div>
   <div class="content">
@@ -285,26 +345,33 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 <!-- ══ OTP POPUP ══ -->
 <div class="otp-overlay" id="otp-overlay">
   <div class="otp-box">
-    <div class="otp-pop-icon">🔐</div>
-    <div class="otp-pop-title">Verification Required</div>
-    <div class="otp-pop-sub" id="otp-pop-room">Your one-time code for <strong>—</strong></div>
-
-    <!-- STEP 1: Show generated OTP -->
-    <div id="otp-step1">
-      <div class="otp-code-display" id="otp-code-show">——</div>
-      <div class="otp-timer">Code expires in <span id="otp-countdown">10:00</span></div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Memorize this code, then enter it below to confirm you are physically present at the restroom.</p>
-      <div class="otp-input-row">
-        <input class="otp-digit" maxlength="1" id="d0" autocomplete="off">
-        <input class="otp-digit" maxlength="1" id="d1" autocomplete="off">
-        <input class="otp-digit" maxlength="1" id="d2" autocomplete="off">
-        <input class="otp-digit" maxlength="1" id="d3" autocomplete="off">
-      </div>
-      <div class="otp-err" id="otp-err">❌ Incorrect code. Please try again.</div>
-      <button class="btn btn-gold" id="otp-verify-btn" onclick="doVerifyOTP()">CONFIRM & ENTER</button>
-      <button class="btn btn-ghost mt10" onclick="cancelOTP()">CANCEL</button>
-      <div class="otp-resend disabled" id="otp-resend" onclick="resendOTP()">🔄 Request new code</div>
+    <div class="otp-icon">🔐</div>
+    <div class="otp-title">Verification Code</div>
+    <div class="otp-sub" id="otp-room-label">Code for <strong>—</strong></div>
+    <div class="otp-code" id="otp-code-show">⏳</div>
+    <div class="otp-timer">Expires in <span id="otp-countdown">10:00</span></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Memorize this code then enter it below to confirm you are physically at the restroom.</p>
+    <div class="otp-inputs">
+      <input class="otp-d" maxlength="1" id="d0" autocomplete="off">
+      <input class="otp-d" maxlength="1" id="d1" autocomplete="off">
+      <input class="otp-d" maxlength="1" id="d2" autocomplete="off">
+      <input class="otp-d" maxlength="1" id="d3" autocomplete="off">
     </div>
+    <div class="otp-err-msg" id="otp-err">❌ Incorrect code. Try again.</div>
+    <button class="btn btn-gold" id="otp-verify-btn" onclick="doVerifyOTP()">CONFIRM & ENTER</button>
+    <button class="btn btn-ghost mt10" onclick="cancelOTP()">CANCEL</button>
+    <div class="otp-resend disabled" id="otp-resend" onclick="resendOTP()">🔄 Request new code</div>
+  </div>
+</div>
+
+<!-- ══ GPS GATE ══ -->
+<div class="gps-overlay" id="gps-overlay">
+  <div class="gps-box">
+    <div class="gps-box-icon" id="gps-gate-icon">📍</div>
+    <div class="gps-box-title" id="gps-gate-title" style="color:var(--gold)">Verifying Location</div>
+    <div class="gps-box-sub" id="gps-gate-sub">Checking you are physically present at this restroom…</div>
+    <button class="btn btn-ghost" id="gps-cancel-btn" onclick="cancelOTP()" style="display:none">CANCEL</button>
+    <button class="btn btn-gold" id="gps-proceed-btn" onclick="proceedDespiteGPS()" style="display:none;margin-top:10px">PROCEED ANYWAY</button>
   </div>
 </div>
 
@@ -325,115 +392,170 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG ──────────────────────────────────────────────────
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
+// ════════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════════
+const GAS_URL  = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
+const APP_PWD  = '2707';
+
+// ABC Verdun Mall GPS coordinates per restroom floor
+// All are within the mall building — adjust if needed
+const MALL_CENTER = { lat: 33.8731, lng: 35.4907 }; // ABC Verdun Mall, Verdun, Beirut
+const GPS_RADIUS_M = 120; // max allowed distance in meters
 
 const ROOMS = [
-  {id:'LG_CENTRAL',name:'LG Central', level:'LG',core:'Central',icon:'🏢'},
-  {id:'GF_EAST',   name:'GF East',    level:'GF',core:'East',   icon:'🏬'},
-  {id:'L1_CENTRAL',name:'L1 Central', level:'L1',core:'Central',icon:'🏢'},
-  {id:'L2_CENTRAL',name:'L2 Central', level:'L2',core:'Central',icon:'🏢'},
-  {id:'L3_EAST',   name:'L3 East',    level:'L3',core:'East',   icon:'🏢'},
-  {id:'L3_CENTRAL',name:'L3 Central', level:'L3',core:'Central',icon:'🏢'},
-  {id:'L4_CENTRAL',name:'L4 Central', level:'L4',core:'Central',icon:'🏢'},
+  {id:'LG_CENTRAL',name:'LG Central', level:'LG',core:'Central',icon:'🏢', lat:33.8730, lng:35.4906},
+  {id:'GF_EAST',   name:'GF East',    level:'GF',core:'East',   icon:'🏬', lat:33.8732, lng:35.4909},
+  {id:'L1_CENTRAL',name:'L1 Central', level:'L1',core:'Central',icon:'🏢', lat:33.8731, lng:35.4907},
+  {id:'L2_CENTRAL',name:'L2 Central', level:'L2',core:'Central',icon:'🏢', lat:33.8731, lng:35.4907},
+  {id:'L3_EAST',   name:'L3 East',    level:'L3',core:'East',   icon:'🏢', lat:33.8732, lng:35.4909},
+  {id:'L3_CENTRAL',name:'L3 Central', level:'L3',core:'Central',icon:'🏢', lat:33.8731, lng:35.4906},
+  {id:'L4_CENTRAL',name:'L4 Central', level:'L4',core:'Central',icon:'🏢', lat:33.8730, lng:35.4907},
 ];
 
-// Alert windows — must match Code.gs
 const WINDOWS = [
-  {id:'W1',label:'Morning Window',   time:'10:00 AM',start:10,end:12},
-  {id:'W2',label:'Afternoon Window', time:'1:00 PM', start:13,end:17},
-  {id:'W3',label:'Evening Window',   time:'7:00 PM', start:19,end:21},
+  {id:'W1',label:'Shift 1 — Morning',   time:'10:00 AM',start:10,end:12},
+  {id:'W2',label:'Shift 2 — Afternoon', time:'1:00 PM', start:13,end:17},
+  {id:'W3',label:'Shift 3 — Evening',   time:'7:00 PM', start:19,end:21},
 ];
 
 const EQ = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
 const CL = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
 const ST = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
 
-// ─── STATE ───────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────
 let curRoom=null, curWin=null, formData={}, lastEntry=null;
 let gasOk=null;
-let otpSession=null, otpCode=null, otpTimer=null, otpSecondsLeft=600;
+let otpSession=null, otpCode=null, otpTimer=null, otpSecs=600;
+let gpsData={lat:null,lng:null,accuracy:null,status:'unknown'};
+let pwdBuffer='';
 
-// ─── UTILS ───────────────────────────────────────────────────
-const now=()=>new Date();
-const pad=n=>String(n).padStart(2,'0');
-const timeStr=d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
-const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const fullDate=d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+// ── UTILS ─────────────────────────────────────
+const now  = ()=>new Date();
+const pad  = n=>String(n).padStart(2,'0');
+const timeStr = d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const dateKey = d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fullDate= d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
 
-function getWin(){
-  const h=now().getHours();
-  return WINDOWS.find(w=>h>=w.start&&h<w.end)||null;
-}
-function getNearestWin(){
-  const w=getWin(); if(w) return w;
-  const h=now().getHours();
-  if(h<10) return WINDOWS[0];
-  if(h<13) return WINDOWS[1];
-  if(h<19) return WINDOWS[2];
-  return WINDOWS[2];
-}
+function getWin(){ const h=now().getHours(); return WINDOWS.find(w=>h>=w.start&&h<w.end)||null; }
+function getNearestWin(){ const w=getWin();if(w)return w; const h=now().getHours(); if(h<10)return WINDOWS[0]; if(h<13)return WINDOWS[1]; if(h<19)return WINDOWS[2]; return WINDOWS[2]; }
 
-// ─── LOCAL DB ────────────────────────────────────────────────
-const getLocal=()=>JSON.parse(localStorage.getItem('abc_rl')||'[]');
+// ── LOCAL DB ──────────────────────────────────
+const getLocal =()=>JSON.parse(localStorage.getItem('abc_rl')||'[]');
 const saveLocal=v=>localStorage.setItem('abc_rl',JSON.stringify(v));
-const addLocal=e=>{const l=getLocal();l.push(e);saveLocal(l);}
+const addLocal =e=>{const l=getLocal();l.push(e);saveLocal(l);}
 const todayLocal=()=>{const dk=dateKey(now());return getLocal().filter(l=>l.date===dk);}
-function isLoggedLocal(roomId,winId){
-  const dk=dateKey(now());
-  return getLocal().some(l=>l.date===dk&&l.roomId===roomId&&l.winId===winId);
-}
+function isLoggedLocal(rId,wId){const dk=dateKey(now());return getLocal().some(l=>l.date===dk&&l.roomId===rId&&l.winId===wId);}
 
-// ─── GAS ─────────────────────────────────────────────────────
+// ── GAS ───────────────────────────────────────
 async function gas(action,body={}){
   try{
     const r=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,...body})});
-    const j=await r.json();
-    gasOk=true; return j;
+    const j=await r.json(); gasOk=true; return j;
   }catch(e){ gasOk=false; return null; }
 }
+async function pingGAS(){ const r=await gas('ping'); gasOk=!!(r&&r.ok); renderCloudBar(); }
 
-async function pingGAS(){
-  const r=await gas('ping');
-  gasOk=!!(r&&r.ok);
-  renderCloudBar();
-}
-
-// ─── SCREENS ─────────────────────────────────────────────────
+// ── SCREENS ───────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function goHome(){curRoom=null;curWin=null;formData={};lastEntry=null;clearOTPTimer();initHome();show('s-home');}
 function gotoAdminLogs(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
-
-// ─── TOAST ───────────────────────────────────────────────────
 function toast(m,d=3000){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
+//  PASSWORD SCREEN
+// ════════════════════════════════════════════
+function pwdKey(k){
+  if(pwdBuffer.length>=4) return;
+  pwdBuffer+=k;
+  updatePwdDots();
+  if(pwdBuffer.length===4) setTimeout(checkPwd,180);
+}
+function pwdDel(){ if(pwdBuffer.length>0){pwdBuffer=pwdBuffer.slice(0,-1);updatePwdDots();document.getElementById('pwd-err').textContent='';} }
+function updatePwdDots(){
+  for(let i=0;i<4;i++){
+    document.getElementById('pd'+i).classList.toggle('filled',i<pwdBuffer.length);
+  }
+}
+function checkPwd(){
+  if(pwdBuffer===APP_PWD){
+    show('s-home');
+    initHome();
+    pingGAS();
+  } else {
+    document.getElementById('pwd-err').textContent='Incorrect code. Try again.';
+    document.querySelectorAll('.pwd-dot').forEach(d=>{
+      d.style.background='var(--danger)';d.style.borderColor='var(--danger)';
+    });
+    setTimeout(()=>{
+      pwdBuffer='';
+      updatePwdDots();
+      document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='';d.style.borderColor='';});
+    },700);
+  }
+}
+
+// ════════════════════════════════════════════
+//  GPS UTILITIES
+// ════════════════════════════════════════════
+function haversineM(lat1,lng1,lat2,lng2){
+  const R=6371000, r=Math.PI/180;
+  const dLat=(lat2-lat1)*r, dLng=(lng2-lng1)*r;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function checkGPS(room){
+  return new Promise((resolve)=>{
+    if(!navigator.geolocation){ resolve({ok:false,reason:'no_gps',dist:null}); return; }
+    document.getElementById('gps-overlay').classList.add('open');
+    document.getElementById('gps-gate-icon').textContent='📍';
+    document.getElementById('gps-gate-title').textContent='Verifying Location';
+    document.getElementById('gps-gate-title').style.color='var(--gold)';
+    document.getElementById('gps-gate-sub').textContent='Checking you are physically present at this restroom…';
+    document.getElementById('gps-cancel-btn').style.display='none';
+    document.getElementById('gps-proceed-btn').style.display='none';
+
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        const {latitude:lat,longitude:lng,accuracy} = pos.coords;
+        gpsData={lat,lng,accuracy,status:'obtained'};
+        const dist=haversineM(lat,lng,room.lat,room.lng);
+        document.getElementById('gps-overlay').classList.remove('open');
+        resolve({ok: dist<=GPS_RADIUS_M, reason:'checked', dist: Math.round(dist), accuracy: Math.round(accuracy)});
+      },
+      err=>{
+        gpsData={lat:null,lng:null,accuracy:null,status:'denied'};
+        resolve({ok:false,reason:'denied',dist:null});
+      },
+      {timeout:10000, enableHighAccuracy:true}
+    );
+  });
+}
+
+// ════════════════════════════════════════════
 //  HOME
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 function initHome(){
   document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
-  renderCloudBar();
-  renderBanner();
-  renderGrid();
+  renderCloudBar(); renderBanner(); renderGrid();
 }
 
 function renderCloudBar(){
   const el=document.getElementById('cloud-bar');
-  if(gasOk===true) el.innerHTML=`<div class="cloud-bar"><div class="c-dot ok"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:6px">— Google Sheets sync active</span></div>`;
-  else if(gasOk===false) el.innerHTML=`<div class="cloud-bar"><div class="c-dot err"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:6px">— Saving locally until connection restores</span></div>`;
-  else el.innerHTML=`<div class="cloud-bar"><div class="c-dot warn"></div><span style="color:var(--muted)">Checking cloud connection...</span></div>`;
+  if(gasOk===true) el.innerHTML=`<div class="cloud-bar"><div class="c-dot ok"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:6px">— Google Sheets sync & email reports active</span></div>`;
+  else if(gasOk===false) el.innerHTML=`<div class="cloud-bar"><div class="c-dot err"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:6px">— Saving locally</span></div>`;
+  else el.innerHTML=`<div class="cloud-bar"><div class="c-dot warn"></div><span style="color:var(--muted)">Checking connection...</span></div>`;
 }
 
 function renderBanner(){
   const cw=getWin(), h=now().getHours();
   let nw=null;
-  if(h<10) nw=WINDOWS[0];
-  else if(h>=12&&h<13) nw=WINDOWS[1];
-  else if(h>=17&&h<19) nw=WINDOWS[2];
+  if(h<10)nw=WINDOWS[0]; else if(h>=12&&h<13)nw=WINDOWS[1]; else if(h>=17&&h<19)nw=WINDOWS[2];
   let html='';
-  if(cw) html=`<div class="banner"><div class="dot on"></div><div class="ban-text"><div class="ban-label">🟢 ACTIVE WINDOW — ${cw.label}</div>Window open until ${cw.end}:00. Inspect all restrooms now.</div></div>`;
-  else if(nw) html=`<div class="banner"><div class="dot next"></div><div class="ban-text"><div class="ban-label">⏳ NEXT — ${nw.label}</div>Next window opens at ${nw.start}:00.</div></div>`;
-  else html=`<div class="banner"><div class="dot off"></div><div class="ban-text"><div class="ban-label">✅ ALL WINDOWS COMPLETE</div>All inspection windows for today have passed.</div></div>`;
+  if(cw) html=`<div class="banner"><div class="dot on"></div><div class="ban-text"><div class="ban-label">🟢 ACTIVE — ${cw.label}</div>Window open until ${cw.end}:00. Inspect all restrooms now.</div></div>`;
+  else if(nw) html=`<div class="banner"><div class="dot next"></div><div class="ban-text"><div class="ban-label">⏳ NEXT — ${nw.label}</div>Opens at ${nw.start}:00.</div></div>`;
+  else html=`<div class="banner"><div class="dot off"></div><div class="ban-text"><div class="ban-label">✅ ALL SHIFTS COMPLETE</div>All windows for today have passed.</div></div>`;
   document.getElementById('shift-banner').innerHTML=html;
 }
 
@@ -441,57 +563,85 @@ function renderGrid(){
   const cw=getWin();
   document.getElementById('room-grid').innerHTML=ROOMS.map(r=>{
     let badge='none',status='No active window';
-    if(cw){const d=isLoggedLocal(r.id,cw.id);badge=d?'ok':'pend';status=d?`${cw.label} ✓`:`${cw.label} — PENDING`;}
-    else{const cnt=WINDOWS.filter(w=>isLoggedLocal(r.id,w.id)).length;if(cnt>0)status=`${cnt}/3 windows logged`;}
-    return `<div class="room-card" onclick="selectRoom('${r.id}')">
-      <div class="rc-badge ${badge}"></div>
-      <div class="rc-icon">${r.icon}</div>
-      <div class="rc-name">${r.name}</div>
-      <div class="rc-status">${status}</div>
-    </div>`;
+    if(cw){const d=isLoggedLocal(r.id,cw.id);badge=d?'ok':'pend';status=d?`${cw.label.split(' ')[0]} ✓`:`${cw.label.split(' ')[0]} — PENDING`;}
+    else{const cnt=WINDOWS.filter(w=>isLoggedLocal(r.id,w.id)).length;if(cnt>0)status=`${cnt}/3 shifts today`;}
+    return `<div class="room-card" onclick="selectRoom('${r.id}')"><div class="rc-badge ${badge}"></div><div class="rc-icon">${r.icon}</div><div class="rc-name">${r.name}</div><div class="rc-status">${status}</div></div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════════
-//  ROOM SELECT → OTP POPUP
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
+//  ROOM SELECT → GPS CHECK → OTP
+// ════════════════════════════════════════════
 async function selectRoom(roomId){
   curRoom=ROOMS.find(r=>r.id===roomId);
   curWin=getNearestWin();
-  if(isLoggedLocal(curRoom.id,curWin.id)){toast('⚠️ Already logged for this window');return;}
+  if(isLoggedLocal(curRoom.id,curWin.id)){toast('⚠️ Already logged for this shift');return;}
+
+  // GPS check
+  const gpsResult = await checkGPS(curRoom);
+  gpsData.status = gpsResult.reason;
+
+  if(!gpsResult.ok && gpsResult.reason==='denied'){
+    // GPS denied — show warning, allow supervisor to proceed (log GPS=denied)
+    showGPSWarning('Permission Denied', 'Could not verify your location. GPS permission was denied.\n\nYou may still proceed, but this will be logged.', true);
+    return; // proceedDespiteGPS() handles the next step
+  }
+
+  if(!gpsResult.ok && gpsResult.reason==='checked'){
+    // Outside radius — warn + block (show distance)
+    showGPSWarning(
+      '⛔ Too Far From Restroom',
+      `You appear to be ${gpsResult.dist}m away from ${curRoom.name}.\n\nYou must be physically present (within ${GPS_RADIUS_M}m) to log an inspection.\n\nIf you believe this is an error, tap Proceed Anyway — it will be flagged.`,
+      true
+    );
+    return;
+  }
+
+  // GPS OK or no GPS hardware — proceed to OTP
   await requestOTP();
 }
 
-async function requestOTP(){
-  // Generate session ID
-  otpSession='SID-'+Date.now()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
+function showGPSWarning(title, msg, showButtons){
+  const overlay=document.getElementById('gps-overlay');
+  document.getElementById('gps-gate-icon').textContent='⚠️';
+  document.getElementById('gps-gate-title').textContent=title;
+  document.getElementById('gps-gate-title').style.color='var(--warning)';
+  document.getElementById('gps-gate-sub').textContent=msg;
+  document.getElementById('gps-cancel-btn').style.display=showButtons?'block':'none';
+  document.getElementById('gps-proceed-btn').style.display=showButtons?'block':'none';
+  overlay.classList.add('open');
+}
 
-  // Show overlay immediately with spinner
-  document.getElementById('otp-pop-room').innerHTML=`Your one-time code for <strong>${curRoom.name}</strong>`;
+async function proceedDespiteGPS(){
+  gpsData.status='overridden';
+  document.getElementById('gps-overlay').classList.remove('open');
+  await requestOTP();
+}
+
+// ════════════════════════════════════════════
+//  OTP FLOW
+// ════════════════════════════════════════════
+async function requestOTP(){
+  otpSession='SID-'+Date.now()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  document.getElementById('otp-room-label').innerHTML=`Code for <strong>${curRoom.name}</strong>`;
   document.getElementById('otp-code-show').textContent='⏳';
   document.getElementById('otp-err').style.display='none';
-  clearInputs();
+  document.getElementById('otp-resend').classList.add('disabled');
+  clearOTPInputs();
   document.getElementById('otp-overlay').classList.add('open');
 
-  // Request OTP from GAS
   let code=null;
-  if(GAS_URL){
-    const r=await gas('requestOTP',{roomId:curRoom.id,sessionId:otpSession});
-    if(r&&r.ok) code=r.otp;
-  }
-
-  // Fallback: generate locally if offline
+  if(GAS_URL){ const r=await gas('requestOTP',{roomId:curRoom.id,sessionId:otpSession}); if(r&&r.ok) code=r.otp; }
   if(!code) code=localGenOTP();
   otpCode=code;
-
   document.getElementById('otp-code-show').textContent=code;
   startOTPTimer();
   setTimeout(()=>document.getElementById('d0').focus(),200);
 }
 
 function localGenOTP(){
-  const letters='ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const l=letters[Math.floor(Math.random()*letters.length)];
+  const L='ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const l=L[Math.floor(Math.random()*L.length)];
   const d=()=>Math.floor(Math.random()*10);
   const arr=[l,String(d()),String(d()),String(d())];
   for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
@@ -499,97 +649,75 @@ function localGenOTP(){
 }
 
 function startOTPTimer(){
-  otpSecondsLeft=600;
-  clearOTPTimer();
-  updateTimerDisplay();
+  otpSecs=600; clearOTPTimer(); updateOTPTimer();
   otpTimer=setInterval(()=>{
-    otpSecondsLeft--;
-    updateTimerDisplay();
-    if(otpSecondsLeft<=0){
+    otpSecs--;
+    updateOTPTimer();
+    if(otpSecs<=0){
       clearOTPTimer();
       document.getElementById('otp-code-show').textContent='EXPIRED';
       document.getElementById('otp-resend').classList.remove('disabled');
-      document.getElementById('otp-err').style.display='block';
-      document.getElementById('otp-err').textContent='⏰ Code expired. Request a new one.';
     }
-    // Allow resend after 60s
-    if(otpSecondsLeft<=540) document.getElementById('otp-resend').classList.remove('disabled');
+    if(otpSecs<=540) document.getElementById('otp-resend').classList.remove('disabled');
   },1000);
 }
-
-function updateTimerDisplay(){
-  const m=Math.floor(otpSecondsLeft/60), s=otpSecondsLeft%60;
-  document.getElementById('otp-countdown').textContent=`${pad(m)}:${pad(s)}`;
-}
-
+function updateOTPTimer(){ const m=Math.floor(otpSecs/60),s=otpSecs%60; document.getElementById('otp-countdown').textContent=`${pad(m)}:${pad(s)}`; }
 function clearOTPTimer(){ if(otpTimer){clearInterval(otpTimer);otpTimer=null;} }
+function clearOTPInputs(){ ['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';}); }
 
 function setupOTPInputs(){
-  const ids=['d0','d1','d2','d3'];
-  ids.forEach((id,i)=>{
+  ['d0','d1','d2','d3'].forEach((id,i)=>{
     const el=document.getElementById(id);
-    el.oninput=()=>{el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1);if(el.value&&i<3)document.getElementById(ids[i+1]).focus();};
-    el.onkeydown=e=>{if(e.key==='Backspace'&&!el.value&&i>0)document.getElementById(ids[i-1]).focus();};
+    el.oninput=()=>{el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1);if(el.value&&i<3)document.getElementById(['d0','d1','d2','d3'][i+1]).focus();};
+    el.onkeydown=e=>{if(e.key==='Backspace'&&!el.value&&i>0)document.getElementById(['d0','d1','d2','d3'][i-1]).focus();};
   });
 }
-
-function clearInputs(){['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
 
 async function doVerifyOTP(){
   const entered=['d0','d1','d2','d3'].map(id=>document.getElementById(id).value.toUpperCase()).join('');
   if(entered.length<4){toast('Enter all 4 characters');return;}
-
   const btn=document.getElementById('otp-verify-btn');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span>VERIFYING...';
 
   let valid=false;
-
-  // Try GAS verification first
-  if(GAS_URL&&gasOk!==false){
-    const r=await gas('verifyOTP',{sessionId:otpSession,otp:entered});
-    if(r&&r.ok) valid=r.valid;
-    else valid=(entered===otpCode); // fallback
-  } else {
-    // Offline: compare against local generated code
-    valid=(entered===otpCode);
-  }
+  if(GAS_URL&&gasOk!==false){ const r=await gas('verifyOTP',{sessionId:otpSession,otp:entered}); if(r&&r.ok) valid=r.valid; else valid=(entered===otpCode); }
+  else valid=(entered===otpCode);
 
   btn.disabled=false;btn.textContent='CONFIRM & ENTER';
-
   if(valid){
     clearOTPTimer();
     document.getElementById('otp-overlay').classList.remove('open');
     showForm();
   } else {
     document.getElementById('otp-err').style.display='block';
-    document.getElementById('otp-err').textContent=otpSecondsLeft<=0?'⏰ Code expired. Request a new one.':'❌ Incorrect code. Please try again.';
+    document.getElementById('otp-err').textContent=otpSecs<=0?'⏰ Code expired. Request a new one.':'❌ Incorrect code. Try again.';
     ['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);e.style.borderColor='var(--danger)';setTimeout(()=>e.style.borderColor='',1500);});
-    clearInputs();
+    clearOTPInputs();
     setTimeout(()=>document.getElementById('d0').focus(),100);
   }
 }
 
-async function resendOTP(){
-  clearOTPTimer();
-  clearInputs();
-  document.getElementById('otp-err').style.display='none';
-  document.getElementById('otp-resend').classList.add('disabled');
-  await requestOTP();
-}
+async function resendOTP(){ clearOTPTimer(); clearOTPInputs(); document.getElementById('otp-err').style.display='none'; await requestOTP(); }
+function cancelOTP(){ clearOTPTimer(); document.getElementById('otp-overlay').classList.remove('open'); document.getElementById('gps-overlay').classList.remove('open'); curRoom=null;curWin=null; }
 
-function cancelOTP(){
-  clearOTPTimer();
-  document.getElementById('otp-overlay').classList.remove('open');
-  curRoom=null;curWin=null;
-}
-
-// ═══════════════════════════════════════════
-//  INSPECTION FORM
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
+//  FORM
+// ════════════════════════════════════════════
 function showForm(){
   document.getElementById('form-room-title').textContent=curRoom.name;
   document.getElementById('form-win-sub').textContent=`${curWin.label} — from ${curWin.time}`;
   document.getElementById('form-pills').innerHTML=WINDOWS.map(w=>`<div class="s-pill ${w.id===curWin.id?'active':''}">${w.label.split(' ')[0]}<br>${w.time}</div>`).join('');
+
+  // GPS badge on form
+  let gpsBadge='';
+  if(gpsData.status==='obtained')
+    gpsBadge=`<div class="gps-badge ok"><div class="gps-dot ok"></div><span style="color:var(--success)">GPS VERIFIED</span><span style="color:var(--muted);margin-left:6px">Accuracy ±${gpsData.accuracy}m</span></div>`;
+  else if(gpsData.status==='overridden')
+    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS OVERRIDDEN</span><span style="color:var(--muted);margin-left:6px">Location not confirmed — logged</span></div>`;
+  else if(gpsData.status==='denied')
+    gpsBadge=`<div class="gps-badge err"><div class="gps-dot err"></div><span style="color:var(--danger)">GPS DENIED</span><span style="color:var(--muted);margin-left:6px">Permission not granted — logged</span></div>`;
+  document.getElementById('gps-form-badge').innerHTML=gpsBadge;
+
   document.getElementById('eq-rows').innerHTML=EQ.map(i=>buildRow('eq',i)).join('');
   document.getElementById('cl-rows').innerHTML=CL.map(i=>buildRow('cl',i)).join('');
   document.getElementById('st-rows').innerHTML=ST.map(i=>buildRow('st',i)).join('');
@@ -602,16 +730,11 @@ function buildRow(sec,item){
   const k=`${sec}_${item.replace(/\W/g,'_')}`;
   return `<div class="f-row"><div class="f-label">${item}</div><div class="tog"><button class="tog-btn ok" onclick="tog(this,'${k}','OK')">✅</button><button class="tog-btn nok" onclick="tog(this,'${k}','NOK')">❌</button></div></div>`;
 }
+function tog(btn,k,v){btn.closest('.tog').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');formData[k]=v;}
 
-function tog(btn,k,v){
-  btn.closest('.tog').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  formData[k]=v;
-}
-
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 //  SUBMIT
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 async function submitForm(){
   const sn=document.getElementById('sup-name').value.trim();
   if(!sn){toast('⚠️ Enter supervisor name');return;}
@@ -631,9 +754,10 @@ async function submitForm(){
     supervisor:sn,comments:document.getElementById('sup-cmt').value,
     equipment:eq,cleaning:cl,staff:st,
     hasIssues:clIssues.length>0,cleaningIssues:clIssues,
+    gpsLat:gpsData.lat,gpsLng:gpsData.lng,
+    gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
     synced:false,
   };
-
   addLocal(entry);
 
   let synced=false;
@@ -643,6 +767,8 @@ async function submitForm(){
       windowId:entry.windowId,windowLabel:entry.windowLabel,
       supervisor:entry.supervisor,comments:entry.comments,
       equipment:eq,cleaning:cl,staff:st,
+      gpsLat:gpsData.lat,gpsLng:gpsData.lng,
+      gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
     });
     if(r&&r.ok){synced=true;entry.synced=true;const logs=getLocal();const i=logs.findIndex(l=>l.id===entry.id);if(i>=0){logs[i].synced=true;saveLocal(logs);}}
   }
@@ -652,19 +778,21 @@ async function submitForm(){
   showSuccess(entry,synced);
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 //  SUCCESS
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 function showSuccess(e,synced){
   document.getElementById('succ-sync-label').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally';
   document.getElementById('succ-sub').textContent=`${e.roomName} — ${e.windowLabel} logged at ${e.time}.`;
+  const gpsTag=e.gpsStatus==='obtained'?`<span class="tag tag-ok">GPS ✓</span>`:e.gpsStatus==='overridden'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">GPS Override</span>`:`<span class="tag tag-issue">GPS N/A</span>`;
   document.getElementById('succ-detail').innerHTML=`
     <div class="sd-row"><span>Room</span><span>${e.roomName}</span></div>
-    <div class="sd-row"><span>Window</span><span>${e.windowLabel}</span></div>
+    <div class="sd-row"><span>Shift</span><span>${e.windowLabel}</span></div>
     <div class="sd-row"><span>Time</span><span>${e.time}</span></div>
     <div class="sd-row"><span>Supervisor</span><span>${e.supervisor}</span></div>
     <div class="sd-row"><span>Equipment</span><span>${Object.values(e.equipment).filter(v=>v==='OK').length}/${Object.keys(e.equipment).length} OK</span></div>
     <div class="sd-row"><span>Cleaning</span><span class="tag ${e.hasIssues?'tag-issue':'tag-ok'}">${e.hasIssues?e.cleaningIssues.length+' Issue(s)':'✓ All OK'}</span></div>
+    <div class="sd-row"><span>Location</span><span>${gpsTag}</span></div>
     <div class="sd-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>
   `;
   document.getElementById('wa-area').innerHTML=e.hasIssues
@@ -672,22 +800,22 @@ function showSuccess(e,synced){
   show('s-success');
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 //  WHATSAPP
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 function openWAModal(){
-  if(!lastEntry) return;
+  if(!lastEntry)return;
   const il=lastEntry.cleaningIssues.map(i=>`  • ${i}`).join('\n');
-  window._wamsg=`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*\n──────────────────────────\n📍 *Location:* ${lastEntry.roomName}\n🕐 *Window:* ${lastEntry.windowLabel} (${lastEntry.time})\n📅 *Date:* ${lastEntry.date}\n👤 *Logged By:* ${lastEntry.supervisor}\n\n⚠️ *Issues Found (CLEANING):*\n${il}\n\nPlease attend immediately and confirm resolution.\n──────────────────────────\nABC Operations — Verdun Mall`;
+  window._wamsg=`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*\n──────────────────────────\n📍 *Location:* ${lastEntry.roomName}\n🕐 *Shift:* ${lastEntry.windowLabel} (${lastEntry.time})\n📅 *Date:* ${lastEntry.date}\n👤 *Logged By:* ${lastEntry.supervisor}\n\n⚠️ *Issues Found (CLEANING):*\n${il}\n\nPlease attend immediately and confirm resolution.\n──────────────────────────\nABC Operations — Verdun Mall`;
   document.getElementById('wa-prev').textContent=window._wamsg;
   document.getElementById('wa-overlay').classList.add('open');
 }
 function openWA(){if(window._wamsg)window.open('https://wa.me/?text='+encodeURIComponent(window._wamsg),'_blank');closeWA();}
 function closeWA(){document.getElementById('wa-overlay').classList.remove('open');}
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 //  ADMIN
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 let curAdminTab='logs';
 function showAdmin(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
 function switchTab(t){curAdminTab=t;updateAdminTabs();renderAdmin();}
@@ -698,7 +826,7 @@ function renderAdmin(){
   if(curAdminTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
   else if(curAdminTab==='hist') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
   else if(curAdminTab==='wins') el.innerHTML=renderWindows();
-  else el.innerHTML=renderConfig();
+  else el.innerHTML=renderCfg();
 }
 
 function renderLogsTable(logs){
@@ -706,13 +834,14 @@ function renderLogsTable(logs){
   const rows=logs.map(l=>`<tr>
     <td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td>
     <td>${l.roomName}</td>
-    <td style="color:var(--muted);font-size:10px">${l.windowLabel||l.winId}</td>
+    <td style="color:var(--muted);font-size:10px">${(l.windowLabel||l.winId||'').split(' ')[0]}</td>
     <td>${Object.values(l.equipment||{}).filter(v=>v==='OK').length}/${Object.keys(l.equipment||{}).length}</td>
     <td><span class="tag ${l.hasIssues?'tag-issue':'tag-ok'}">${l.hasIssues?'ISSUE':'OK'}</span></td>
+    <td style="font-size:10px">${l.gpsStatus==='obtained'?'✅':l.gpsStatus==='overridden'?'⚠️':'—'}</td>
     <td>${l.synced?'☁️':'💾'}</td>
   </tr>`).join('');
   return `<div class="acard"><div class="acard-title">📋 Logs (${logs.length})</div>
-  <table class="atable"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>WINDOW</th><th>EQ</th><th>CL</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+  <table class="atable"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>SHIFT</th><th>EQ</th><th>CL</th><th>GPS</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
   <button class="btn btn-ghost" style="font-size:12px;padding:10px" onclick="if(confirm('Clear all local logs?')){localStorage.removeItem('abc_rl');renderAdmin();toast('Cleared')}">🗑 Clear Local Logs</button>`;
 }
 
@@ -720,29 +849,33 @@ function renderWindows(){
   const rows=WINDOWS.map(w=>`<tr>
     <td><strong>${w.label}</strong></td>
     <td>${w.start}:00 – ${w.end}:00</td>
-    <td style="color:var(--muted);font-size:10px">Email fires once at ${w.end}:00 if any room has no log in this window</td>
+    <td style="color:var(--muted);font-size:10px">HTML report sent at ${w.end}:00 with full room breakdown</td>
   </tr>`).join('');
-  return `<div class="acard"><div class="acard-title">⏰ Alert Windows</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">A single email is sent to <strong style="color:var(--gold)">salaachi@abc.com.lb</strong> at the end of each window if any room was not inspected.</p>
-  <table class="atable"><thead><tr><th>WINDOW</th><th>TIME RANGE</th><th>TRIGGER</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `<div class="acard"><div class="acard-title">📊 Shift Report Schedule</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">One HTML email report is sent to <strong style="color:var(--gold)">salaachi@abc.com.lb</strong> at the END of each shift — showing every room: ✅ checked or ❌ missed.</p>
+  <table class="atable"><thead><tr><th>SHIFT</th><th>WINDOW</th><th>TRIGGER</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function renderConfig(){
-  return `<div class="acard"><div class="acard-title">⚙️ Backend Status</div>
-  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">GAS Connection</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
-  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
+function renderCfg(){
+  return `<div class="acard"><div class="acard-title">⚙️ System Status</div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Cloud (GAS)</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
+  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">GPS Radius</span><span style="font-size:12px">${GPS_RADIUS_M}m from each restroom</span></div>
   </div>
-  <div class="acard"><div class="acard-title">🔐 OTP Info</div>
-  <p style="font-size:12px;color:var(--muted);line-height:1.7">OTPs are generated server-side on every inspection attempt. Each code is unique, valid for 10 minutes, and tied to a session ID. The QR code only opens the app — it contains no OTP. Codes are never reused.</p></div>`;
+  <div class="acard"><div class="acard-title">🔐 Security Layers</div>
+  <p style="font-size:12px;color:var(--muted);line-height:1.8">
+    <strong style="color:var(--white)">1. PIN Password (2707)</strong> — required every time app is opened<br>
+    <strong style="color:var(--white)">2. GPS Location Check</strong> — verifies supervisor is within ${GPS_RADIUS_M}m of the restroom<br>
+    <strong style="color:var(--white)">3. OTP Verification</strong> — 4-char code generated fresh per session, expires in 10 min<br>
+    <strong style="color:var(--white)">4. Session ID</strong> — each OTP tied to unique session, single-use only
+  </p></div>`;
 }
 
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 //  INIT
-// ═══════════════════════════════════════════
+// ════════════════════════════════════════════
 window.addEventListener('load',()=>{
   setupOTPInputs();
-  initHome();
-  pingGAS();
   setInterval(()=>{
     if(document.getElementById('s-home').classList.contains('active')){
       document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
