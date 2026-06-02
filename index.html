@@ -351,12 +351,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 </div>
 
 <!-- ══ ADMIN PIN OVERLAY ══ -->
-<div class="otp-overlay" id="admin-pwd-overlay" style="background:rgba(0,0,0,0.92)">
-  <div class="otp-box" style="max-width:320px">
+<div id="admin-pwd-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:320px;text-align:center;animation:popIn .3s ease;">
     <div style="font-size:36px;margin-bottom:12px">🛡️</div>
     <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:4px">ADMIN ACCESS</div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:22px">Enter the Admin PIN to continue</div>
-    <div class="pwd-dots" style="justify-content:center;margin-bottom:20px">
+    <div style="display:flex;gap:12px;justify-content:center;margin-bottom:20px">
       <div class="pwd-dot" id="apd0"></div>
       <div class="pwd-dot" id="apd1"></div>
       <div class="pwd-dot" id="apd2"></div>
@@ -527,12 +527,16 @@ function checkPwd(){
       const room=ROOMS.find(r=>r.id===roomId);
       if(room){ curRoom=room; startGPSCheck(); return; }
     }
-    // No room param — go to admin (direct URL open without QR)
-    showAdmin();
+    // No room param (direct URL, not via QR) — go straight to admin screen, no second PIN
+    curAdminTab='logs'; renderAdmin(); show('s-admin'); updateAdminTabs();
   } else {
     document.getElementById('pwd-err').textContent='Incorrect code. Try again.';
-    document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='var(--danger)';d.style.borderColor='var(--danger)';});
-    setTimeout(()=>{pwdBuffer='';updatePwdDots();document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='';d.style.borderColor='';});},700);
+    // Only target the main pwd screen dots — not the admin overlay dots
+    document.querySelectorAll('#s-pwd .pwd-dot').forEach(d=>{d.style.background='var(--danger)';d.style.borderColor='var(--danger)';});
+    setTimeout(()=>{
+      pwdBuffer='';updatePwdDots();
+      document.querySelectorAll('#s-pwd .pwd-dot').forEach(d=>{d.style.background='';d.style.borderColor='';});
+    },700);
   }
 }
 
@@ -762,9 +766,9 @@ let adminPwdBuffer = '';
 let adminPwdCallback = null; // function to call after successful admin auth
 
 function showAdmin(){
-  // Always require admin PIN before entering admin panel
+  // Called from ADMIN button inside the form header — require admin PIN
   openAdminPwd(()=>{
-    curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();
+    curAdminTab='logs'; renderAdmin(); show('s-admin'); updateAdminTabs();
   });
 }
 
@@ -773,7 +777,7 @@ function openAdminPwd(callback){
   adminPwdCallback=callback;
   updateAdminPwdDots();
   document.getElementById('admin-pwd-err').textContent='';
-  document.getElementById('admin-pwd-overlay').classList.add('open');
+  document.getElementById('admin-pwd-overlay').style.display='flex';
 }
 
 function adminPwdKey(k){
@@ -795,7 +799,7 @@ function updateAdminPwdDots(){
 }
 function checkAdminPwd(){
   if(adminPwdBuffer===ADMIN_PWD){
-    document.getElementById('admin-pwd-overlay').classList.remove('open');
+    document.getElementById('admin-pwd-overlay').style.display='none';
     if(adminPwdCallback) adminPwdCallback();
   } else {
     document.getElementById('admin-pwd-err').textContent='Incorrect admin code.';
@@ -812,7 +816,7 @@ function checkAdminPwd(){
   }
 }
 function closeAdminPwd(){
-  document.getElementById('admin-pwd-overlay').classList.remove('open');
+  document.getElementById('admin-pwd-overlay').style.display='none';
   adminPwdBuffer='';adminPwdCallback=null;
 }
 function switchTab(t){curAdminTab=t;updateAdminTabs();renderAdmin();}
