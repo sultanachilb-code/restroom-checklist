@@ -259,7 +259,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
         <div class="gps-result-body" id="gps-result-body">—</div>
       </div>
       <button class="btn btn-gold" id="gps-proceed-btn" onclick="afterGPS()" style="display:none">PROCEED TO FORM</button>
-      <button class="btn btn-ghost" id="gps-override-btn" onclick="overrideGPS()" style="display:none;margin-top:10px">PROCEED ANYWAY (FLAGGED)</button>
+      <button class="btn btn-gold" id="gps-retry-btn" onclick="retryGPS()" style="display:none;margin-top:10px">🔄 RETRY GPS</button>
       <button class="btn btn-ghost" onclick="cancelGPS()" style="margin-top:10px">CANCEL</button>
     </div>
   </div>
@@ -404,7 +404,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 const GAS_URL      = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
 const APP_PWD      = '2707';   // Supervisor PIN — opens inspection form via QR
 const ADMIN_PWD    = '2606';   // Admin PIN — opens Admin Panel
-const GPS_RADIUS_M = 120;
+const GPS_RADIUS_M     = 80;   // must be within this distance of calibrated point
+const GPS_MAX_ACCURACY = 60;   // reject if phone GPS accuracy is worse than this (too unreliable)
 const CAL_KEY      = 'abc_room_coords_v2';
 
 // ── FACTORY-CALIBRATED COORDINATES (captured on-site 02 Jun 2026) ──
@@ -550,7 +551,7 @@ function startGPSCheck(){
   if(isLoggedLocal(curRoom.id,curWin.id)){
     showGPSResult('warn','Already Logged',
       `${curRoom.name} has already been inspected for ${curWin.label}.\n\nYou can proceed to log again if needed.`,
-      true,false);
+      true,false,false);
     return;
   }
 
@@ -572,7 +573,7 @@ function startGPSCheck(){
     gpsData={lat:null,lng:null,accuracy:null,status:'uncalibrated'};
     showGPSResult('warn','Room Not Calibrated',
       `${curRoom.name} has not been GPS calibrated yet.\n\nGo to Admin → 📍 Calibrate to set coordinates.\n\nYou can proceed now — this will be logged.`,
-      true,false);
+      true,false,false);
     return;
   }
 
@@ -580,7 +581,7 @@ function startGPSCheck(){
     gpsData={lat:null,lng:null,accuracy:null,status:'no_gps'};
     showGPSResult('warn','GPS Unavailable',
       'This device does not support GPS. Proceeding without location verification.',
-      true,false);
+      true,false,false);
     return;
   }
 
@@ -592,29 +593,46 @@ function startGPSCheck(){
 
       const dist=haversineM(lat,lng,cal.lat,cal.lng);
 
-      if(dist<=GPS_RADIUS_M){
-        // ✅ Within range
-        showGPSResult('ok',`✅ Location Verified — ${curRoom.name}`,
-          `You are ${Math.round(dist)}m from the calibrated position.\nAccuracy: ±${Math.round(accuracy)}m\n\nYou may proceed with the inspection.`,
-          true,false);
-      } else {
-        // ❌ Too far
-        gpsData.status='out_of_range';
-        showGPSResult('err',`⛔ Too Far — ${Math.round(dist)}m Away`,
-          `You must be within ${GPS_RADIUS_M}m of ${curRoom.name}.\n\nCurrent distance: ${Math.round(dist)}m\nAccuracy: ±${Math.round(accuracy)}m\n\nPlease walk to the restroom and try again.\nIf you believe this is an error, use Proceed Anyway.`,
-          false,true);
+      // ── CASE 1: GPS signal too weak to trust ──
+      if(accuracy > GPS_MAX_ACCURACY){
+        gpsData.status='weak_signal';
+        showGPSResult('err',
+          `⚠️ GPS Signal Too Weak`,
+          `Your device GPS accuracy is ±${Math.round(accuracy)}m — too imprecise to verify location.\n\nRequired: ±${GPS_MAX_ACCURACY}m or better.\n\nPlease move near a window or step outside briefly, then tap Retry.`,
+          false, false, true);
+        return;
       }
+
+      // ── CASE 2: Good signal, within radius ✅ ──
+      if(dist <= GPS_RADIUS_M){
+        showGPSResult('ok',
+          `✅ Location Verified`,
+          `You are ${Math.round(dist)}m from ${curRoom.name}.\nAccuracy: ±${Math.round(accuracy)}m\n\nYou may proceed with the inspection.`,
+          true, false, false);
+        return;
+      }
+
+      // ── CASE 3: Good signal, but too far ❌ ──
+      gpsData.status='out_of_range';
+      showGPSResult('err',
+        `⛔ Wrong Location — ${Math.round(dist)}m Away`,
+        `You must be physically inside ${curRoom.name} to log this inspection.\n\nYour position: ${Math.round(dist)}m away from the restroom.\nAccuracy: ±${Math.round(accuracy)}m\nAllowed radius: ${GPS_RADIUS_M}m\n\nPlease walk to the restroom and scan again.`,
+        false, false, false);
     },
     (err)=>{
       gpsData={lat:null,lng:null,accuracy:null,status:'denied'};
-      const msgs={1:'GPS permission was denied. Please enable location access in your browser settings.',2:'GPS position unavailable.',3:'GPS timed out. Try again.'};
-      showGPSResult('err','GPS Error',msgs[err.code]||'GPS error.',false,true);
+      const msgs={
+        1:'GPS permission was denied. Please enable location access in your browser settings and try again.',
+        2:'GPS position unavailable. Move to an open area and retry.',
+        3:'GPS timed out. Move closer to a window and retry.'
+      };
+      showGPSResult('err','GPS Error', msgs[err.code]||'GPS error.',false,false,true);
     },
-    {timeout:12000,enableHighAccuracy:true,maximumAge:0}
+    {timeout:15000,enableHighAccuracy:true,maximumAge:0}
   );
 }
 
-function showGPSResult(type,title,body,showProceed,showOverride){
+function showGPSResult(type,title,body,showProceed,showOverride,showRetry){
   document.getElementById('gps-checking-state').style.display='none';
   document.getElementById('gps-result-state').style.display='block';
   const card=document.getElementById('gps-result-card');
@@ -623,14 +641,17 @@ function showGPSResult(type,title,body,showProceed,showOverride){
   document.getElementById('gps-result-title').textContent=title;
   document.getElementById('gps-result-body').textContent=body;
   document.getElementById('gps-proceed-btn').style.display=showProceed?'block':'none';
-  document.getElementById('gps-override-btn').style.display=showOverride?'block':'none';
+  document.getElementById('gps-retry-btn').style.display=showRetry?'block':'none';
 }
 
 function afterGPS(){ showForm(); }
 
-function overrideGPS(){
-  gpsData.status='overridden';
-  showForm();
+function retryGPS(){
+  // Re-run the full GPS check for the current room
+  document.getElementById('gps-checking-state').style.display='block';
+  document.getElementById('gps-result-state').style.display='none';
+  document.getElementById('gps-acc-val').textContent='—';
+  startGPSCheck();
 }
 
 function cancelGPS(){
