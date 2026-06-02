@@ -28,11 +28,49 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 /* ── CONTENT ── */
 .content{flex:1;padding:20px;max-width:520px;margin:0 auto;width:100%;}
 
+/* ── PASSWORD ── */
+.pwd-wrap{text-align:center;padding:40px 20px;}
+.pwd-icon{font-size:52px;margin-bottom:16px;}
+.pwd-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.pwd-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.pwd-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px;}
+.pwd-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all .2s;}
+.pwd-dot.filled{background:var(--gold);border-color:var(--gold);}
+.pwd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:240px;margin:0 auto;}
+.pwd-key{padding:18px 10px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--white);cursor:pointer;transition:all .2s;text-align:center;user-select:none;}
+.pwd-key:hover{border-color:var(--gold);color:var(--gold);}
+.pwd-key:active{transform:scale(.93);}
+.pwd-key.del{font-size:16px;color:var(--muted);}
+.pwd-err{color:var(--danger);font-size:12px;margin-top:12px;min-height:18px;}
+
+/* ── GPS CHECKING SCREEN ── */
+.gps-checking{text-align:center;padding:60px 30px;}
+.gps-checking-icon{font-size:56px;margin-bottom:20px;animation:bounce 1.4s infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.gps-checking-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.gps-checking-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:30px;}
+.gps-accuracy-ring{width:100px;height:100px;border-radius:50%;border:3px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;position:relative;}
+.gps-accuracy-ring::before{content:'';position:absolute;inset:4px;border-radius:50%;border:2px dashed var(--gold);opacity:.3;animation:rotate 3s linear infinite;}
+@keyframes rotate{to{transform:rotate(360deg)}}
+.gps-accuracy-val{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--gold);}
+.gps-accuracy-lbl{font-size:10px;color:var(--muted);letter-spacing:1px;}
+.gps-result-card{border-radius:12px;padding:16px 20px;margin-bottom:20px;text-align:left;}
+.gps-result-card.ok{background:rgba(62,184,124,.08);border:1px solid rgba(62,184,124,.3);}
+.gps-result-card.warn{background:rgba(240,160,64,.08);border:1px solid rgba(240,160,64,.3);}
+.gps-result-card.err{background:rgba(224,82,82,.08);border:1px solid rgba(224,82,82,.3);}
+.gps-result-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;margin-bottom:6px;}
+.gps-result-title.ok{color:var(--success);}
+.gps-result-title.warn{color:var(--warning);}
+.gps-result-title.err{color:var(--danger);}
+.gps-result-body{font-size:12px;color:var(--muted);line-height:1.7;}
+
 /* ── HERO ── */
 .hero{text-align:center;padding:28px 0 20px;}
 .hero-logo{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;box-shadow:0 8px 32px rgba(201,168,76,.25);}
-.hero-title{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:1px;}
-.hero-sub{font-size:13px;color:var(--muted);margin-top:5px;}
+.hero-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.hero-sub{font-size:12px;color:var(--muted);margin-top:5px;}
+.hero-room{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:var(--white);margin-top:8px;}
+.hero-room-loc{font-size:12px;color:var(--muted);margin-top:2px;}
 
 /* ── BANNER ── */
 .banner{margin:14px 0;padding:12px 16px;border-radius:10px;border-left:4px solid var(--gold);background:var(--card);display:flex;align-items:center;gap:12px;}
@@ -43,22 +81,15 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .ban-text{font-size:12px;color:var(--white);}
 .ban-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--gold);}
 
-/* ── ROOM GRID ── */
-.sec-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:18px 0 10px;}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
-.room-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
-.room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
-.room-card:hover{border-color:var(--gold);transform:translateY(-2px);}
-.room-card:hover::before{transform:scaleX(1);}
-.room-card:active{transform:scale(.97);}
-.rc-icon{font-size:20px;margin-bottom:7px;}
-.rc-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--white);}
-.rc-status{font-size:10px;color:var(--muted);margin-top:3px;}
-.rc-badge{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;}
-.rc-badge.ok{background:var(--success);}
-.rc-badge.pend{background:var(--warning);animation:pulse 1.5s infinite;}
-.rc-badge.none{background:var(--muted);}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* ── GPS BADGE (on form) ── */
+.gps-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:16px;border:1px solid var(--border);}
+.gps-badge.ok{background:rgba(62,184,124,.08);border-color:rgba(62,184,124,.3);}
+.gps-badge.warn{background:rgba(240,160,64,.08);border-color:rgba(240,160,64,.3);}
+.gps-badge.err{background:rgba(224,82,82,.08);border-color:rgba(224,82,82,.3);}
+.gps-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.gps-dot.ok{background:var(--success);}
+.gps-dot.warn{background:var(--warning);}
+.gps-dot.err{background:var(--danger);}
 
 /* ── FORM ── */
 .form-sec{margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
@@ -81,16 +112,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .s-pill{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);text-align:center;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:var(--card);}
 .s-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
 
-/* ── GPS BADGE ── */
-.gps-badge{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:16px;border:1px solid var(--border);}
-.gps-badge.ok{background:rgba(62,184,124,.08);border-color:rgba(62,184,124,.3);}
-.gps-badge.warn{background:rgba(240,160,64,.08);border-color:rgba(240,160,64,.3);}
-.gps-badge.err{background:rgba(224,82,82,.08);border-color:rgba(224,82,82,.3);}
-.gps-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.gps-dot.ok{background:var(--success);}
-.gps-dot.warn{background:var(--warning);}
-.gps-dot.err{background:var(--danger);}
-
 /* ── BUTTONS ── */
 .btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
@@ -99,54 +120,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
-.btn-danger{background:linear-gradient(135deg,#e05252,#c04040);color:white;}
 .btn-wa{background:linear-gradient(135deg,#25d366,#128c3e);color:white;display:flex;align-items:center;justify-content:center;gap:10px;}
-
-/* ── PASSWORD SCREEN ── */
-.pwd-wrap{text-align:center;padding:40px 20px;}
-.pwd-icon{font-size:52px;margin-bottom:16px;}
-.pwd-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--gold);margin-bottom:6px;}
-.pwd-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
-.pwd-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px;}
-.pwd-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all .2s;}
-.pwd-dot.filled{background:var(--gold);border-color:var(--gold);}
-.pwd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:240px;margin:0 auto;}
-.pwd-key{padding:18px 10px;background:var(--card);border:1px solid var(--border);border-radius:12px;font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--white);cursor:pointer;transition:all .2s;text-align:center;}
-.pwd-key:hover{border-color:var(--gold);color:var(--gold);}
-.pwd-key:active{transform:scale(.93);}
-.pwd-key.del{font-size:16px;color:var(--muted);}
-.pwd-err{color:var(--danger);font-size:12px;margin-top:12px;min-height:18px;}
-
-/* ── OTP POPUP ── */
-.otp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px;}
-.otp-overlay.open{display:flex;}
-.otp-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn .35s cubic-bezier(.34,1.56,.64,1);}
-@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
-.otp-icon{font-size:44px;margin-bottom:12px;}
-.otp-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px;}
-.otp-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
-.otp-code{font-family:'Rajdhani',sans-serif;font-size:48px;font-weight:700;color:var(--gold);letter-spacing:14px;background:rgba(201,168,76,.07);border:2px dashed var(--gold);border-radius:14px;padding:16px 10px;margin-bottom:8px;text-indent:14px;}
-.otp-timer{font-size:11px;color:var(--muted);margin-bottom:22px;}
-.otp-timer span{color:var(--warning);font-weight:600;}
-.otp-inputs{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
-.otp-d{width:52px;height:60px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
-.otp-d:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
-.otp-err-msg{color:var(--danger);font-size:12px;margin-bottom:12px;display:none;}
-.otp-resend{font-size:11px;color:var(--muted);margin-top:10px;cursor:pointer;}
-.otp-resend:hover{color:var(--gold);}
-.otp-resend.disabled{opacity:.4;pointer-events:none;}
-
-/* ── GPS GATE MODAL ── */
-.gps-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:700;align-items:center;justify-content:center;padding:20px;}
-.gps-overlay.open{display:flex;}
-.gps-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn .3s ease;}
-.gps-box-icon{font-size:52px;margin-bottom:14px;}
-.gps-box-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px;}
-.gps-box-sub{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
 
 /* ── SUCCESS ── */
 .succ-wrap{text-align:center;padding:36px 0;}
 .succ-icon{width:80px;height:80px;background:rgba(62,184,124,.15);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;animation:popIn .4s ease;}
+@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 .succ-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--success);}
 .succ-sub{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.6;}
 .succ-detail{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin:18px 0;text-align:left;}
@@ -156,7 +135,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 
 /* ── ADMIN ── */
 .atabs{display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
-.atab{flex:1;padding:10px 4px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.atab{flex:1;padding:10px 2px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
 .atab.active{background:rgba(201,168,76,.12);color:var(--gold);}
 .acard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
 .acard-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;}
@@ -166,7 +145,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .atable tr:last-child td{border-bottom:none;}
 
 /* ── CALIBRATE ── */
-.atab{font-size:10px;}
 .cal-room-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s;}
 .cal-room-card.calibrated{border-color:rgba(62,184,124,.4);}
 .cal-room-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
@@ -178,8 +156,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .cal-coords span{color:var(--gold);}
 .cal-btn{width:100%;padding:11px;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .cal-btn.go{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
-.cal-btn.go:hover{opacity:.9;transform:translateY(-1px);}
-.cal-btn.go:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.cal-btn.go:hover{opacity:.9;}
+.cal-btn.go:disabled{opacity:.4;cursor:not-allowed;}
 .cal-btn.rst{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:6px;}
 .cal-btn.rst:hover{border-color:var(--danger);color:var(--danger);}
 .cal-prog-wrap{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:14px;}
@@ -188,7 +166,21 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .cal-prog-txt{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;}
 .cal-note{background:rgba(201,168,76,.06);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px;}
 .cal-note strong{color:var(--gold);}
-.cal-scanning{font-size:11px;color:var(--warning);margin-top:6px;display:none;}
+
+/* ── MISC ── */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
+.tag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
+.tag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
+.cloud-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;font-size:11px;margin-bottom:14px;border:1px solid var(--border);background:var(--card);}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.c-dot.ok{background:var(--success);box-shadow:0 0 5px var(--success);}
+.c-dot.warn{background:var(--warning);}
+.c-dot.err{background:var(--danger);}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
+.toast.show{display:block;}
+.mt10{margin-top:10px;}
 
 /* ── WA MODAL ── */
 .wa-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
@@ -199,28 +191,11 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .wa-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:4px;}
 .wa-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
 .wa-prev{background:#1a2f1a;border:1px solid #25d366;border-radius:10px;padding:13px;font-size:12px;color:#d4ffd4;line-height:1.7;margin-bottom:14px;white-space:pre-wrap;}
-
-/* ── CLOUD BAR ── */
-.cloud-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;font-size:11px;margin-bottom:14px;border:1px solid var(--border);background:var(--card);}
-.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.c-dot.ok{background:var(--success);box-shadow:0 0 5px var(--success);}
-.c-dot.warn{background:var(--warning);}
-.c-dot.err{background:var(--danger);}
-
-/* ── MISC ── */
-.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
-.tag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
-.tag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:rotate .6s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes rotate{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
-.toast.show{display:block;}
-.mt10{margin-top:10px;}
 </style>
 </head>
 <body>
 
-<!-- ══ PASSWORD SCREEN ══ -->
+<!-- ══ 1. PASSWORD SCREEN ══ -->
 <div class="screen active" id="s-pwd">
   <div class="hdr">
     <div class="hdr-logo">ABC</div>
@@ -233,7 +208,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
     <div class="pwd-wrap">
       <div class="pwd-icon">🔒</div>
       <div class="pwd-title">ENTER ACCESS CODE</div>
-      <div class="pwd-sub">This system is restricted to authorized<br>mall supervisors only.</div>
+      <div class="pwd-sub">Restricted to authorized supervisors only.</div>
       <div class="pwd-dots" id="pwd-dots">
         <div class="pwd-dot" id="pd0"></div>
         <div class="pwd-dot" id="pd1"></div>
@@ -259,39 +234,46 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
   </div>
 </div>
 
-<!-- ══ HOME ══ -->
-<div class="screen" id="s-home">
+<!-- ══ 2. GPS CHECKING SCREEN ══ -->
+<div class="screen" id="s-gps">
   <div class="hdr">
     <div class="hdr-logo">ABC</div>
     <div class="hdr-info">
-      <div class="hdr-title">Restroom Inspection</div>
-      <div class="hdr-sub" id="home-date">—</div>
+      <div class="hdr-title" id="gps-hdr-title">Verifying Location</div>
+      <div class="hdr-sub" id="gps-hdr-sub">Please wait…</div>
     </div>
-    <button class="hdr-btn" onclick="showAdmin()">ADMIN</button>
   </div>
   <div class="content">
-    <div class="hero">
-      <div class="hero-logo">🚻</div>
-      <div class="hero-title">ABC VERDUN MALL</div>
-      <div class="hero-sub">Daily Restroom Inspection System</div>
+    <div class="gps-checking" id="gps-checking-state">
+      <div class="gps-checking-icon">📍</div>
+      <div class="gps-accuracy-ring">
+        <div class="gps-accuracy-val" id="gps-acc-val">—</div>
+        <div class="gps-accuracy-lbl">ACCURACY</div>
+      </div>
+      <div class="gps-checking-title">Acquiring GPS Signal</div>
+      <div class="gps-checking-sub" id="gps-checking-msg">Checking your location against<br><strong id="gps-room-name-label" style="color:var(--gold)">—</strong></div>
     </div>
-    <div id="cloud-bar"></div>
-    <div id="shift-banner"></div>
-    <div class="sec-label">Select Restroom to Inspect</div>
-    <div class="grid" id="room-grid"></div>
-    <button class="btn btn-ghost" onclick="gotoAdminLogs()">📋 View Today's Logs</button>
-    <div style="height:20px"></div>
+    <div id="gps-result-state" style="display:none;padding-top:20px">
+      <div class="gps-result-card" id="gps-result-card">
+        <div class="gps-result-title" id="gps-result-title">—</div>
+        <div class="gps-result-body" id="gps-result-body">—</div>
+      </div>
+      <button class="btn btn-gold" id="gps-proceed-btn" onclick="afterGPS()" style="display:none">PROCEED TO FORM</button>
+      <button class="btn btn-ghost" id="gps-override-btn" onclick="overrideGPS()" style="display:none;margin-top:10px">PROCEED ANYWAY (FLAGGED)</button>
+      <button class="btn btn-ghost" onclick="cancelGPS()" style="margin-top:10px">CANCEL</button>
+    </div>
   </div>
 </div>
 
-<!-- ══ FORM ══ -->
+<!-- ══ 3. INSPECTION FORM ══ -->
 <div class="screen" id="s-form">
   <div class="hdr">
-    <button class="hdr-btn" onclick="goHome()">← HOME</button>
+    <button class="hdr-btn" onclick="cancelGPS()">← BACK</button>
     <div class="hdr-info">
       <div class="hdr-title" id="form-room-title">Inspection</div>
       <div class="hdr-sub" id="form-win-sub">—</div>
     </div>
+    <button class="hdr-btn" onclick="showAdmin()">ADMIN</button>
   </div>
   <div class="content">
     <div class="s-pills" id="form-pills"></div>
@@ -320,12 +302,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
       </div>
     </div>
     <button class="btn btn-gold" id="submit-btn" onclick="submitForm()">SUBMIT INSPECTION</button>
-    <button class="btn btn-ghost" onclick="goHome()">CANCEL</button>
+    <button class="btn btn-ghost" onclick="cancelGPS()">CANCEL</button>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══ SUCCESS ══ -->
+<!-- ══ 4. SUCCESS ══ -->
 <div class="screen" id="s-success">
   <div class="hdr">
     <div class="hdr-logo">ABC</div>
@@ -341,18 +323,18 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
       <div class="succ-sub" id="succ-sub">—</div>
       <div class="succ-detail" id="succ-detail"></div>
       <div id="wa-area"></div>
-      <button class="btn btn-gold mt10" onclick="goHome()">BACK TO HOME</button>
+      <button class="btn btn-gold mt10" onclick="returnToScan()">SCAN NEXT RESTROOM</button>
     </div>
   </div>
 </div>
 
-<!-- ══ ADMIN ══ -->
+<!-- ══ 5. ADMIN ══ -->
 <div class="screen" id="s-admin">
   <div class="hdr">
-    <button class="hdr-btn" onclick="goHome()">← BACK</button>
+    <button class="hdr-btn" onclick="cancelGPS()">← BACK</button>
     <div class="hdr-info">
       <div class="hdr-title">Admin Panel</div>
-      <div class="hdr-sub">Logs & Reports</div>
+      <div class="hdr-sub">Logs & Calibration</div>
     </div>
   </div>
   <div class="content">
@@ -365,39 +347,6 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
     </div>
     <div id="admin-content"></div>
     <div style="height:20px"></div>
-  </div>
-</div>
-
-<!-- ══ OTP POPUP ══ -->
-<div class="otp-overlay" id="otp-overlay">
-  <div class="otp-box">
-    <div class="otp-icon">🔐</div>
-    <div class="otp-title">Verification Code</div>
-    <div class="otp-sub" id="otp-room-label">Code for <strong>—</strong></div>
-    <div class="otp-code" id="otp-code-show">⏳</div>
-    <div class="otp-timer">Expires in <span id="otp-countdown">10:00</span></div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Memorize this code then enter it below to confirm you are physically at the restroom.</p>
-    <div class="otp-inputs">
-      <input class="otp-d" maxlength="1" id="d0" autocomplete="off">
-      <input class="otp-d" maxlength="1" id="d1" autocomplete="off">
-      <input class="otp-d" maxlength="1" id="d2" autocomplete="off">
-      <input class="otp-d" maxlength="1" id="d3" autocomplete="off">
-    </div>
-    <div class="otp-err-msg" id="otp-err">❌ Incorrect code. Try again.</div>
-    <button class="btn btn-gold" id="otp-verify-btn" onclick="doVerifyOTP()">CONFIRM & ENTER</button>
-    <button class="btn btn-ghost mt10" onclick="cancelOTP()">CANCEL</button>
-    <div class="otp-resend disabled" id="otp-resend" onclick="resendOTP()">🔄 Request new code</div>
-  </div>
-</div>
-
-<!-- ══ GPS GATE ══ -->
-<div class="gps-overlay" id="gps-overlay">
-  <div class="gps-box">
-    <div class="gps-box-icon" id="gps-gate-icon">📍</div>
-    <div class="gps-box-title" id="gps-gate-title" style="color:var(--gold)">Verifying Location</div>
-    <div class="gps-box-sub" id="gps-gate-sub">Checking you are physically present at this restroom…</div>
-    <button class="btn btn-ghost" id="gps-cancel-btn" onclick="cancelOTP()" style="display:none">CANCEL</button>
-    <button class="btn btn-gold" id="gps-proceed-btn" onclick="proceedDespiteGPS()" style="display:none;margin-top:10px">PROCEED ANYWAY</button>
   </div>
 </div>
 
@@ -421,335 +370,244 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 // ════════════════════════════════════════════
 //  CONFIG
 // ════════════════════════════════════════════
-const GAS_URL  = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
-const APP_PWD  = '2707';
-
-// ABC Verdun Mall GPS coordinates per restroom floor
-// All are within the mall building — adjust if needed
-const MALL_CENTER = { lat: 33.8731, lng: 35.4907 }; // ABC Verdun Mall, Verdun, Beirut
-const GPS_RADIUS_M = 120; // max allowed distance in meters
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
+const APP_PWD = '2707';
+const GPS_RADIUS_M = 120;
+const CAL_KEY = 'abc_room_coords_v2'; // v2 = per-room isolated storage
 
 const ROOMS = [
-  {id:'LG_CENTRAL',name:'LG Central', level:'LG',core:'Central',icon:'🏢', lat:33.8730, lng:35.4906},
-  {id:'GF_EAST',   name:'GF East',    level:'GF',core:'East',   icon:'🏬', lat:33.8732, lng:35.4909},
-  {id:'L1_CENTRAL',name:'L1 Central', level:'L1',core:'Central',icon:'🏢', lat:33.8731, lng:35.4907},
-  {id:'L2_CENTRAL',name:'L2 Central', level:'L2',core:'Central',icon:'🏢', lat:33.8731, lng:35.4907},
-  {id:'L3_EAST',   name:'L3 East',    level:'L3',core:'East',   icon:'🏢', lat:33.8732, lng:35.4909},
-  {id:'L3_CENTRAL',name:'L3 Central', level:'L3',core:'Central',icon:'🏢', lat:33.8731, lng:35.4906},
-  {id:'L4_CENTRAL',name:'L4 Central', level:'L4',core:'Central',icon:'🏢', lat:33.8730, lng:35.4907},
+  {id:'LG_CENTRAL', name:'LG Central',  level:'LG', core:'Central', icon:'🏢'},
+  {id:'GF_EAST',    name:'GF East',     level:'GF', core:'East',    icon:'🏬'},
+  {id:'L1_CENTRAL', name:'L1 Central',  level:'L1', core:'Central', icon:'🏢'},
+  {id:'L2_CENTRAL', name:'L2 Central',  level:'L2', core:'Central', icon:'🏢'},
+  {id:'L3_EAST',    name:'L3 East',     level:'L3', core:'East',    icon:'🏢'},
+  {id:'L3_CENTRAL', name:'L3 Central',  level:'L3', core:'Central', icon:'🏢'},
+  {id:'L4_CENTRAL', name:'L4 Central',  level:'L4', core:'Central', icon:'🏢'},
 ];
 
 const WINDOWS = [
-  {id:'W1',label:'Shift 1 — Morning',   time:'10:00 AM',start:10,end:12},
-  {id:'W2',label:'Shift 2 — Afternoon', time:'1:00 PM', start:13,end:17},
-  {id:'W3',label:'Shift 3 — Evening',   time:'7:00 PM', start:19,end:21},
+  {id:'W1', label:'Shift 1 — Morning',   time:'10:00 AM', start:10, end:12},
+  {id:'W2', label:'Shift 2 — Afternoon', time:'1:00 PM',  start:13, end:17},
+  {id:'W3', label:'Shift 3 — Evening',   time:'7:00 PM',  start:19, end:21},
 ];
 
 const EQ = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
 const CL = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
 const ST = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
 
-// ── STATE ─────────────────────────────────────
-let curRoom=null, curWin=null, formData={}, lastEntry=null;
-let gasOk=null;
-let otpSession=null, otpCode=null, otpTimer=null, otpSecs=600;
+// ── STATE ──────────────────────────────────
+let curRoom=null, curWin=null, formData={}, lastEntry=null, gasOk=null;
 let gpsData={lat:null,lng:null,accuracy:null,status:'unknown'};
 let pwdBuffer='';
+let curAdminTab='logs';
 
-// ── UTILS ─────────────────────────────────────
-const now  = ()=>new Date();
-const pad  = n=>String(n).padStart(2,'0');
+// ── UTILS ──────────────────────────────────
+const now   = ()=>new Date();
+const pad   = n=>String(n).padStart(2,'0');
 const timeStr = d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const dateKey = d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const fullDate= d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-
 function getWin(){ const h=now().getHours(); return WINDOWS.find(w=>h>=w.start&&h<w.end)||null; }
-function getNearestWin(){ const w=getWin();if(w)return w; const h=now().getHours(); if(h<10)return WINDOWS[0]; if(h<13)return WINDOWS[1]; if(h<19)return WINDOWS[2]; return WINDOWS[2]; }
+function getNearestWin(){ const w=getWin();if(w)return w; const h=now().getHours(); if(h<10)return WINDOWS[0];if(h<13)return WINDOWS[1];if(h<19)return WINDOWS[2];return WINDOWS[2]; }
 
-// ── LOCAL DB ──────────────────────────────────
-const getLocal =()=>JSON.parse(localStorage.getItem('abc_rl')||'[]');
-const saveLocal=v=>localStorage.setItem('abc_rl',JSON.stringify(v));
-const addLocal =e=>{const l=getLocal();l.push(e);saveLocal(l);}
-const todayLocal=()=>{const dk=dateKey(now());return getLocal().filter(l=>l.date===dk);}
+// ── LOCAL DB ───────────────────────────────
+const getLocal  = ()=>JSON.parse(localStorage.getItem('abc_rl')||'[]');
+const saveLocal = v=>localStorage.setItem('abc_rl',JSON.stringify(v));
+const addLocal  = e=>{const l=getLocal();l.push(e);saveLocal(l);}
+const todayLocal= ()=>{const dk=dateKey(now());return getLocal().filter(l=>l.date===dk);}
 function isLoggedLocal(rId,wId){const dk=dateKey(now());return getLocal().some(l=>l.date===dk&&l.roomId===rId&&l.winId===wId);}
 
-// ── GAS ───────────────────────────────────────
+// ── GAS ────────────────────────────────────
 async function gas(action,body={}){
-  try{
-    const r=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,...body})});
-    const j=await r.json(); gasOk=true; return j;
-  }catch(e){ gasOk=false; return null; }
+  try{const r=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,...body})});const j=await r.json();gasOk=true;return j;}
+  catch(e){gasOk=false;return null;}
 }
-async function pingGAS(){ const r=await gas('ping'); gasOk=!!(r&&r.ok); renderCloudBar(); }
+async function pingGAS(){const r=await gas('ping');gasOk=!!(r&&r.ok);}
 
-// ── SCREENS ───────────────────────────────────
+// ── CALIBRATION STORAGE (PER ROOM, ISOLATED) ──
+function getSavedCoords(){ return JSON.parse(localStorage.getItem(CAL_KEY)||'{}'); }
+function getRoomCoords(roomId){ return (getSavedCoords())[roomId]||null; }
+function saveRoomCoords(roomId,lat,lng,accuracy){
+  const all=getSavedCoords();
+  // Each room key stores ONLY its own data — never shared
+  all[roomId]={lat,lng,accuracy,calibratedAt:new Date().toISOString()};
+  localStorage.setItem(CAL_KEY,JSON.stringify(all));
+}
+function clearRoomCoords(roomId){
+  const all=getSavedCoords();
+  delete all[roomId];
+  localStorage.setItem(CAL_KEY,JSON.stringify(all));
+}
+
+// ── SCREEN MANAGEMENT ──────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function goHome(){curRoom=null;curWin=null;formData={};lastEntry=null;clearOTPTimer();initHome();show('s-home');}
-function gotoAdminLogs(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
 function toast(m,d=3000){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
+// ── RETURN AFTER SUBMISSION ────────────────
+// After logging, go back to GPS check screen for that same room
+// (supervisor may want to log next shift or move to next restroom)
+function returnToScan(){
+  curRoom=null;curWin=null;formData={};lastEntry=null;
+  gpsData={lat:null,lng:null,accuracy:null,status:'unknown'};
+  // Return to password screen — next scan will re-enter via QR
+  show('s-pwd');
+  pwdBuffer='';
+  updatePwdDots();
+}
+
 // ════════════════════════════════════════════
-//  PASSWORD SCREEN
+//  1. PASSWORD
 // ════════════════════════════════════════════
 function pwdKey(k){
-  if(pwdBuffer.length>=4) return;
+  if(pwdBuffer.length>=4)return;
   pwdBuffer+=k;
   updatePwdDots();
-  if(pwdBuffer.length===4) setTimeout(checkPwd,180);
+  if(pwdBuffer.length===4)setTimeout(checkPwd,180);
 }
-function pwdDel(){ if(pwdBuffer.length>0){pwdBuffer=pwdBuffer.slice(0,-1);updatePwdDots();document.getElementById('pwd-err').textContent='';} }
-function updatePwdDots(){
-  for(let i=0;i<4;i++){
-    document.getElementById('pd'+i).classList.toggle('filled',i<pwdBuffer.length);
-  }
-}
+function pwdDel(){if(pwdBuffer.length>0){pwdBuffer=pwdBuffer.slice(0,-1);updatePwdDots();document.getElementById('pwd-err').textContent='';}}
+function updatePwdDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pwdBuffer.length);}
 function checkPwd(){
   if(pwdBuffer===APP_PWD){
-    show('s-home');
-    initHome();
-    pingGAS();
+    // Read room from URL ?room=ROOM_ID
+    const roomId=new URLSearchParams(window.location.search).get('room');
+    if(roomId){
+      const room=ROOMS.find(r=>r.id===roomId);
+      if(room){ curRoom=room; startGPSCheck(); return; }
+    }
+    // No room param — go to admin (direct URL open without QR)
+    showAdmin();
   } else {
     document.getElementById('pwd-err').textContent='Incorrect code. Try again.';
-    document.querySelectorAll('.pwd-dot').forEach(d=>{
-      d.style.background='var(--danger)';d.style.borderColor='var(--danger)';
-    });
-    setTimeout(()=>{
-      pwdBuffer='';
-      updatePwdDots();
-      document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='';d.style.borderColor='';});
-    },700);
+    document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='var(--danger)';d.style.borderColor='var(--danger)';});
+    setTimeout(()=>{pwdBuffer='';updatePwdDots();document.querySelectorAll('.pwd-dot').forEach(d=>{d.style.background='';d.style.borderColor='';});},700);
   }
 }
 
 // ════════════════════════════════════════════
-//  GPS UTILITIES
+//  2. GPS CHECK SCREEN
 // ════════════════════════════════════════════
+function startGPSCheck(){
+  curWin=getNearestWin();
+
+  // Already logged this shift?
+  if(isLoggedLocal(curRoom.id,curWin.id)){
+    showGPSResult('warn','Already Logged',
+      `${curRoom.name} has already been inspected for ${curWin.label}.\n\nYou can proceed to log again if needed.`,
+      true,false);
+    return;
+  }
+
+  // Show GPS checking UI
+  document.getElementById('gps-hdr-title').textContent=curRoom.name;
+  document.getElementById('gps-hdr-sub').textContent=`${curRoom.icon} Level ${curRoom.level} — ${curRoom.core}`;
+  document.getElementById('gps-room-name-label').textContent=curRoom.name;
+  document.getElementById('gps-checking-msg').innerHTML=`Checking your location against<br><strong id="gps-room-name-label" style="color:var(--gold)">${curRoom.name}</strong>`;
+  document.getElementById('gps-acc-val').textContent='—';
+  document.getElementById('gps-checking-state').style.display='block';
+  document.getElementById('gps-result-state').style.display='none';
+  show('s-gps');
+
+  // Get calibrated coords for THIS room specifically
+  const cal=getRoomCoords(curRoom.id);
+
+  if(!cal){
+    // Room not calibrated — bypass GPS, proceed directly
+    gpsData={lat:null,lng:null,accuracy:null,status:'uncalibrated'};
+    showGPSResult('warn','Room Not Calibrated',
+      `${curRoom.name} has not been GPS calibrated yet.\n\nGo to Admin → 📍 Calibrate to set coordinates.\n\nYou can proceed now — this will be logged.`,
+      true,false);
+    return;
+  }
+
+  if(!navigator.geolocation){
+    gpsData={lat:null,lng:null,accuracy:null,status:'no_gps'};
+    showGPSResult('warn','GPS Unavailable',
+      'This device does not support GPS. Proceeding without location verification.',
+      true,false);
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos)=>{
+      const {latitude:lat,longitude:lng,accuracy}=pos.coords;
+      gpsData={lat,lng,accuracy,status:'obtained'};
+      document.getElementById('gps-acc-val').textContent=`±${Math.round(accuracy)}m`;
+
+      const dist=haversineM(lat,lng,cal.lat,cal.lng);
+
+      if(dist<=GPS_RADIUS_M){
+        // ✅ Within range
+        showGPSResult('ok',`✅ Location Verified — ${curRoom.name}`,
+          `You are ${Math.round(dist)}m from the calibrated position.\nAccuracy: ±${Math.round(accuracy)}m\n\nYou may proceed with the inspection.`,
+          true,false);
+      } else {
+        // ❌ Too far
+        gpsData.status='out_of_range';
+        showGPSResult('err',`⛔ Too Far — ${Math.round(dist)}m Away`,
+          `You must be within ${GPS_RADIUS_M}m of ${curRoom.name}.\n\nCurrent distance: ${Math.round(dist)}m\nAccuracy: ±${Math.round(accuracy)}m\n\nPlease walk to the restroom and try again.\nIf you believe this is an error, use Proceed Anyway.`,
+          false,true);
+      }
+    },
+    (err)=>{
+      gpsData={lat:null,lng:null,accuracy:null,status:'denied'};
+      const msgs={1:'GPS permission was denied. Please enable location access in your browser settings.',2:'GPS position unavailable.',3:'GPS timed out. Try again.'};
+      showGPSResult('err','GPS Error',msgs[err.code]||'GPS error.',false,true);
+    },
+    {timeout:12000,enableHighAccuracy:true,maximumAge:0}
+  );
+}
+
+function showGPSResult(type,title,body,showProceed,showOverride){
+  document.getElementById('gps-checking-state').style.display='none';
+  document.getElementById('gps-result-state').style.display='block';
+  const card=document.getElementById('gps-result-card');
+  card.className=`gps-result-card ${type}`;
+  document.getElementById('gps-result-title').className=`gps-result-title ${type}`;
+  document.getElementById('gps-result-title').textContent=title;
+  document.getElementById('gps-result-body').textContent=body;
+  document.getElementById('gps-proceed-btn').style.display=showProceed?'block':'none';
+  document.getElementById('gps-override-btn').style.display=showOverride?'block':'none';
+}
+
+function afterGPS(){ showForm(); }
+
+function overrideGPS(){
+  gpsData.status='overridden';
+  showForm();
+}
+
+function cancelGPS(){
+  curRoom=null;curWin=null;formData={};
+  gpsData={lat:null,lng:null,accuracy:null,status:'unknown'};
+  show('s-pwd');
+  pwdBuffer='';updatePwdDots();
+}
+
+// ── HAVERSINE ──────────────────────────────
 function haversineM(lat1,lng1,lat2,lng2){
-  const R=6371000, r=Math.PI/180;
-  const dLat=(lat2-lat1)*r, dLng=(lng2-lng1)*r;
+  const R=6371000,r=Math.PI/180;
+  const dLat=(lat2-lat1)*r,dLng=(lng2-lng1)*r;
   const a=Math.sin(dLat/2)**2+Math.cos(lat1*r)*Math.cos(lat2*r)*Math.sin(dLng/2)**2;
   return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
-function checkGPS(room){
-  return new Promise((resolve)=>{
-    // If room not yet calibrated — skip GPS gate, log as 'uncalibrated'
-    if(!room._calibrated){
-      gpsData={lat:null,lng:null,accuracy:null,status:'uncalibrated'};
-      resolve({ok:true,reason:'uncalibrated',dist:null});
-      return;
-    }
-    if(!navigator.geolocation){ resolve({ok:false,reason:'no_gps',dist:null}); return; }
-    document.getElementById('gps-overlay').classList.add('open');
-    document.getElementById('gps-gate-icon').textContent='📍';
-    document.getElementById('gps-gate-title').textContent='Verifying Location';
-    document.getElementById('gps-gate-title').style.color='var(--gold)';
-    document.getElementById('gps-gate-sub').textContent='Checking you are physically present at this restroom…';
-    document.getElementById('gps-cancel-btn').style.display='none';
-    document.getElementById('gps-proceed-btn').style.display='none';
-
-    navigator.geolocation.getCurrentPosition(
-      pos=>{
-        const {latitude:lat,longitude:lng,accuracy} = pos.coords;
-        gpsData={lat,lng,accuracy,status:'obtained'};
-        const dist=haversineM(lat,lng,room.lat,room.lng);
-        document.getElementById('gps-overlay').classList.remove('open');
-        resolve({ok: dist<=GPS_RADIUS_M, reason:'checked', dist: Math.round(dist), accuracy: Math.round(accuracy)});
-      },
-      err=>{
-        gpsData={lat:null,lng:null,accuracy:null,status:'denied'};
-        resolve({ok:false,reason:'denied',dist:null});
-      },
-      {timeout:10000, enableHighAccuracy:true}
-    );
-  });
-}
-
 // ════════════════════════════════════════════
-//  HOME
-// ════════════════════════════════════════════
-function initHome(){
-  document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
-  renderCloudBar(); renderBanner(); renderGrid();
-}
-
-function renderCloudBar(){
-  const el=document.getElementById('cloud-bar');
-  if(gasOk===true) el.innerHTML=`<div class="cloud-bar"><div class="c-dot ok"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:6px">— Google Sheets sync & email reports active</span></div>`;
-  else if(gasOk===false) el.innerHTML=`<div class="cloud-bar"><div class="c-dot err"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:6px">— Saving locally</span></div>`;
-  else el.innerHTML=`<div class="cloud-bar"><div class="c-dot warn"></div><span style="color:var(--muted)">Checking connection...</span></div>`;
-}
-
-function renderBanner(){
-  const cw=getWin(), h=now().getHours();
-  let nw=null;
-  if(h<10)nw=WINDOWS[0]; else if(h>=12&&h<13)nw=WINDOWS[1]; else if(h>=17&&h<19)nw=WINDOWS[2];
-  let html='';
-  if(cw) html=`<div class="banner"><div class="dot on"></div><div class="ban-text"><div class="ban-label">🟢 ACTIVE — ${cw.label}</div>Window open until ${cw.end}:00. Inspect all restrooms now.</div></div>`;
-  else if(nw) html=`<div class="banner"><div class="dot next"></div><div class="ban-text"><div class="ban-label">⏳ NEXT — ${nw.label}</div>Opens at ${nw.start}:00.</div></div>`;
-  else html=`<div class="banner"><div class="dot off"></div><div class="ban-text"><div class="ban-label">✅ ALL SHIFTS COMPLETE</div>All windows for today have passed.</div></div>`;
-  document.getElementById('shift-banner').innerHTML=html;
-}
-
-function renderGrid(){
-  const cw=getWin();
-  document.getElementById('room-grid').innerHTML=ROOMS.map(r=>{
-    let badge='none',status='No active window';
-    if(cw){const d=isLoggedLocal(r.id,cw.id);badge=d?'ok':'pend';status=d?`${cw.label.split(' ')[0]} ✓`:`${cw.label.split(' ')[0]} — PENDING`;}
-    else{const cnt=WINDOWS.filter(w=>isLoggedLocal(r.id,w.id)).length;if(cnt>0)status=`${cnt}/3 shifts today`;}
-    return `<div class="room-card" onclick="selectRoom('${r.id}')"><div class="rc-badge ${badge}"></div><div class="rc-icon">${r.icon}</div><div class="rc-name">${r.name}</div><div class="rc-status">${status}</div></div>`;
-  }).join('');
-}
-
-// ════════════════════════════════════════════
-//  ROOM SELECT → GPS CHECK → OTP
-// ════════════════════════════════════════════
-async function selectRoom(roomId){
-  curRoom=ROOMS.find(r=>r.id===roomId);
-  curWin=getNearestWin();
-  if(isLoggedLocal(curRoom.id,curWin.id)){toast('⚠️ Already logged for this shift');return;}
-
-  // GPS check
-  const gpsResult = await checkGPS(curRoom);
-  gpsData.status = gpsResult.reason;
-
-  if(!gpsResult.ok && gpsResult.reason==='denied'){
-    // GPS denied — show warning, allow supervisor to proceed (log GPS=denied)
-    showGPSWarning('Permission Denied', 'Could not verify your location. GPS permission was denied.\n\nYou may still proceed, but this will be logged.', true);
-    return; // proceedDespiteGPS() handles the next step
-  }
-
-  if(!gpsResult.ok && gpsResult.reason==='checked'){
-    // Outside radius — warn + block (show distance)
-    showGPSWarning(
-      '⛔ Too Far From Restroom',
-      `You appear to be ${gpsResult.dist}m away from ${curRoom.name}.\n\nYou must be physically present (within ${GPS_RADIUS_M}m) to log an inspection.\n\nIf you believe this is an error, tap Proceed Anyway — it will be flagged.`,
-      true
-    );
-    return;
-  }
-
-  // GPS OK or no GPS hardware — proceed to OTP
-  await requestOTP();
-}
-
-function showGPSWarning(title, msg, showButtons){
-  const overlay=document.getElementById('gps-overlay');
-  document.getElementById('gps-gate-icon').textContent='⚠️';
-  document.getElementById('gps-gate-title').textContent=title;
-  document.getElementById('gps-gate-title').style.color='var(--warning)';
-  document.getElementById('gps-gate-sub').textContent=msg;
-  document.getElementById('gps-cancel-btn').style.display=showButtons?'block':'none';
-  document.getElementById('gps-proceed-btn').style.display=showButtons?'block':'none';
-  overlay.classList.add('open');
-}
-
-async function proceedDespiteGPS(){
-  gpsData.status='overridden';
-  document.getElementById('gps-overlay').classList.remove('open');
-  await requestOTP();
-}
-
-// ════════════════════════════════════════════
-//  OTP FLOW
-// ════════════════════════════════════════════
-async function requestOTP(){
-  otpSession='SID-'+Date.now()+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
-  document.getElementById('otp-room-label').innerHTML=`Code for <strong>${curRoom.name}</strong>`;
-  document.getElementById('otp-code-show').textContent='⏳';
-  document.getElementById('otp-err').style.display='none';
-  document.getElementById('otp-resend').classList.add('disabled');
-  clearOTPInputs();
-  document.getElementById('otp-overlay').classList.add('open');
-
-  let code=null;
-  if(GAS_URL){ const r=await gas('requestOTP',{roomId:curRoom.id,sessionId:otpSession}); if(r&&r.ok) code=r.otp; }
-  if(!code) code=localGenOTP();
-  otpCode=code;
-  document.getElementById('otp-code-show').textContent=code;
-  startOTPTimer();
-  setTimeout(()=>document.getElementById('d0').focus(),200);
-}
-
-function localGenOTP(){
-  const L='ABCDEFGHJKLMNPQRSTUVWXYZ';
-  const l=L[Math.floor(Math.random()*L.length)];
-  const d=()=>Math.floor(Math.random()*10);
-  const arr=[l,String(d()),String(d()),String(d())];
-  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-  return arr.join('');
-}
-
-function startOTPTimer(){
-  otpSecs=600; clearOTPTimer(); updateOTPTimer();
-  otpTimer=setInterval(()=>{
-    otpSecs--;
-    updateOTPTimer();
-    if(otpSecs<=0){
-      clearOTPTimer();
-      document.getElementById('otp-code-show').textContent='EXPIRED';
-      document.getElementById('otp-resend').classList.remove('disabled');
-    }
-    if(otpSecs<=540) document.getElementById('otp-resend').classList.remove('disabled');
-  },1000);
-}
-function updateOTPTimer(){ const m=Math.floor(otpSecs/60),s=otpSecs%60; document.getElementById('otp-countdown').textContent=`${pad(m)}:${pad(s)}`; }
-function clearOTPTimer(){ if(otpTimer){clearInterval(otpTimer);otpTimer=null;} }
-function clearOTPInputs(){ ['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';}); }
-
-function setupOTPInputs(){
-  ['d0','d1','d2','d3'].forEach((id,i)=>{
-    const el=document.getElementById(id);
-    el.oninput=()=>{el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1);if(el.value&&i<3)document.getElementById(['d0','d1','d2','d3'][i+1]).focus();};
-    el.onkeydown=e=>{if(e.key==='Backspace'&&!el.value&&i>0)document.getElementById(['d0','d1','d2','d3'][i-1]).focus();};
-  });
-}
-
-async function doVerifyOTP(){
-  const entered=['d0','d1','d2','d3'].map(id=>document.getElementById(id).value.toUpperCase()).join('');
-  if(entered.length<4){toast('Enter all 4 characters');return;}
-  const btn=document.getElementById('otp-verify-btn');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span>VERIFYING...';
-
-  let valid=false;
-  if(GAS_URL&&gasOk!==false){ const r=await gas('verifyOTP',{sessionId:otpSession,otp:entered}); if(r&&r.ok) valid=r.valid; else valid=(entered===otpCode); }
-  else valid=(entered===otpCode);
-
-  btn.disabled=false;btn.textContent='CONFIRM & ENTER';
-  if(valid){
-    clearOTPTimer();
-    document.getElementById('otp-overlay').classList.remove('open');
-    showForm();
-  } else {
-    document.getElementById('otp-err').style.display='block';
-    document.getElementById('otp-err').textContent=otpSecs<=0?'⏰ Code expired. Request a new one.':'❌ Incorrect code. Try again.';
-    ['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);e.style.borderColor='var(--danger)';setTimeout(()=>e.style.borderColor='',1500);});
-    clearOTPInputs();
-    setTimeout(()=>document.getElementById('d0').focus(),100);
-  }
-}
-
-async function resendOTP(){ clearOTPTimer(); clearOTPInputs(); document.getElementById('otp-err').style.display='none'; await requestOTP(); }
-function cancelOTP(){ clearOTPTimer(); document.getElementById('otp-overlay').classList.remove('open'); document.getElementById('gps-overlay').classList.remove('open'); curRoom=null;curWin=null; }
-
-// ════════════════════════════════════════════
-//  FORM
+//  3. FORM
 // ════════════════════════════════════════════
 function showForm(){
-  document.getElementById('form-room-title').textContent=curRoom.name;
+  document.getElementById('form-room-title').textContent=`${curRoom.icon} ${curRoom.name}`;
   document.getElementById('form-win-sub').textContent=`${curWin.label} — from ${curWin.time}`;
   document.getElementById('form-pills').innerHTML=WINDOWS.map(w=>`<div class="s-pill ${w.id===curWin.id?'active':''}">${w.label.split(' ')[0]}<br>${w.time}</div>`).join('');
 
-  // GPS badge on form
   let gpsBadge='';
   if(gpsData.status==='obtained')
-    gpsBadge=`<div class="gps-badge ok"><div class="gps-dot ok"></div><span style="color:var(--success)">GPS VERIFIED</span><span style="color:var(--muted);margin-left:6px">Accuracy ±${gpsData.accuracy}m</span></div>`;
+    gpsBadge=`<div class="gps-badge ok"><div class="gps-dot ok"></div><span style="color:var(--success)">GPS VERIFIED</span><span style="color:var(--muted);margin-left:8px">±${Math.round(gpsData.accuracy)}m accuracy</span></div>`;
   else if(gpsData.status==='overridden')
-    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS OVERRIDDEN</span><span style="color:var(--muted);margin-left:6px">Location not confirmed — logged</span></div>`;
+    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS OVERRIDDEN</span><span style="color:var(--muted);margin-left:8px">Outside radius — flagged</span></div>`;
   else if(gpsData.status==='uncalibrated')
-    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS NOT CALIBRATED</span><span style="color:var(--muted);margin-left:6px">Calibrate this room in Admin → 📍 Calibrate</span></div>`;
-  else if(gpsData.status==='denied')
-    gpsBadge=`<div class="gps-badge err"><div class="gps-dot err"></div><span style="color:var(--danger)">GPS DENIED</span><span style="color:var(--muted);margin-left:6px">Permission not granted — logged</span></div>`;
+    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">NOT CALIBRATED</span><span style="color:var(--muted);margin-left:8px">Admin → 📍 Calibrate to enable GPS</span></div>`;
+  else if(gpsData.status==='denied'||gpsData.status==='no_gps')
+    gpsBadge=`<div class="gps-badge err"><div class="gps-dot err"></div><span style="color:var(--danger)">GPS UNAVAILABLE</span><span style="color:var(--muted);margin-left:8px">Enable location permission</span></div>`;
   document.getElementById('gps-form-badge').innerHTML=gpsBadge;
 
   document.getElementById('eq-rows').innerHTML=EQ.map(i=>buildRow('eq',i)).join('');
@@ -788,8 +646,7 @@ async function submitForm(){
     supervisor:sn,comments:document.getElementById('sup-cmt').value,
     equipment:eq,cleaning:cl,staff:st,
     hasIssues:clIssues.length>0,cleaningIssues:clIssues,
-    gpsLat:gpsData.lat,gpsLng:gpsData.lng,
-    gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
+    gpsLat:gpsData.lat,gpsLng:gpsData.lng,gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
     synced:false,
   };
   addLocal(entry);
@@ -801,10 +658,9 @@ async function submitForm(){
       windowId:entry.windowId,windowLabel:entry.windowLabel,
       supervisor:entry.supervisor,comments:entry.comments,
       equipment:eq,cleaning:cl,staff:st,
-      gpsLat:gpsData.lat,gpsLng:gpsData.lng,
-      gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
+      gpsLat:gpsData.lat,gpsLng:gpsData.lng,gpsAccuracy:gpsData.accuracy,gpsStatus:gpsData.status,
     });
-    if(r&&r.ok){synced=true;entry.synced=true;const logs=getLocal();const i=logs.findIndex(l=>l.id===entry.id);if(i>=0){logs[i].synced=true;saveLocal(logs);}}
+    if(r&&r.ok){synced=true;const logs=getLocal();const i=logs.findIndex(l=>l.id===entry.id);if(i>=0){logs[i].synced=true;saveLocal(logs);}}
   }
 
   btn.disabled=false;btn.textContent='SUBMIT INSPECTION';
@@ -818,7 +674,7 @@ async function submitForm(){
 function showSuccess(e,synced){
   document.getElementById('succ-sync-label').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally';
   document.getElementById('succ-sub').textContent=`${e.roomName} — ${e.windowLabel} logged at ${e.time}.`;
-  const gpsTag=e.gpsStatus==='obtained'?`<span class="tag tag-ok">GPS ✓</span>`:e.gpsStatus==='overridden'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">GPS Override</span>`:e.gpsStatus==='uncalibrated'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">Not Calibrated</span>`:`<span class="tag tag-issue">GPS N/A</span>`;
+  const gpsStatusLabels={'obtained':'✅ Verified','overridden':'⚠️ Overridden','uncalibrated':'⚠️ Not Calibrated','denied':'❌ Denied','no_gps':'❌ Unavailable'};
   document.getElementById('succ-detail').innerHTML=`
     <div class="sd-row"><span>Room</span><span>${e.roomName}</span></div>
     <div class="sd-row"><span>Shift</span><span>${e.windowLabel}</span></div>
@@ -826,9 +682,8 @@ function showSuccess(e,synced){
     <div class="sd-row"><span>Supervisor</span><span>${e.supervisor}</span></div>
     <div class="sd-row"><span>Equipment</span><span>${Object.values(e.equipment).filter(v=>v==='OK').length}/${Object.keys(e.equipment).length} OK</span></div>
     <div class="sd-row"><span>Cleaning</span><span class="tag ${e.hasIssues?'tag-issue':'tag-ok'}">${e.hasIssues?e.cleaningIssues.length+' Issue(s)':'✓ All OK'}</span></div>
-    <div class="sd-row"><span>Location</span><span>${gpsTag}</span></div>
-    <div class="sd-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>
-  `;
+    <div class="sd-row"><span>GPS</span><span>${gpsStatusLabels[e.gpsStatus]||'—'}</span></div>
+    <div class="sd-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>`;
   document.getElementById('wa-area').innerHTML=e.hasIssues
     ?`<button class="btn btn-wa mt10" onclick="openWAModal()">📱 Send WhatsApp Alert — Cleaning Issues</button>`:'';
   show('s-success');
@@ -850,228 +705,148 @@ function closeWA(){document.getElementById('wa-overlay').classList.remove('open'
 // ════════════════════════════════════════════
 //  ADMIN
 // ════════════════════════════════════════════
-let curAdminTab='logs';
 function showAdmin(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
 function switchTab(t){curAdminTab=t;updateAdminTabs();renderAdmin();}
 function updateAdminTabs(){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+curAdminTab).classList.add('active');}
-
 function renderAdmin(){
   const el=document.getElementById('admin-content');
-  if(curAdminTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
+  if(curAdminTab==='logs')      el.innerHTML=renderLogsTable(todayLocal());
   else if(curAdminTab==='hist') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
   else if(curAdminTab==='wins') el.innerHTML=renderWindows();
-  else if(curAdminTab==='cal') el.innerHTML=renderCalibrate();
-  else el.innerHTML=renderCfg();
+  else if(curAdminTab==='cal')  el.innerHTML=renderCalibrate();
+  else                          el.innerHTML=renderCfg();
 }
 
 function renderLogsTable(logs){
-  if(!logs.length) return `<div class="acard" style="text-align:center;padding:28px"><p style="font-size:30px">📋</p><p style="color:var(--muted);margin-top:10px;font-size:13px">No inspections logged yet</p></div>`;
+  if(!logs.length)return`<div class="acard" style="text-align:center;padding:28px"><p style="font-size:30px">📋</p><p style="color:var(--muted);margin-top:10px;font-size:13px">No inspections logged yet</p></div>`;
   const rows=logs.map(l=>`<tr>
     <td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td>
     <td>${l.roomName}</td>
-    <td style="color:var(--muted);font-size:10px">${(l.windowLabel||l.winId||'').split(' ')[0]}</td>
+    <td style="color:var(--muted);font-size:10px">${(l.windowLabel||'').split(' ')[0]}</td>
     <td>${Object.values(l.equipment||{}).filter(v=>v==='OK').length}/${Object.keys(l.equipment||{}).length}</td>
     <td><span class="tag ${l.hasIssues?'tag-issue':'tag-ok'}">${l.hasIssues?'ISSUE':'OK'}</span></td>
-    <td style="font-size:10px">${l.gpsStatus==='obtained'?'✅':l.gpsStatus==='overridden'?'⚠️':'—'}</td>
+    <td style="font-size:10px">${{obtained:'✅',overridden:'⚠️',uncalibrated:'🔓',denied:'❌'}[l.gpsStatus]||'—'}</td>
     <td>${l.synced?'☁️':'💾'}</td>
   </tr>`).join('');
-  return `<div class="acard"><div class="acard-title">📋 Logs (${logs.length})</div>
+  return`<div class="acard"><div class="acard-title">📋 Logs (${logs.length})</div>
   <table class="atable"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>SHIFT</th><th>EQ</th><th>CL</th><th>GPS</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
   <button class="btn btn-ghost" style="font-size:12px;padding:10px" onclick="if(confirm('Clear all local logs?')){localStorage.removeItem('abc_rl');renderAdmin();toast('Cleared')}">🗑 Clear Local Logs</button>`;
 }
 
 function renderWindows(){
-  const rows=WINDOWS.map(w=>`<tr>
-    <td><strong>${w.label}</strong></td>
-    <td>${w.start}:00 – ${w.end}:00</td>
-    <td style="color:var(--muted);font-size:10px">HTML report sent at ${w.end}:00 with full room breakdown</td>
-  </tr>`).join('');
-  return `<div class="acard"><div class="acard-title">📊 Shift Report Schedule</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">One HTML email report is sent to <strong style="color:var(--gold)">salaachi@abc.com.lb</strong> at the END of each shift — showing every room: ✅ checked or ❌ missed.</p>
+  const rows=WINDOWS.map(w=>`<tr><td><strong>${w.label}</strong></td><td>${w.start}:00 – ${w.end}:00</td><td style="color:var(--muted);font-size:10px">HTML report email at ${w.end}:00</td></tr>`).join('');
+  return`<div class="acard"><div class="acard-title">📊 Shift Report Schedule</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">HTML email report sent to <strong style="color:var(--gold)">salaachi@abc.com.lb</strong> at end of each shift — shows every room checked ✅ or missed ❌.</p>
   <table class="atable"><thead><tr><th>SHIFT</th><th>WINDOW</th><th>TRIGGER</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function renderCfg(){
-  return `<div class="acard"><div class="acard-title">⚙️ System Status</div>
-  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Cloud (GAS)</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
-  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
-  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">GPS Radius</span><span style="font-size:12px">${GPS_RADIUS_M}m from each restroom</span></div>
-  </div>
-  <div class="acard"><div class="acard-title">🔐 Security Layers</div>
-  <p style="font-size:12px;color:var(--muted);line-height:1.8">
-    <strong style="color:var(--white)">1. PIN Password (2707)</strong> — required every time app is opened<br>
-    <strong style="color:var(--white)">2. GPS Location Check</strong> — verifies supervisor is within ${GPS_RADIUS_M}m of the restroom<br>
-    <strong style="color:var(--white)">3. OTP Verification</strong> — 4-char code generated fresh per session, expires in 10 min<br>
-    <strong style="color:var(--white)">4. Session ID</strong> — each OTP tied to unique session, single-use only
-  </p></div>`;
-}
-
 // ════════════════════════════════════════════
-//  GPS CALIBRATION
+//  CALIBRATION — fully per-room isolated
 // ════════════════════════════════════════════
+function renderCalibrate(){
+  const saved=getSavedCoords();
+  const calCount=Object.keys(saved).length;
+  const pct=Math.round((calCount/ROOMS.length)*100);
 
-// Storage key for saved coordinates
-const CAL_KEY = 'abc_room_coords';
+  const progress=`<div class="cal-prog-wrap">
+    <div class="cal-prog-bar-bg"><div class="cal-prog-bar" style="width:${pct}%"></div></div>
+    <div class="cal-prog-txt">${calCount}/${ROOMS.length} Calibrated</div>
+  </div>`;
 
-function getSavedCoords() {
-  return JSON.parse(localStorage.getItem(CAL_KEY) || '{}');
-}
+  const note=`<div class="cal-note">
+    <strong>📍 How to calibrate:</strong><br>
+    Walk inside each restroom and tap <strong>Capture My Location</strong>. The app saves that room's exact GPS coordinates independently. Each room stores only its own coordinates — one room's calibration never affects another.
+  </div>`;
 
-function saveCoords(roomId, lat, lng, accuracy) {
-  const all = getSavedCoords();
-  all[roomId] = { lat, lng, accuracy, calibratedAt: new Date().toISOString() };
-  localStorage.setItem(CAL_KEY, JSON.stringify(all));
-  // Also update the live ROOMS array so GPS checks use real coords immediately
-  const room = ROOMS.find(r => r.id === roomId);
-  if (room) { room.lat = lat; room.lng = lng; room._calibrated = true; }
-}
+  const cards=ROOMS.map(room=>{
+    // Read THIS room's coords only — completely isolated
+    const cal=saved[room.id]||null;
+    const isCalibrated=!!cal;
+    const calDate=cal?new Date(cal.calibratedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):null;
 
-function clearCoords(roomId) {
-  const all = getSavedCoords();
-  delete all[roomId];
-  localStorage.setItem(CAL_KEY, JSON.stringify(all));
-  // Reset room to dummy coords flag
-  const room = ROOMS.find(r => r.id === roomId);
-  if (room) { room._calibrated = false; }
-}
+    const coordsBlock=isCalibrated
+      ?`<div class="cal-coords">Lat: <span>${cal.lat.toFixed(6)}</span> &nbsp; Lng: <span>${cal.lng.toFixed(6)}</span> &nbsp; Accuracy: <span>±${Math.round(cal.accuracy)}m</span><br><span style="font-size:10px">Set: ${calDate}</span></div>`
+      :`<div class="cal-coords" style="color:var(--warning)">Not calibrated — stand inside this restroom then tap capture.</div>`;
 
-function loadSavedCoords() {
-  // Called on app start — overwrite ROOMS with any saved calibrated coords
-  const all = getSavedCoords();
-  ROOMS.forEach(room => {
-    if (all[room.id]) {
-      room.lat = all[room.id].lat;
-      room.lng = all[room.id].lng;
-      room._calibrated = true;
-    }
-  });
-}
-
-function renderCalibrate() {
-  const saved = getSavedCoords();
-  const calibratedCount = Object.keys(saved).length;
-  const pct = Math.round((calibratedCount / ROOMS.length) * 100);
-
-  const progressBar = `
-    <div class="cal-prog-wrap">
-      <div class="cal-prog-bar-bg">
-        <div class="cal-prog-bar" style="width:${pct}%"></div>
+    return`<div class="cal-room-card ${isCalibrated?'calibrated':''}" id="calcard-${room.id}">
+      <div class="cal-room-hdr">
+        <div class="cal-room-name">${room.icon} ${room.name} <span style="font-size:11px;color:var(--muted);font-weight:400">L${room.level}</span></div>
+        <span class="cal-tag ${isCalibrated?'done':'pend'}">${isCalibrated?'✓ SET':'PENDING'}</span>
       </div>
-      <div class="cal-prog-txt">${calibratedCount}/${ROOMS.length} Calibrated</div>
+      ${coordsBlock}
+      <div id="cal-scanning-${room.id}" style="display:none;font-size:11px;color:var(--warning);margin-bottom:8px"><span class="spin"></span> Acquiring GPS…</div>
+      <button class="cal-btn go" id="cal-btn-${room.id}" onclick="captureLocation('${room.id}')">📍 Capture My Location</button>
+      ${isCalibrated?`<button class="cal-btn rst" onclick="resetCal('${room.id}')">↺ Reset</button>`:''}
     </div>`;
-
-  const note = `
-    <div class="cal-note">
-      <strong>📍 How to calibrate:</strong><br>
-      Walk to each restroom physically and stand inside it. Tap <strong>Capture My Location</strong> — the app saves your exact GPS coordinates for that room. This takes about 2 minutes per floor.<br><br>
-      <strong>⚠️ Until a room is calibrated</strong>, GPS verification for that room is bypassed (the system uses a fallback radius from the mall center).
-    </div>`;
-
-  const roomCards = ROOMS.map(room => {
-    const cal = saved[room.id];
-    const isCalibrated = !!cal;
-    const calDate = cal ? new Date(cal.calibratedAt).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : null;
-
-    const coordsBlock = isCalibrated
-      ? `<div class="cal-coords">
-          Lat: <span>${cal.lat.toFixed(6)}</span>&nbsp;&nbsp;
-          Lng: <span>${cal.lng.toFixed(6)}</span>&nbsp;&nbsp;
-          Accuracy: <span>±${Math.round(cal.accuracy)}m</span><br>
-          <span style="font-size:10px;color:var(--muted)">Calibrated: ${calDate}</span>
-        </div>`
-      : `<div class="cal-coords" style="color:var(--warning)">Not calibrated — stand inside this restroom and tap capture.</div>`;
-
-    return `
-      <div class="cal-room-card ${isCalibrated ? 'calibrated' : ''}" id="calcard-${room.id}">
-        <div class="cal-room-hdr">
-          <div class="cal-room-name">${room.icon} ${room.name}</div>
-          <span class="cal-tag ${isCalibrated ? 'done' : 'pend'}">${isCalibrated ? '✓ SET' : 'PENDING'}</span>
-        </div>
-        ${coordsBlock}
-        <div class="cal-scanning" id="cal-scanning-${room.id}"><span class="spin"></span> Acquiring GPS signal...</div>
-        <button class="cal-btn go" id="cal-btn-${room.id}" onclick="captureLocation('${room.id}')">
-          📍 Capture My Location
-        </button>
-        ${isCalibrated ? `<button class="cal-btn rst" onclick="resetCalibration('${room.id}')">↺ Reset</button>` : ''}
-      </div>`;
   }).join('');
 
-  const allDoneMsg = calibratedCount === ROOMS.length
-    ? `<div class="banner" style="margin-bottom:14px"><div class="dot on"></div><div class="ban-text"><div class="ban-label">✅ ALL ROOMS CALIBRATED</div>GPS verification is fully active for all 7 restrooms.</div></div>`
-    : '';
+  const allDone=calCount===ROOMS.length
+    ?`<div class="banner" style="margin-bottom:14px"><div class="dot on"></div><div class="ban-text"><div class="ban-label">✅ ALL ROOMS CALIBRATED</div>GPS verification fully active for all 7 restrooms.</div></div>`:'' ;
 
-  return allDoneMsg + progressBar + note + roomCards;
+  return allDone+progress+note+cards;
 }
 
-async function captureLocation(roomId) {
-  const btn = document.getElementById(`cal-btn-${roomId}`);
-  const scanning = document.getElementById(`cal-scanning-${roomId}`);
-
-  if (!navigator.geolocation) {
-    toast('❌ GPS not available on this device');
-    return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span> CAPTURING...';
-  scanning.style.display = 'block';
+async function captureLocation(roomId){
+  const btn=document.getElementById(`cal-btn-${roomId}`);
+  const scanning=document.getElementById(`cal-scanning-${roomId}`);
+  if(!navigator.geolocation){toast('❌ GPS not available on this device');return;}
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> CAPTURING...';
+  scanning.style.display='block';
 
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const { latitude: lat, longitude: lng, accuracy } = pos.coords;
-
-      if (accuracy > 80) {
-        // GPS signal weak — warn but allow
-        toast(`⚠️ Weak signal (±${Math.round(accuracy)}m). Move to a window if possible, or recapture.`);
-      }
-
-      saveCoords(roomId, lat, lng, accuracy);
-
-      btn.disabled = false;
-      btn.innerHTML = '📍 Capture My Location';
-      scanning.style.display = 'none';
-
-      toast(`✅ ${ROOMS.find(r=>r.id===roomId)?.name} calibrated! Accuracy: ±${Math.round(accuracy)}m`);
-
-      // Re-render calibrate tab to show updated state
-      setTimeout(() => { if (curAdminTab === 'cal') renderAdmin(); }, 400);
+    (pos)=>{
+      const {latitude:lat,longitude:lng,accuracy}=pos.coords;
+      // Save ONLY to this room's key — isolated from all others
+      saveRoomCoords(roomId,lat,lng,accuracy);
+      btn.disabled=false; btn.innerHTML='📍 Capture My Location';
+      scanning.style.display='none';
+      const name=ROOMS.find(r=>r.id===roomId)?.name;
+      toast(`✅ ${name} calibrated! Accuracy: ±${Math.round(accuracy)}m`);
+      if(curAdminTab==='cal')setTimeout(()=>renderAdmin(),400);
     },
-    (err) => {
-      btn.disabled = false;
-      btn.innerHTML = '📍 Capture My Location';
-      scanning.style.display = 'none';
-
-      const msgs = {
-        1: '❌ GPS permission denied. Enable location in browser settings.',
-        2: '❌ GPS position unavailable. Try moving to an open area.',
-        3: '❌ GPS timed out. Try again.',
-      };
-      toast(msgs[err.code] || '❌ GPS error. Try again.');
+    (err)=>{
+      btn.disabled=false; btn.innerHTML='📍 Capture My Location';
+      scanning.style.display='none';
+      const msgs={1:'❌ GPS permission denied.',2:'❌ Position unavailable.',3:'❌ GPS timed out.'};
+      toast(msgs[err.code]||'❌ GPS error.');
     },
-    { timeout: 15000, enableHighAccuracy: true, maximumAge: 0 }
+    {timeout:15000,enableHighAccuracy:true,maximumAge:0}
   );
 }
 
-function resetCalibration(roomId) {
-  const room = ROOMS.find(r => r.id === roomId);
-  if (!confirm(`Reset calibration for ${room?.name}? GPS verification will be bypassed until recalibrated.`)) return;
-  clearCoords(roomId);
-  toast(`↺ ${room?.name} reset`);
-  if (curAdminTab === 'cal') renderAdmin();
+function resetCal(roomId){
+  const name=ROOMS.find(r=>r.id===roomId)?.name;
+  if(!confirm(`Reset calibration for ${name}?`))return;
+  clearRoomCoords(roomId);
+  toast(`↺ ${name} reset`);
+  if(curAdminTab==='cal')renderAdmin();
+}
+
+function renderCfg(){
+  const saved=getSavedCoords();
+  const calCount=Object.keys(saved).length;
+  return`<div class="acard"><div class="acard-title">⚙️ System Status</div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Cloud (GAS)</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">GPS Radius</span><span style="font-size:12px">${GPS_RADIUS_M}m</span></div>
+  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">Rooms Calibrated</span><span style="font-size:12px">${calCount}/7</span></div>
+  </div>
+  <div class="acard"><div class="acard-title">🔐 Security Layers</div>
+  <p style="font-size:12px;color:var(--muted);line-height:1.9">
+    <strong style="color:var(--white)">1. PIN (2707)</strong> — required on every app open<br>
+    <strong style="color:var(--white)">2. QR Code</strong> — each restroom QR opens app with room ID pre-set<br>
+    <strong style="color:var(--white)">3. GPS Verification</strong> — checks supervisor is within ${GPS_RADIUS_M}m of that specific room's calibrated coordinates<br>
+    <strong style="color:var(--white)">4. Per-Room Calibration</strong> — each room stores its own independent GPS anchor
+  </p></div>`;
 }
 
 // ════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════
-window.addEventListener('load',()=>{
-  loadSavedCoords(); // ← apply any saved calibrations immediately
-  setupOTPInputs();
-  setInterval(()=>{
-    if(document.getElementById('s-home').classList.contains('active')){
-      document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
-      renderBanner();
-    }
-  },60000);
+window.addEventListener('load',async()=>{
+  // Auto-detect room from URL and skip straight to GPS if already authenticated
+  // (Session-based: once PIN is entered, it stays in memory until page reloads)
+  pingGAS();
 });
 document.getElementById('wa-overlay').addEventListener('click',function(e){if(e.target===this)closeWA();});
 </script>
