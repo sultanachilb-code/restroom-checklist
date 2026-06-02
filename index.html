@@ -350,6 +350,37 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
   </div>
 </div>
 
+<!-- ══ ADMIN PIN OVERLAY ══ -->
+<div class="otp-overlay" id="admin-pwd-overlay" style="background:rgba(0,0,0,0.92)">
+  <div class="otp-box" style="max-width:320px">
+    <div style="font-size:36px;margin-bottom:12px">🛡️</div>
+    <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:4px">ADMIN ACCESS</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:22px">Enter the Admin PIN to continue</div>
+    <div class="pwd-dots" style="justify-content:center;margin-bottom:20px">
+      <div class="pwd-dot" id="apd0"></div>
+      <div class="pwd-dot" id="apd1"></div>
+      <div class="pwd-dot" id="apd2"></div>
+      <div class="pwd-dot" id="apd3"></div>
+    </div>
+    <div class="pwd-grid" style="max-width:210px;margin:0 auto">
+      <div class="pwd-key" onclick="adminPwdKey('1')">1</div>
+      <div class="pwd-key" onclick="adminPwdKey('2')">2</div>
+      <div class="pwd-key" onclick="adminPwdKey('3')">3</div>
+      <div class="pwd-key" onclick="adminPwdKey('4')">4</div>
+      <div class="pwd-key" onclick="adminPwdKey('5')">5</div>
+      <div class="pwd-key" onclick="adminPwdKey('6')">6</div>
+      <div class="pwd-key" onclick="adminPwdKey('7')">7</div>
+      <div class="pwd-key" onclick="adminPwdKey('8')">8</div>
+      <div class="pwd-key" onclick="adminPwdKey('9')">9</div>
+      <div class="pwd-key" style="visibility:hidden"></div>
+      <div class="pwd-key" onclick="adminPwdKey('0')">0</div>
+      <div class="pwd-key del" onclick="adminPwdDel()">⌫</div>
+    </div>
+    <div class="pwd-err" id="admin-pwd-err" style="margin-top:10px"></div>
+    <button class="btn btn-ghost" onclick="closeAdminPwd()" style="margin-top:14px;padding:10px">CANCEL</button>
+  </div>
+</div>
+
 <!-- ══ WA MODAL ══ -->
 <div class="wa-overlay" id="wa-overlay">
   <div class="wa-sheet">
@@ -370,10 +401,24 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 // ════════════════════════════════════════════
 //  CONFIG
 // ════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
-const APP_PWD = '2707';
+const GAS_URL      = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
+const APP_PWD      = '2707';   // Supervisor PIN — opens inspection form via QR
+const ADMIN_PWD    = '2606';   // Admin PIN — opens Admin Panel
 const GPS_RADIUS_M = 120;
-const CAL_KEY = 'abc_room_coords_v2'; // v2 = per-room isolated storage
+const CAL_KEY      = 'abc_room_coords_v2';
+
+// ── FACTORY-CALIBRATED COORDINATES (captured on-site 02 Jun 2026) ──
+// These are loaded as defaults if localStorage has no override for a room.
+// Supervisors can recalibrate in Admin → 📍 Calibrate at any time.
+const FACTORY_COORDS = {
+  LG_CENTRAL: { lat:33.884775, lng:35.484569, accuracy:92,  calibratedAt:'2026-06-02T19:09:00.000Z' },
+  GF_EAST:    { lat:33.884289, lng:35.484833, accuracy:29,  calibratedAt:'2026-06-02T18:55:00.000Z' },
+  L1_CENTRAL: { lat:33.884334, lng:35.484231, accuracy:15,  calibratedAt:'2026-06-02T18:58:00.000Z' },
+  L2_CENTRAL: { lat:33.884400, lng:35.484158, accuracy:15,  calibratedAt:'2026-06-02T19:01:00.000Z' },
+  L3_EAST:    { lat:33.884281, lng:35.484795, accuracy:22,  calibratedAt:'2026-06-02T19:04:00.000Z' },
+  L3_CENTRAL: { lat:33.884379, lng:35.484224, accuracy:21,  calibratedAt:'2026-06-02T19:02:00.000Z' },
+  L4_CENTRAL: { lat:33.884335, lng:35.484286, accuracy:46,  calibratedAt:'2026-06-02T19:07:00.000Z' },
+};
 
 const ROOMS = [
   {id:'LG_CENTRAL', name:'LG Central',  level:'LG', core:'Central', icon:'🏢'},
@@ -426,7 +471,15 @@ async function pingGAS(){const r=await gas('ping');gasOk=!!(r&&r.ok);}
 
 // ── CALIBRATION STORAGE (PER ROOM, ISOLATED) ──
 function getSavedCoords(){ return JSON.parse(localStorage.getItem(CAL_KEY)||'{}'); }
-function getRoomCoords(roomId){ return (getSavedCoords())[roomId]||null; }
+function getRoomCoords(roomId){
+  // Priority: 1) user recalibrated in localStorage, 2) factory defaults
+  const saved = getSavedCoords();
+  return saved[roomId] || FACTORY_COORDS[roomId] || null;
+}
+function isFactoryCoord(roomId){
+  // Returns true if room is using factory default (not user-recalibrated)
+  return !getSavedCoords()[roomId] && !!FACTORY_COORDS[roomId];
+}
 function saveRoomCoords(roomId,lat,lng,accuracy){
   const all=getSavedCoords();
   // Each room key stores ONLY its own data — never shared
@@ -703,9 +756,65 @@ function openWA(){if(window._wamsg)window.open('https://wa.me/?text='+encodeURIC
 function closeWA(){document.getElementById('wa-overlay').classList.remove('open');}
 
 // ════════════════════════════════════════════
-//  ADMIN
+//  ADMIN — PIN GATED (2606)
 // ════════════════════════════════════════════
-function showAdmin(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
+let adminPwdBuffer = '';
+let adminPwdCallback = null; // function to call after successful admin auth
+
+function showAdmin(){
+  // Always require admin PIN before entering admin panel
+  openAdminPwd(()=>{
+    curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();
+  });
+}
+
+function openAdminPwd(callback){
+  adminPwdBuffer='';
+  adminPwdCallback=callback;
+  updateAdminPwdDots();
+  document.getElementById('admin-pwd-err').textContent='';
+  document.getElementById('admin-pwd-overlay').classList.add('open');
+}
+
+function adminPwdKey(k){
+  if(adminPwdBuffer.length>=4)return;
+  adminPwdBuffer+=k;
+  updateAdminPwdDots();
+  if(adminPwdBuffer.length===4)setTimeout(checkAdminPwd,180);
+}
+function adminPwdDel(){
+  if(adminPwdBuffer.length>0){
+    adminPwdBuffer=adminPwdBuffer.slice(0,-1);
+    updateAdminPwdDots();
+    document.getElementById('admin-pwd-err').textContent='';
+  }
+}
+function updateAdminPwdDots(){
+  for(let i=0;i<4;i++)
+    document.getElementById('apd'+i).classList.toggle('filled',i<adminPwdBuffer.length);
+}
+function checkAdminPwd(){
+  if(adminPwdBuffer===ADMIN_PWD){
+    document.getElementById('admin-pwd-overlay').classList.remove('open');
+    if(adminPwdCallback) adminPwdCallback();
+  } else {
+    document.getElementById('admin-pwd-err').textContent='Incorrect admin code.';
+    document.querySelectorAll('#admin-pwd-overlay .pwd-dot').forEach(d=>{
+      d.style.background='var(--danger)';d.style.borderColor='var(--danger)';
+    });
+    setTimeout(()=>{
+      adminPwdBuffer='';
+      updateAdminPwdDots();
+      document.querySelectorAll('#admin-pwd-overlay .pwd-dot').forEach(d=>{
+        d.style.background='';d.style.borderColor='';
+      });
+    },700);
+  }
+}
+function closeAdminPwd(){
+  document.getElementById('admin-pwd-overlay').classList.remove('open');
+  adminPwdBuffer='';adminPwdCallback=null;
+}
 function switchTab(t){curAdminTab=t;updateAdminTabs();renderAdmin();}
 function updateAdminTabs(){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+curAdminTab).classList.add('active');}
 function renderAdmin(){
@@ -745,45 +854,47 @@ function renderWindows(){
 // ════════════════════════════════════════════
 function renderCalibrate(){
   const saved=getSavedCoords();
-  const calCount=Object.keys(saved).length;
-  const pct=Math.round((calCount/ROOMS.length)*100);
+  // All 7 rooms have factory coords, so always show 7/7 unless some are missing
+  const fullyCalibrated=ROOMS.every(r=>getRoomCoords(r.id)!==null);
+  const userRecalibrated=Object.keys(saved).length;
 
   const progress=`<div class="cal-prog-wrap">
-    <div class="cal-prog-bar-bg"><div class="cal-prog-bar" style="width:${pct}%"></div></div>
-    <div class="cal-prog-txt">${calCount}/${ROOMS.length} Calibrated</div>
+    <div class="cal-prog-bar-bg"><div class="cal-prog-bar" style="width:100%"></div></div>
+    <div class="cal-prog-txt">7/7 Active &nbsp;${userRecalibrated>0?`(${userRecalibrated} recalibrated)`:''}</div>
   </div>`;
 
   const note=`<div class="cal-note">
-    <strong>📍 How to calibrate:</strong><br>
-    Walk inside each restroom and tap <strong>Capture My Location</strong>. The app saves that room's exact GPS coordinates independently. Each room stores only its own coordinates — one room's calibration never affects another.
+    <strong>📍 Factory coordinates loaded (02 Jun 2026).</strong><br>
+    All 7 rooms are GPS-active using on-site calibration data. You can recapture any room's coordinates by standing inside it and tapping <strong>Recapture</strong>. User-captured coordinates take priority over factory defaults.
   </div>`;
 
   const cards=ROOMS.map(room=>{
-    // Read THIS room's coords only — completely isolated
-    const cal=saved[room.id]||null;
-    const isCalibrated=!!cal;
+    const cal=getRoomCoords(room.id); // factory or user
+    const isUserCal=!!saved[room.id]; // only true if user explicitly recalibrated
+    const isFactory=!isUserCal&&!!FACTORY_COORDS[room.id];
     const calDate=cal?new Date(cal.calibratedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):null;
 
-    const coordsBlock=isCalibrated
-      ?`<div class="cal-coords">Lat: <span>${cal.lat.toFixed(6)}</span> &nbsp; Lng: <span>${cal.lng.toFixed(6)}</span> &nbsp; Accuracy: <span>±${Math.round(cal.accuracy)}m</span><br><span style="font-size:10px">Set: ${calDate}</span></div>`
-      :`<div class="cal-coords" style="color:var(--warning)">Not calibrated — stand inside this restroom then tap capture.</div>`;
+    const sourceTag=isUserCal
+      ?`<span style="font-size:9px;background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);padding:2px 6px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px">USER SET</span>`
+      :`<span style="font-size:9px;background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:2px 6px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px">FACTORY</span>`;
 
-    return`<div class="cal-room-card ${isCalibrated?'calibrated':''}" id="calcard-${room.id}">
+    const coordsBlock=cal
+      ?`<div class="cal-coords">Lat: <span>${cal.lat.toFixed(6)}</span> &nbsp; Lng: <span>${cal.lng.toFixed(6)}</span> &nbsp; Acc: <span>±${Math.round(cal.accuracy)}m</span><br><span style="font-size:10px">${isUserCal?'Recalibrated':'Captured'}: ${calDate}</span></div>`
+      :`<div class="cal-coords" style="color:var(--danger)">No coordinates available.</div>`;
+
+    return`<div class="cal-room-card calibrated" id="calcard-${room.id}">
       <div class="cal-room-hdr">
-        <div class="cal-room-name">${room.icon} ${room.name} <span style="font-size:11px;color:var(--muted);font-weight:400">L${room.level}</span></div>
-        <span class="cal-tag ${isCalibrated?'done':'pend'}">${isCalibrated?'✓ SET':'PENDING'}</span>
+        <div class="cal-room-name">${room.icon} ${room.name} &nbsp;${sourceTag}</div>
+        <span class="cal-tag done">✓ ACTIVE</span>
       </div>
       ${coordsBlock}
       <div id="cal-scanning-${room.id}" style="display:none;font-size:11px;color:var(--warning);margin-bottom:8px"><span class="spin"></span> Acquiring GPS…</div>
-      <button class="cal-btn go" id="cal-btn-${room.id}" onclick="captureLocation('${room.id}')">📍 Capture My Location</button>
-      ${isCalibrated?`<button class="cal-btn rst" onclick="resetCal('${room.id}')">↺ Reset</button>`:''}
+      <button class="cal-btn go" id="cal-btn-${room.id}" onclick="captureLocation('${room.id}')">📍 Recapture My Location</button>
+      ${isUserCal?`<button class="cal-btn rst" onclick="resetCal('${room.id}')">↺ Revert to Factory</button>`:''}
     </div>`;
   }).join('');
 
-  const allDone=calCount===ROOMS.length
-    ?`<div class="banner" style="margin-bottom:14px"><div class="dot on"></div><div class="ban-text"><div class="ban-label">✅ ALL ROOMS CALIBRATED</div>GPS verification fully active for all 7 restrooms.</div></div>`:'' ;
-
-  return allDone+progress+note+cards;
+  return progress+note+cards;
 }
 
 async function captureLocation(roomId){
@@ -816,27 +927,27 @@ async function captureLocation(roomId){
 
 function resetCal(roomId){
   const name=ROOMS.find(r=>r.id===roomId)?.name;
-  if(!confirm(`Reset calibration for ${name}?`))return;
+  if(!confirm(`Revert ${name} to factory coordinates?\n\nYour custom calibration will be removed and the original on-site coordinates will be used.`))return;
   clearRoomCoords(roomId);
-  toast(`↺ ${name} reset`);
+  toast(`↺ ${name} reverted to factory coordinates`);
   if(curAdminTab==='cal')renderAdmin();
 }
 
 function renderCfg(){
-  const saved=getSavedCoords();
-  const calCount=Object.keys(saved).length;
+  const userRecal=Object.keys(getSavedCoords()).length;
   return`<div class="acard"><div class="acard-title">⚙️ System Status</div>
   <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Cloud (GAS)</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
   <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
-  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">GPS Radius</span><span style="font-size:12px">${GPS_RADIUS_M}m</span></div>
-  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">Rooms Calibrated</span><span style="font-size:12px">${calCount}/7</span></div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">GPS Radius</span><span style="font-size:12px">${GPS_RADIUS_M}m per room</span></div>
+  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">GPS Calibration</span><span style="font-size:12px">7/7 active &nbsp;${userRecal>0?`(${userRecal} user-set)`:''}</span></div>
   </div>
   <div class="acard"><div class="acard-title">🔐 Security Layers</div>
   <p style="font-size:12px;color:var(--muted);line-height:1.9">
-    <strong style="color:var(--white)">1. PIN (2707)</strong> — required on every app open<br>
-    <strong style="color:var(--white)">2. QR Code</strong> — each restroom QR opens app with room ID pre-set<br>
-    <strong style="color:var(--white)">3. GPS Verification</strong> — checks supervisor is within ${GPS_RADIUS_M}m of that specific room's calibrated coordinates<br>
-    <strong style="color:var(--white)">4. Per-Room Calibration</strong> — each room stores its own independent GPS anchor
+    <strong style="color:var(--white)">1. Supervisor PIN (2707)</strong> — required to open any inspection form via QR<br>
+    <strong style="color:var(--white)">2. Admin PIN (2606)</strong> — separate PIN required to access Admin Panel<br>
+    <strong style="color:var(--white)">3. QR Code</strong> — each restroom QR pre-loads that room's ID directly<br>
+    <strong style="color:var(--white)">4. GPS Verification</strong> — checks within ${GPS_RADIUS_M}m of that room's calibrated coordinates<br>
+    <strong style="color:var(--white)">5. Per-Room Calibration</strong> — factory coordinates locked in, user can recapture anytime
   </p></div>`;
 }
 
