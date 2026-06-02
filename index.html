@@ -5,250 +5,319 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ABC Verdun — Restroom Inspection</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap');
-  :root{--navy:#0a1628;--navy-mid:#122040;--navy-light:#1a2f57;--gold:#c9a84c;--gold-light:#e8c97a;--gold-dim:#8a6d2e;--white:#f5f7fa;--muted:#8a9ab5;--danger:#e05252;--success:#3eb87c;--warning:#f0a040;--card-bg:#0f1e38;--border:rgba(201,168,76,0.18);}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
-  .screen{display:none;min-height:100vh;} .screen.active{display:flex;flex-direction:column;}
-  .header{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
-  .header-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--navy);letter-spacing:1px;flex-shrink:0;}
-  .header-info{flex:1;} .header-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--gold);letter-spacing:.5px;} .header-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-  .header-back{background:none;border:1px solid var(--border);color:var(--gold);font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
-  .header-back:hover{background:var(--gold);color:var(--navy);}
-  .content{flex:1;padding:20px;max-width:520px;margin:0 auto;width:100%;}
-  .home-hero{text-align:center;padding:30px 0 24px;}
-  .home-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:var(--navy);margin:0 auto 16px;box-shadow:0 8px 32px rgba(201,168,76,.25);}
-  .home-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--gold);letter-spacing:1px;} .home-sub{font-size:13px;color:var(--muted);margin-top:6px;}
-  .shift-banner{margin:16px 0;padding:12px 16px;border-radius:10px;border-left:4px solid var(--gold);background:var(--card-bg);display:flex;align-items:center;gap:12px;}
-  .shift-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-  .shift-dot.active{background:var(--success);box-shadow:0 0 8px var(--success);} .shift-dot.upcoming{background:var(--warning);} .shift-dot.closed{background:var(--muted);}
-  .shift-text{font-size:12px;color:var(--white);} .shift-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:var(--gold);}
-  .section-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:20px 0 10px;}
-  .room-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
-  .room-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
-  .room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
-  .room-card:hover{border-color:var(--gold);transform:translateY(-2px);} .room-card:hover::before{transform:scaleX(1);} .room-card:active{transform:scale(.97);}
-  .room-icon{font-size:22px;margin-bottom:8px;} .room-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--white);} .room-status{font-size:10px;color:var(--muted);margin-top:3px;}
-  .room-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;}
-  .room-badge.ok{background:var(--success);} .room-badge.pending{background:var(--warning);animation:pulse 1.5s infinite;} .room-badge.none{background:var(--muted);}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  .otp-room-tag{text-align:center;padding:28px 0 20px;} .otp-room-icon{font-size:44px;margin-bottom:10px;} .otp-room-name{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);}
-  .otp-shift-badge{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:20px;background:rgba(201,168,76,.12);border:1px solid var(--border);font-size:11px;color:var(--gold);font-family:'Rajdhani',sans-serif;letter-spacing:1px;font-weight:600;}
-  .otp-label{text-align:center;font-size:13px;color:var(--muted);margin-bottom:18px;}
-  .otp-input-row{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
-  .otp-digit{width:56px;height:64px;background:var(--card-bg);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
-  .otp-digit:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
-  .otp-hint{background:rgba(201,168,76,.07);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.6;}
-  .otp-hint strong{color:var(--gold);} .otp-error{text-align:center;color:var(--danger);font-size:13px;margin-bottom:12px;display:none;}
-  .btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
-  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
-  .btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);} .btn-primary:active{transform:scale(.98);} .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
-  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
-  .btn-whatsapp{background:linear-gradient(135deg,#25d366,#128c3e);color:white;display:flex;align-items:center;justify-content:center;gap:10px;}
-  .shift-indicator{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
-  .shift-pill{flex:1;min-width:0;padding:8px 6px;border-radius:8px;border:1px solid var(--border);text-align:center;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:var(--card-bg);}
-  .shift-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
-  .form-section{margin-bottom:20px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-  .form-section-header{padding:12px 16px;background:rgba(201,168,76,.08);border-bottom:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
-  .form-row{display:grid;grid-template-columns:1fr 80px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);gap:10px;}
-  .form-row:last-child{border-bottom:none;} .form-row-label{font-size:13px;color:var(--white);}
-  .status-toggle{display:flex;gap:4px;}
-  .status-btn{flex:1;padding:5px 4px;border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:16px;background:transparent;transition:all .15s;text-align:center;}
-  .status-btn.ok-btn.selected{background:rgba(62,184,124,.2);border-color:var(--success);} .status-btn.nok-btn.selected{background:rgba(224,82,82,.2);border-color:var(--danger);}
-  .comments-area{width:100%;padding:12px 16px;background:transparent;border:none;color:var(--white);font-family:'Source Sans 3',sans-serif;font-size:13px;resize:none;outline:none;min-height:80px;}
-  .comments-area::placeholder{color:var(--muted);}
-  .supervisor-field{padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);} .supervisor-field:last-child{border-bottom:none;}
-  .supervisor-field label{font-size:11px;color:var(--muted);letter-spacing:1px;display:block;margin-bottom:5px;}
-  .supervisor-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);font-size:14px;padding:4px 0;outline:none;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;}
-  .supervisor-input:focus{border-color:var(--gold);}
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
-  .modal-overlay.open{display:flex;}
-  .modal-sheet{background:var(--navy-mid);border:1px solid var(--border);border-bottom:none;border-radius:18px 18px 0 0;padding:20px;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease;}
-  @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-  .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
-  .modal-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:4px;} .modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
-  .wa-preview{background:#1a2f1a;border:1px solid #25d366;border-radius:10px;padding:14px;font-size:12px;color:#d4ffd4;line-height:1.7;margin-bottom:16px;white-space:pre-wrap;font-family:'Source Sans 3',sans-serif;}
-  .modal-actions{display:flex;flex-direction:column;gap:8px;}
-  .success-content{text-align:center;padding:40px 20px;}
-  .success-icon{width:80px;height:80px;background:rgba(62,184,124,.15);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px;animation:popIn .4s ease;}
-  @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-  .success-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--success);} .success-sub{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.6;}
-  .success-details{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;text-align:left;}
-  .success-detail-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.06);font-size:13px;} .success-detail-row:last-child{border-bottom:none;}
-  .success-detail-row span:first-child{color:var(--muted);} .success-detail-row span:last-child{color:var(--white);font-weight:600;}
-  .admin-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
-  .admin-card-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:10px;}
-  .otp-table{width:100%;border-collapse:collapse;font-size:12px;}
-  .otp-table th{color:var(--muted);padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);letter-spacing:1px;font-size:10px;text-transform:uppercase;}
-  .otp-table td{padding:8px 8px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);}
-  .otp-code{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--gold);letter-spacing:2px;}
-  .flag-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
-  .flag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);} .flag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
-  .logs-table{width:100%;border-collapse:collapse;font-size:11px;}
-  .logs-table th{color:var(--muted);padding:6px 6px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
-  .logs-table td{padding:7px 6px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);vertical-align:top;} .logs-table tr:last-child td{border-bottom:none;}
-  .nav-tabs{display:flex;gap:0;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
-  .nav-tab{flex:1;padding:10px 6px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
-  .nav-tab.active{background:rgba(201,168,76,.12);color:var(--gold);}
-  .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
-  @keyframes spin{to{transform:rotate(360deg)}}
-  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;animation:fadeToast .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
-  .toast.show{display:block;} @keyframes fadeToast{from{opacity:0;transform:translateX(-50%) translateY(10px)}}
-  .gas-status{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;font-size:11px;margin-bottom:16px;border:1px solid var(--border);background:var(--card-bg);}
-  .gas-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-  .gas-dot.connected{background:var(--success);box-shadow:0 0 6px var(--success);} .gas-dot.local{background:var(--warning);} .gas-dot.error{background:var(--danger);}
-  .mt-8{margin-top:8px;}
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap');
+:root{
+  --navy:#0a1628;--navy-mid:#122040;--gold:#c9a84c;--gold-dim:#8a6d2e;
+  --white:#f5f7fa;--muted:#8a9ab5;--danger:#e05252;--success:#3eb87c;
+  --warning:#f0a040;--card:#0f1e38;--border:rgba(201,168,76,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+
+/* HEADER */
+.hdr{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
+.hdr-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--navy);flex-shrink:0;}
+.hdr-info{flex:1;}
+.hdr-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--gold);}
+.hdr-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.hdr-btn{background:none;border:1px solid var(--border);color:var(--gold);font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.hdr-btn:hover{background:var(--gold);color:var(--navy);}
+
+/* CONTENT */
+.content{flex:1;padding:20px;max-width:520px;margin:0 auto;width:100%;}
+
+/* HOME */
+.hero{text-align:center;padding:28px 0 20px;}
+.hero-logo{width:70px;height:70px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;box-shadow:0 8px 32px rgba(201,168,76,.25);}
+.hero-title{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.hero-sub{font-size:13px;color:var(--muted);margin-top:5px;}
+
+.banner{margin:14px 0;padding:12px 16px;border-radius:10px;border-left:4px solid var(--gold);background:var(--card);display:flex;align-items:center;gap:12px;}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dot.on{background:var(--success);box-shadow:0 0 8px var(--success);}
+.dot.next{background:var(--warning);}
+.dot.off{background:var(--muted);}
+.ban-text{font-size:12px;color:var(--white);}
+.ban-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--gold);}
+
+.sec-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:18px 0 10px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;}
+.room-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.room-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.room-card:hover::before{transform:scaleX(1);}
+.room-card:active{transform:scale(.97);}
+.rc-icon{font-size:20px;margin-bottom:7px;}
+.rc-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--white);}
+.rc-status{font-size:10px;color:var(--muted);margin-top:3px;}
+.rc-badge{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;}
+.rc-badge.ok{background:var(--success);}
+.rc-badge.pend{background:var(--warning);animation:pulse 1.5s infinite;}
+.rc-badge.none{background:var(--muted);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* FORM */
+.form-sec{margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.form-sec-hdr{padding:11px 16px;background:rgba(201,168,76,.08);border-bottom:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;}
+.f-row{display:grid;grid-template-columns:1fr 76px;align-items:center;padding:9px 16px;border-bottom:1px solid rgba(201,168,76,.05);gap:10px;}
+.f-row:last-child{border-bottom:none;}
+.f-label{font-size:13px;color:var(--white);}
+.tog{display:flex;gap:3px;}
+.tog-btn{flex:1;padding:5px 3px;border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:15px;background:transparent;transition:all .15s;text-align:center;}
+.tog-btn.ok.sel{background:rgba(62,184,124,.2);border-color:var(--success);}
+.tog-btn.nok.sel{background:rgba(224,82,82,.2);border-color:var(--danger);}
+.sup-field{padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);}
+.sup-field:last-child{border-bottom:none;}
+.sup-field label{font-size:10px;color:var(--muted);letter-spacing:1px;display:block;margin-bottom:5px;}
+.sup-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);font-size:13px;padding:4px 0;outline:none;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;}
+.sup-input:focus{border-color:var(--gold);}
+.cmt-area{width:100%;padding:11px 16px;background:transparent;border:none;color:var(--white);font-family:'Source Sans 3',sans-serif;font-size:13px;resize:none;outline:none;min-height:70px;}
+.cmt-area::placeholder{color:var(--muted);}
+
+/* SHIFT PILLS */
+.s-pills{display:flex;gap:6px;margin-bottom:16px;}
+.s-pill{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);text-align:center;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:var(--card);}
+.s-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
+
+/* BUTTONS */
+.btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;margin-top:0;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
+.btn-gold:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);}
+.btn-gold:active{transform:scale(.98);}
+.btn-gold:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.btn-wa{background:linear-gradient(135deg,#25d366,#128c3e);color:white;display:flex;align-items:center;justify-content:center;gap:10px;}
+
+/* OTP POPUP MODAL */
+.otp-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);z-index:600;align-items:center;justify-content:center;padding:20px;}
+.otp-overlay.open{display:flex;}
+.otp-box{background:var(--navy-mid);border:1px solid var(--border);border-radius:20px;padding:28px 24px;width:100%;max-width:360px;text-align:center;animation:popIn .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+.otp-pop-icon{font-size:44px;margin-bottom:12px;}
+.otp-pop-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.otp-pop-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.otp-code-display{
+  font-family:'Rajdhani',sans-serif;
+  font-size:48px;font-weight:700;
+  color:var(--gold);letter-spacing:14px;
+  background:rgba(201,168,76,.07);
+  border:2px dashed var(--gold);
+  border-radius:14px;
+  padding:16px 10px;
+  margin-bottom:8px;
+  text-indent:14px;
+}
+.otp-timer{font-size:11px;color:var(--muted);margin-bottom:22px;}
+.otp-timer span{color:var(--warning);font-weight:600;}
+.otp-input-row{display:flex;gap:8px;justify-content:center;margin-bottom:16px;}
+.otp-digit{width:52px;height:60px;background:var(--card);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
+.otp-digit:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
+.otp-err{color:var(--danger);font-size:12px;margin-bottom:12px;display:none;}
+.otp-resend{font-size:11px;color:var(--muted);margin-top:10px;cursor:pointer;}
+.otp-resend:hover{color:var(--gold);}
+.otp-resend.disabled{opacity:.4;pointer-events:none;}
+
+/* SUCCESS */
+.succ-wrap{text-align:center;padding:36px 0;}
+.succ-icon{width:80px;height:80px;background:rgba(62,184,124,.15);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 18px;animation:popIn .4s ease;}
+.succ-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--success);}
+.succ-sub{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.6;}
+.succ-detail{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin:18px 0;text-align:left;}
+.sd-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.05);font-size:12px;}
+.sd-row:last-child{border-bottom:none;}
+.sd-row span:first-child{color:var(--muted);}
+.sd-row span:last-child{color:var(--white);font-weight:600;}
+
+/* ADMIN */
+.atabs{display:flex;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.atab{flex:1;padding:10px 4px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+.atab.active{background:rgba(201,168,76,.12);color:var(--gold);}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;}
+.acard-title{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px;}
+.atable{width:100%;border-collapse:collapse;font-size:11px;}
+.atable th{color:var(--muted);padding:6px 6px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
+.atable td{padding:7px 6px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);vertical-align:top;}
+.atable tr:last-child td{border-bottom:none;}
+
+/* WA MODAL */
+.wa-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
+.wa-overlay.open{display:flex;}
+.wa-sheet{background:var(--navy-mid);border:1px solid var(--border);border-bottom:none;border-radius:18px 18px 0 0;padding:20px;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.wa-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px;}
+.wa-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:4px;}
+.wa-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.wa-prev{background:#1a2f1a;border:1px solid #25d366;border-radius:10px;padding:13px;font-size:12px;color:#d4ffd4;line-height:1.7;margin-bottom:14px;white-space:pre-wrap;}
+
+/* TAGS */
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
+.tag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
+.tag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
+
+/* CLOUD STATUS */
+.cloud-bar{display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;font-size:11px;margin-bottom:14px;border:1px solid var(--border);background:var(--card);}
+.c-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.c-dot.ok{background:var(--success);box-shadow:0 0 5px var(--success);}
+.c-dot.warn{background:var(--warning);}
+.c-dot.err{background:var(--danger);}
+
+/* SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:rotate .6s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes rotate{to{transform:rotate(360deg)}}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:11px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
+.toast.show{display:block;}
+.mt10{margin-top:10px;}
 </style>
 </head>
 <body>
 
-<!-- ══ SCREEN 1: HOME ══ -->
-<div class="screen active" id="screen-home">
-  <div class="header">
-    <div class="header-logo">ABC</div>
-    <div class="header-info">
-      <div class="header-title">Restroom Inspection</div>
-      <div class="header-sub" id="home-date-display">Loading...</div>
+<!-- ══ HOME ══ -->
+<div class="screen active" id="s-home">
+  <div class="hdr">
+    <div class="hdr-logo">ABC</div>
+    <div class="hdr-info">
+      <div class="hdr-title">Restroom Inspection</div>
+      <div class="hdr-sub" id="home-date">—</div>
     </div>
-    <button class="header-back" onclick="showAdmin()">ADMIN</button>
+    <button class="hdr-btn" onclick="showAdmin()">ADMIN</button>
   </div>
   <div class="content">
-    <div class="home-hero">
-      <div class="home-logo">🚻</div>
-      <div class="home-title">ABC VERDUN MALL</div>
-      <div class="home-sub">Daily Restroom Inspection System</div>
+    <div class="hero">
+      <div class="hero-logo">🚻</div>
+      <div class="hero-title">ABC VERDUN MALL</div>
+      <div class="hero-sub">Daily Restroom Inspection System</div>
     </div>
-    <div id="gas-indicator"></div>
-    <div id="shift-status-banner"></div>
-    <div class="section-label">Select Restroom to Inspect</div>
-    <div class="room-grid" id="room-grid"></div>
-    <button class="btn btn-outline" onclick="showAdminLogs()">📋 View Today's Logs</button>
+    <div id="cloud-bar"></div>
+    <div id="shift-banner"></div>
+    <div class="sec-label">Select Restroom to Inspect</div>
+    <div class="grid" id="room-grid"></div>
+    <button class="btn btn-ghost" onclick="gotoAdminLogs()">📋 View Today's Logs</button>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══ SCREEN 2: OTP ══ -->
-<div class="screen" id="screen-otp">
-  <div class="header">
-    <button class="header-back" onclick="goHome()">← BACK</button>
-    <div class="header-info">
-      <div class="header-title">Verify OTP</div>
-      <div class="header-sub">On-site verification required</div>
+<!-- ══ FORM ══ -->
+<div class="screen" id="s-form">
+  <div class="hdr">
+    <button class="hdr-btn" onclick="goHome()">← HOME</button>
+    <div class="hdr-info">
+      <div class="hdr-title" id="form-room-title">Inspection</div>
+      <div class="hdr-sub" id="form-win-sub">—</div>
     </div>
   </div>
   <div class="content">
-    <div class="otp-room-tag">
-      <div class="otp-room-icon" id="otp-room-icon">🚻</div>
-      <div class="otp-room-name" id="otp-room-name">—</div>
-      <div class="otp-shift-badge" id="otp-shift-label">—</div>
-    </div>
-    <p class="otp-label">Enter the 4-character OTP posted inside the restroom</p>
-    <div class="otp-input-row">
-      <input class="otp-digit" maxlength="1" id="otp-0" autocomplete="off">
-      <input class="otp-digit" maxlength="1" id="otp-1" autocomplete="off">
-      <input class="otp-digit" maxlength="1" id="otp-2" autocomplete="off">
-      <input class="otp-digit" maxlength="1" id="otp-3" autocomplete="off">
-    </div>
-    <div class="otp-error" id="otp-error">❌ Invalid OTP. Please check and retry.</div>
-    <div class="otp-hint">The OTP is on the <strong>laminated card</strong> inside the restroom — 3 digits + 1 letter.</div>
-    <button class="btn btn-primary" id="otp-submit-btn" onclick="verifyOTP()">VERIFY & PROCEED</button>
-    <button class="btn btn-outline" onclick="goHome()">CANCEL</button>
-  </div>
-</div>
-
-<!-- ══ SCREEN 3: FORM ══ -->
-<div class="screen" id="screen-form">
-  <div class="header">
-    <button class="header-back" onclick="goHome()">← HOME</button>
-    <div class="header-info">
-      <div class="header-title" id="form-room-title">Inspection</div>
-      <div class="header-sub" id="form-shift-sub">—</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="shift-indicator" id="form-shift-pills"></div>
-    <div class="form-section">
-      <div class="form-section-header">🔧 Equipment Description</div>
+    <div class="s-pills" id="form-pills"></div>
+    <div class="form-sec">
+      <div class="form-sec-hdr">🔧 Equipment Description</div>
       <div id="eq-rows"></div>
     </div>
-    <div class="form-section">
-      <div class="form-section-header">🧹 Cleaning</div>
+    <div class="form-sec">
+      <div class="form-sec-hdr">🧹 Cleaning</div>
       <div id="cl-rows"></div>
     </div>
-    <div class="form-section">
-      <div class="form-section-header">👔 Staff Cleaning</div>
+    <div class="form-sec">
+      <div class="form-sec-hdr">👔 Staff Cleaning</div>
       <div id="st-rows"></div>
     </div>
-    <div class="form-section">
-      <div class="form-section-header">📝 Supervisor Info</div>
-      <div class="supervisor-field">
+    <div class="form-sec">
+      <div class="form-sec-hdr">📝 Supervisor Info</div>
+      <div class="sup-field">
         <label>MALL SUPERVISOR NAME</label>
-        <input class="supervisor-input" id="sup-name" placeholder="Enter full name" value="Sultan Al Achi">
+        <input class="sup-input" id="sup-name" value="Sultan Al Achi">
       </div>
-      <div class="supervisor-field">
+      <div class="sup-field">
         <label>OTHER COMMENTS</label>
-        <textarea class="comments-area" id="sup-comments" placeholder="Any additional remarks..."></textarea>
+        <textarea class="cmt-area" id="sup-cmt" placeholder="Any additional remarks..."></textarea>
       </div>
     </div>
-    <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">SUBMIT INSPECTION</button>
-    <button class="btn btn-outline mt-8" onclick="goHome()">CANCEL</button>
+    <button class="btn btn-gold" id="submit-btn" onclick="submitForm()">SUBMIT INSPECTION</button>
+    <button class="btn btn-ghost" onclick="goHome()">CANCEL</button>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══ SCREEN 4: SUCCESS ══ -->
-<div class="screen" id="screen-success">
-  <div class="header">
-    <div class="header-logo">ABC</div>
-    <div class="header-info">
-      <div class="header-title">Inspection Logged</div>
-      <div class="header-sub" id="success-storage-mode">Saved to cloud</div>
+<!-- ══ SUCCESS ══ -->
+<div class="screen" id="s-success">
+  <div class="hdr">
+    <div class="hdr-logo">ABC</div>
+    <div class="hdr-info">
+      <div class="hdr-title">Inspection Logged</div>
+      <div class="hdr-sub" id="succ-sync-label">—</div>
     </div>
   </div>
   <div class="content">
-    <div class="success-content">
-      <div class="success-icon">✓</div>
-      <div class="success-title">LOGGED</div>
-      <div class="success-sub" id="success-sub-text">Inspection recorded.</div>
-      <div class="success-details" id="success-details"></div>
-      <div id="wa-trigger-area"></div>
-      <button class="btn btn-primary" style="margin-top:12px" onclick="goHome()">BACK TO HOME</button>
+    <div class="succ-wrap">
+      <div class="succ-icon">✓</div>
+      <div class="succ-title">LOGGED</div>
+      <div class="succ-sub" id="succ-sub">—</div>
+      <div class="succ-detail" id="succ-detail"></div>
+      <div id="wa-area"></div>
+      <button class="btn btn-gold mt10" onclick="goHome()">BACK TO HOME</button>
     </div>
   </div>
 </div>
 
-<!-- ══ SCREEN 5: ADMIN ══ -->
-<div class="screen" id="screen-admin">
-  <div class="header">
-    <button class="header-back" onclick="goHome()">← BACK</button>
-    <div class="header-info">
-      <div class="header-title">Admin Panel</div>
-      <div class="header-sub">OTPs, Logs & Settings</div>
+<!-- ══ ADMIN ══ -->
+<div class="screen" id="s-admin">
+  <div class="hdr">
+    <button class="hdr-btn" onclick="goHome()">← BACK</button>
+    <div class="hdr-info">
+      <div class="hdr-title">Admin Panel</div>
+      <div class="hdr-sub">Logs & Settings</div>
     </div>
   </div>
   <div class="content">
-    <div class="nav-tabs">
-      <button class="nav-tab active" id="tab-otps" onclick="switchTab('otps')">OTPs</button>
-      <button class="nav-tab" id="tab-logs" onclick="switchTab('logs')">TODAY</button>
-      <button class="nav-tab" id="tab-history" onclick="switchTab('history')">HISTORY</button>
-      <button class="nav-tab" id="tab-config" onclick="switchTab('config')">CONFIG</button>
+    <div class="atabs">
+      <button class="atab active" id="tab-logs" onclick="switchTab('logs')">TODAY</button>
+      <button class="atab" id="tab-hist" onclick="switchTab('hist')">HISTORY</button>
+      <button class="atab" id="tab-wins" onclick="switchTab('wins')">WINDOWS</button>
+      <button class="atab" id="tab-cfg"  onclick="switchTab('cfg')">CONFIG</button>
     </div>
     <div id="admin-content"></div>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══ WHATSAPP MODAL ══ -->
-<div class="modal-overlay" id="wa-modal">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚠️ Cleaning Issue Detected</div>
-    <div class="modal-sub">Send escalation to Cleaning Group on WhatsApp</div>
-    <div class="wa-preview" id="wa-preview-text"></div>
-    <div class="modal-actions">
-      <button class="btn btn-whatsapp" onclick="openWhatsApp()"><span>📱</span> Open WhatsApp</button>
-      <button class="btn btn-outline" onclick="closeWAModal()">DISMISS</button>
+<!-- ══ OTP POPUP ══ -->
+<div class="otp-overlay" id="otp-overlay">
+  <div class="otp-box">
+    <div class="otp-pop-icon">🔐</div>
+    <div class="otp-pop-title">Verification Required</div>
+    <div class="otp-pop-sub" id="otp-pop-room">Your one-time code for <strong>—</strong></div>
+
+    <!-- STEP 1: Show generated OTP -->
+    <div id="otp-step1">
+      <div class="otp-code-display" id="otp-code-show">——</div>
+      <div class="otp-timer">Code expires in <span id="otp-countdown">10:00</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:18px">Memorize this code, then enter it below to confirm you are physically present at the restroom.</p>
+      <div class="otp-input-row">
+        <input class="otp-digit" maxlength="1" id="d0" autocomplete="off">
+        <input class="otp-digit" maxlength="1" id="d1" autocomplete="off">
+        <input class="otp-digit" maxlength="1" id="d2" autocomplete="off">
+        <input class="otp-digit" maxlength="1" id="d3" autocomplete="off">
+      </div>
+      <div class="otp-err" id="otp-err">❌ Incorrect code. Please try again.</div>
+      <button class="btn btn-gold" id="otp-verify-btn" onclick="doVerifyOTP()">CONFIRM & ENTER</button>
+      <button class="btn btn-ghost mt10" onclick="cancelOTP()">CANCEL</button>
+      <div class="otp-resend disabled" id="otp-resend" onclick="resendOTP()">🔄 Request new code</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WA MODAL ══ -->
+<div class="wa-overlay" id="wa-overlay">
+  <div class="wa-sheet">
+    <div class="wa-handle"></div>
+    <div class="wa-title">⚠️ Cleaning Issue Detected</div>
+    <div class="wa-sub">Send escalation to Cleaning Group on WhatsApp</div>
+    <div class="wa-prev" id="wa-prev"></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn btn-wa" onclick="openWA()"><span>📱</span> Open WhatsApp</button>
+      <button class="btn btn-ghost" onclick="closeWA()">DISMISS</button>
     </div>
   </div>
 </div>
@@ -256,275 +325,351 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════
-//  CONFIGURATION — UPDATE BEFORE DEPLOYMENT
-// ═══════════════════════════════════════════
+// ─── CONFIG ──────────────────────────────────────────────────
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
-// Example: 'https://script.google.com/macros/s/AKfycbxXXXXXX/exec'
 
 const ROOMS = [
-  { id:'LG_CENTRAL', name:'LG Central',  level:'LG', core:'Central', icon:'🏢' },
-  { id:'GF_EAST',    name:'GF East',     level:'GF', core:'East',    icon:'🏬' },
-  { id:'L1_CENTRAL', name:'L1 Central',  level:'L1', core:'Central', icon:'🏢' },
-  { id:'L2_CENTRAL', name:'L2 Central',  level:'L2', core:'Central', icon:'🏢' },
-  { id:'L3_EAST',    name:'L3 East',     level:'L3', core:'East',    icon:'🏢' },
-  { id:'L3_CENTRAL', name:'L3 Central',  level:'L3', core:'Central', icon:'🏢' },
-  { id:'L4_CENTRAL', name:'L4 Central',  level:'L4', core:'Central', icon:'🏢' },
+  {id:'LG_CENTRAL',name:'LG Central', level:'LG',core:'Central',icon:'🏢'},
+  {id:'GF_EAST',   name:'GF East',    level:'GF',core:'East',   icon:'🏬'},
+  {id:'L1_CENTRAL',name:'L1 Central', level:'L1',core:'Central',icon:'🏢'},
+  {id:'L2_CENTRAL',name:'L2 Central', level:'L2',core:'Central',icon:'🏢'},
+  {id:'L3_EAST',   name:'L3 East',    level:'L3',core:'East',   icon:'🏢'},
+  {id:'L3_CENTRAL',name:'L3 Central', level:'L3',core:'Central',icon:'🏢'},
+  {id:'L4_CENTRAL',name:'L4 Central', level:'L4',core:'Central',icon:'🏢'},
 ];
-const SHIFTS = [
-  { id:'S1', label:'Shift 1', time:'10:00', start:10, end:11 },
-  { id:'S2', label:'Shift 2', time:'13:00', start:13, end:17 },
-  { id:'S3', label:'Shift 3', time:'19:00', start:19, end:21 },
+
+// Alert windows — must match Code.gs
+const WINDOWS = [
+  {id:'W1',label:'Morning Window',   time:'10:00 AM',start:10,end:12},
+  {id:'W2',label:'Afternoon Window', time:'1:00 PM', start:13,end:17},
+  {id:'W3',label:'Evening Window',   time:'7:00 PM', start:19,end:21},
 ];
-const EQ_ITEMS = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
-const CL_ITEMS = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
-const ST_ITEMS = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
-const OTP_DB   = { LG_CENTRAL:'4K27', GF_EAST:'81M3', L1_CENTRAL:'5N96', L2_CENTRAL:'23T7', L3_EAST:'64P1', L3_CENTRAL:'9R38', L4_CENTRAL:'15W6' };
-const ALERT_EMAIL = 'salaachi@abc.com.lb';
 
-let currentRoom=null, currentShift=null, formData={}, lastEntry=null;
-let gasConnected = null; // null=unknown, true=connected, false=offline
+const EQ = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
+const CL = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
+const ST = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
 
-// ─── UTILS ───────────────────────────────
-function now(){ return new Date(); }
-function pad(n){ return String(n).padStart(2,'0'); }
-function timeStr(d){ return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function dateKey(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
-function fullDate(d){ return d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}); }
-function getCurrentShift(){ const h=now().getHours(); if(h>=10&&h<11) return SHIFTS[0]; if(h>=13&&h<17) return SHIFTS[1]; if(h>=19&&h<21) return SHIFTS[2]; return null; }
-function getActiveOrNearestShift(){
-  const cs=getCurrentShift(); if(cs) return cs;
+// ─── STATE ───────────────────────────────────────────────────
+let curRoom=null, curWin=null, formData={}, lastEntry=null;
+let gasOk=null;
+let otpSession=null, otpCode=null, otpTimer=null, otpSecondsLeft=600;
+
+// ─── UTILS ───────────────────────────────────────────────────
+const now=()=>new Date();
+const pad=n=>String(n).padStart(2,'0');
+const timeStr=d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fullDate=d=>d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+
+function getWin(){
   const h=now().getHours();
-  if(h<10) return SHIFTS[0]; if(h<13) return SHIFTS[1]; if(h<19) return SHIFTS[2]; return SHIFTS[2];
+  return WINDOWS.find(w=>h>=w.start&&h<w.end)||null;
+}
+function getNearestWin(){
+  const w=getWin(); if(w) return w;
+  const h=now().getHours();
+  if(h<10) return WINDOWS[0];
+  if(h<13) return WINDOWS[1];
+  if(h<19) return WINDOWS[2];
+  return WINDOWS[2];
 }
 
-// ─── LOCAL DB (fallback & cache) ─────────
-function getLocal(){ return JSON.parse(localStorage.getItem('abc_restroom_logs')||'[]'); }
-function saveLocal(logs){ localStorage.setItem('abc_restroom_logs',JSON.stringify(logs)); }
-function addLocal(entry){ const logs=getLocal(); logs.push(entry); saveLocal(logs); }
-function todayLocal(){ const dk=dateKey(now()); return getLocal().filter(l=>l.date===dk); }
-function isLoggedLocal(roomId,shiftId){ const dk=dateKey(now()); return getLocal().some(l=>l.date===dk&&l.roomId===roomId&&l.shiftId===shiftId); }
-
-// ─── GAS API ─────────────────────────────
-async function gasCall(action, body={}) {
-  if (!GAS_URL) return null;
-  try {
-    const res = await fetch(GAS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action, ...body }),
-    });
-    const json = await res.json();
-    gasConnected = true;
-    return json;
-  } catch(e) {
-    gasConnected = false;
-    return null;
-  }
+// ─── LOCAL DB ────────────────────────────────────────────────
+const getLocal=()=>JSON.parse(localStorage.getItem('abc_rl')||'[]');
+const saveLocal=v=>localStorage.setItem('abc_rl',JSON.stringify(v));
+const addLocal=e=>{const l=getLocal();l.push(e);saveLocal(l);}
+const todayLocal=()=>{const dk=dateKey(now());return getLocal().filter(l=>l.date===dk);}
+function isLoggedLocal(roomId,winId){
+  const dk=dateKey(now());
+  return getLocal().some(l=>l.date===dk&&l.roomId===roomId&&l.winId===winId);
 }
 
-async function pingGAS() {
-  const r = await gasCall('ping');
-  gasConnected = !!(r && r.ok);
-  renderGASIndicator();
+// ─── GAS ─────────────────────────────────────────────────────
+async function gas(action,body={}){
+  try{
+    const r=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action,...body})});
+    const j=await r.json();
+    gasOk=true; return j;
+  }catch(e){ gasOk=false; return null; }
 }
 
-function renderGASIndicator() {
-  const el = document.getElementById('gas-indicator');
-  if (!GAS_URL) {
-    el.innerHTML = `<div class="gas-status"><div class="gas-dot local"></div><span style="color:var(--warning)">LOCAL MODE</span><span style="color:var(--muted);margin-left:4px">— Add GAS_URL to enable cloud sync & email alerts</span></div>`;
-  } else if (gasConnected === true) {
-    el.innerHTML = `<div class="gas-status"><div class="gas-dot connected"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:4px">— Google Sheets sync active</span></div>`;
-  } else if (gasConnected === false) {
-    el.innerHTML = `<div class="gas-status"><div class="gas-dot error"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:4px">— Saving locally, will sync on reconnect</span></div>`;
-  } else {
-    el.innerHTML = `<div class="gas-status"><div class="gas-dot local"></div><span style="color:var(--muted)">Checking connection...</span></div>`;
-  }
+async function pingGAS(){
+  const r=await gas('ping');
+  gasOk=!!(r&&r.ok);
+  renderCloudBar();
 }
 
-// ─── TOAST ───────────────────────────────
-function toast(msg,dur=3000){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
-function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); window.scrollTo(0,0); }
-function goHome(){ currentRoom=null; currentShift=null; formData={}; lastEntry=null; initHome(); showScreen('home'); }
+// ─── SCREENS ─────────────────────────────────────────────────
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goHome(){curRoom=null;curWin=null;formData={};lastEntry=null;clearOTPTimer();initHome();show('s-home');}
+function gotoAdminLogs(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
+
+// ─── TOAST ───────────────────────────────────────────────────
+function toast(m,d=3000){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),d);}
 
 // ═══════════════════════════════════════════
 //  HOME
 // ═══════════════════════════════════════════
-function initHome() {
-  const d=now();
-  document.getElementById('home-date-display').textContent=fullDate(d)+' — '+timeStr(d);
-  renderGASIndicator();
-  renderShiftBanner();
-  renderRoomGrid();
+function initHome(){
+  document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
+  renderCloudBar();
+  renderBanner();
+  renderGrid();
 }
 
-function renderShiftBanner(){
-  const cs=getCurrentShift(), h=now().getHours();
-  let ns=null;
-  if(h<10) ns=SHIFTS[0]; else if(h>=11&&h<13) ns=SHIFTS[1]; else if(h>=17&&h<19) ns=SHIFTS[2];
+function renderCloudBar(){
+  const el=document.getElementById('cloud-bar');
+  if(gasOk===true) el.innerHTML=`<div class="cloud-bar"><div class="c-dot ok"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:6px">— Google Sheets sync active</span></div>`;
+  else if(gasOk===false) el.innerHTML=`<div class="cloud-bar"><div class="c-dot err"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:6px">— Saving locally until connection restores</span></div>`;
+  else el.innerHTML=`<div class="cloud-bar"><div class="c-dot warn"></div><span style="color:var(--muted)">Checking cloud connection...</span></div>`;
+}
+
+function renderBanner(){
+  const cw=getWin(), h=now().getHours();
+  let nw=null;
+  if(h<10) nw=WINDOWS[0];
+  else if(h>=12&&h<13) nw=WINDOWS[1];
+  else if(h>=17&&h<19) nw=WINDOWS[2];
   let html='';
-  if(cs) html=`<div class="shift-banner"><div class="shift-dot active"></div><div class="shift-text"><div class="shift-label">🟢 ACTIVE WINDOW — ${cs.label}</div>Inspection window open until ${cs.end}:00. Visit all restrooms now.</div></div>`;
-  else if(ns) html=`<div class="shift-banner"><div class="shift-dot upcoming"></div><div class="shift-text"><div class="shift-label">⏳ NEXT — ${ns.label}</div>Next window opens at ${ns.start}:00.</div></div>`;
-  else html=`<div class="shift-banner"><div class="shift-dot closed"></div><div class="shift-text"><div class="shift-label">✅ ALL SHIFTS COMPLETE</div>All inspection windows for today have passed.</div></div>`;
-  document.getElementById('shift-status-banner').innerHTML=html;
+  if(cw) html=`<div class="banner"><div class="dot on"></div><div class="ban-text"><div class="ban-label">🟢 ACTIVE WINDOW — ${cw.label}</div>Window open until ${cw.end}:00. Inspect all restrooms now.</div></div>`;
+  else if(nw) html=`<div class="banner"><div class="dot next"></div><div class="ban-text"><div class="ban-label">⏳ NEXT — ${nw.label}</div>Next window opens at ${nw.start}:00.</div></div>`;
+  else html=`<div class="banner"><div class="dot off"></div><div class="ban-text"><div class="ban-label">✅ ALL WINDOWS COMPLETE</div>All inspection windows for today have passed.</div></div>`;
+  document.getElementById('shift-banner').innerHTML=html;
 }
 
-function renderRoomGrid(){
-  const cs=getCurrentShift();
+function renderGrid(){
+  const cw=getWin();
   document.getElementById('room-grid').innerHTML=ROOMS.map(r=>{
-    let badge='none', statusTxt='No active window';
-    if(cs){ const done=isLoggedLocal(r.id,cs.id); badge=done?'ok':'pending'; statusTxt=done?`${cs.label} ✓ Logged`:`${cs.label} — PENDING`; }
-    else { const cnt=SHIFTS.filter(s=>isLoggedLocal(r.id,s.id)).length; if(cnt>0) statusTxt=`${cnt}/3 shifts today`; }
-    return `<div class="room-card" onclick="selectRoom('${r.id}')"><div class="room-badge ${badge}"></div><div class="room-icon">${r.icon}</div><div class="room-name">${r.name}</div><div class="room-status">${statusTxt}</div></div>`;
+    let badge='none',status='No active window';
+    if(cw){const d=isLoggedLocal(r.id,cw.id);badge=d?'ok':'pend';status=d?`${cw.label} ✓`:`${cw.label} — PENDING`;}
+    else{const cnt=WINDOWS.filter(w=>isLoggedLocal(r.id,w.id)).length;if(cnt>0)status=`${cnt}/3 windows logged`;}
+    return `<div class="room-card" onclick="selectRoom('${r.id}')">
+      <div class="rc-badge ${badge}"></div>
+      <div class="rc-icon">${r.icon}</div>
+      <div class="rc-name">${r.name}</div>
+      <div class="rc-status">${status}</div>
+    </div>`;
   }).join('');
 }
 
 // ═══════════════════════════════════════════
-//  ROOM SELECT → OTP
+//  ROOM SELECT → OTP POPUP
 // ═══════════════════════════════════════════
-function selectRoom(roomId){
-  currentRoom=ROOMS.find(r=>r.id===roomId);
-  currentShift=getActiveOrNearestShift();
-  if(isLoggedLocal(currentRoom.id,currentShift.id)){ toast('⚠️ Already logged for current shift'); return; }
-  showOTPScreen();
+async function selectRoom(roomId){
+  curRoom=ROOMS.find(r=>r.id===roomId);
+  curWin=getNearestWin();
+  if(isLoggedLocal(curRoom.id,curWin.id)){toast('⚠️ Already logged for this window');return;}
+  await requestOTP();
 }
 
-function showOTPScreen(){
-  document.getElementById('otp-room-icon').textContent=currentRoom.icon;
-  document.getElementById('otp-room-name').textContent=currentRoom.name;
-  document.getElementById('otp-shift-label').textContent=`${currentShift.label} — ${currentShift.time}`;
-  document.getElementById('otp-error').style.display='none';
-  document.getElementById('otp-submit-btn').disabled=false;
-  document.getElementById('otp-submit-btn').textContent='VERIFY & PROCEED';
-  ['otp-0','otp-1','otp-2','otp-3'].forEach(id=>document.getElementById(id).value='');
-  setupOTPInputs();
-  showScreen('otp');
-  setTimeout(()=>document.getElementById('otp-0').focus(),300);
+async function requestOTP(){
+  // Generate session ID
+  otpSession='SID-'+Date.now()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
+
+  // Show overlay immediately with spinner
+  document.getElementById('otp-pop-room').innerHTML=`Your one-time code for <strong>${curRoom.name}</strong>`;
+  document.getElementById('otp-code-show').textContent='⏳';
+  document.getElementById('otp-err').style.display='none';
+  clearInputs();
+  document.getElementById('otp-overlay').classList.add('open');
+
+  // Request OTP from GAS
+  let code=null;
+  if(GAS_URL){
+    const r=await gas('requestOTP',{roomId:curRoom.id,sessionId:otpSession});
+    if(r&&r.ok) code=r.otp;
+  }
+
+  // Fallback: generate locally if offline
+  if(!code) code=localGenOTP();
+  otpCode=code;
+
+  document.getElementById('otp-code-show').textContent=code;
+  startOTPTimer();
+  setTimeout(()=>document.getElementById('d0').focus(),200);
 }
+
+function localGenOTP(){
+  const letters='ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const l=letters[Math.floor(Math.random()*letters.length)];
+  const d=()=>Math.floor(Math.random()*10);
+  const arr=[l,String(d()),String(d()),String(d())];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  return arr.join('');
+}
+
+function startOTPTimer(){
+  otpSecondsLeft=600;
+  clearOTPTimer();
+  updateTimerDisplay();
+  otpTimer=setInterval(()=>{
+    otpSecondsLeft--;
+    updateTimerDisplay();
+    if(otpSecondsLeft<=0){
+      clearOTPTimer();
+      document.getElementById('otp-code-show').textContent='EXPIRED';
+      document.getElementById('otp-resend').classList.remove('disabled');
+      document.getElementById('otp-err').style.display='block';
+      document.getElementById('otp-err').textContent='⏰ Code expired. Request a new one.';
+    }
+    // Allow resend after 60s
+    if(otpSecondsLeft<=540) document.getElementById('otp-resend').classList.remove('disabled');
+  },1000);
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(otpSecondsLeft/60), s=otpSecondsLeft%60;
+  document.getElementById('otp-countdown').textContent=`${pad(m)}:${pad(s)}`;
+}
+
+function clearOTPTimer(){ if(otpTimer){clearInterval(otpTimer);otpTimer=null;} }
 
 function setupOTPInputs(){
-  const ids=['otp-0','otp-1','otp-2','otp-3'];
+  const ids=['d0','d1','d2','d3'];
   ids.forEach((id,i)=>{
     const el=document.getElementById(id);
-    el.oninput=()=>{ el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1); if(el.value&&i<3) document.getElementById(ids[i+1]).focus(); };
-    el.onkeydown=(e)=>{ if(e.key==='Backspace'&&!el.value&&i>0) document.getElementById(ids[i-1]).focus(); };
+    el.oninput=()=>{el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1);if(el.value&&i<3)document.getElementById(ids[i+1]).focus();};
+    el.onkeydown=e=>{if(e.key==='Backspace'&&!el.value&&i>0)document.getElementById(ids[i-1]).focus();};
   });
 }
 
-async function verifyOTP(){
-  const entered=['otp-0','otp-1','otp-2','otp-3'].map(id=>document.getElementById(id).value.toUpperCase()).join('');
-  const btn=document.getElementById('otp-submit-btn');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>VERIFYING...';
+function clearInputs(){['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});}
+
+async function doVerifyOTP(){
+  const entered=['d0','d1','d2','d3'].map(id=>document.getElementById(id).value.toUpperCase()).join('');
+  if(entered.length<4){toast('Enter all 4 characters');return;}
+
+  const btn=document.getElementById('otp-verify-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>VERIFYING...';
 
   let valid=false;
-  // Try GAS first, fallback to local
-  if(GAS_URL){
-    const r=await gasCall('verifyOTP',{roomId:currentRoom.id,otp:entered});
+
+  // Try GAS verification first
+  if(GAS_URL&&gasOk!==false){
+    const r=await gas('verifyOTP',{sessionId:otpSession,otp:entered});
     if(r&&r.ok) valid=r.valid;
-    else valid=(entered===(OTP_DB[currentRoom.id]||'').toUpperCase());
+    else valid=(entered===otpCode); // fallback
   } else {
-    valid=(entered===(OTP_DB[currentRoom.id]||'').toUpperCase());
+    // Offline: compare against local generated code
+    valid=(entered===otpCode);
   }
 
-  btn.disabled=false; btn.textContent='VERIFY & PROCEED';
-  if(valid){ document.getElementById('otp-error').style.display='none'; showForm(); }
-  else {
-    document.getElementById('otp-error').style.display='block';
-    ['otp-0','otp-1','otp-2','otp-3'].forEach(id=>{ const el=document.getElementById(id); el.style.borderColor='var(--danger)'; setTimeout(()=>el.style.borderColor='',1500); });
+  btn.disabled=false;btn.textContent='CONFIRM & ENTER';
+
+  if(valid){
+    clearOTPTimer();
+    document.getElementById('otp-overlay').classList.remove('open');
+    showForm();
+  } else {
+    document.getElementById('otp-err').style.display='block';
+    document.getElementById('otp-err').textContent=otpSecondsLeft<=0?'⏰ Code expired. Request a new one.':'❌ Incorrect code. Please try again.';
+    ['d0','d1','d2','d3'].forEach(id=>{const e=document.getElementById(id);e.style.borderColor='var(--danger)';setTimeout(()=>e.style.borderColor='',1500);});
+    clearInputs();
+    setTimeout(()=>document.getElementById('d0').focus(),100);
   }
 }
 
+async function resendOTP(){
+  clearOTPTimer();
+  clearInputs();
+  document.getElementById('otp-err').style.display='none';
+  document.getElementById('otp-resend').classList.add('disabled');
+  await requestOTP();
+}
+
+function cancelOTP(){
+  clearOTPTimer();
+  document.getElementById('otp-overlay').classList.remove('open');
+  curRoom=null;curWin=null;
+}
+
 // ═══════════════════════════════════════════
-//  FORM
+//  INSPECTION FORM
 // ═══════════════════════════════════════════
 function showForm(){
-  document.getElementById('form-room-title').textContent=currentRoom.name;
-  document.getElementById('form-shift-sub').textContent=`${currentShift.label} — ${currentShift.time} window`;
-  document.getElementById('form-shift-pills').innerHTML=SHIFTS.map(s=>`<div class="shift-pill ${s.id===currentShift.id?'active':''}">${s.label}<br>${s.time}</div>`).join('');
-  document.getElementById('eq-rows').innerHTML=EQ_ITEMS.map(i=>buildRow('eq',i)).join('');
-  document.getElementById('cl-rows').innerHTML=CL_ITEMS.map(i=>buildRow('cl',i)).join('');
-  document.getElementById('st-rows').innerHTML=ST_ITEMS.map(i=>buildRow('st',i)).join('');
-  document.getElementById('sup-comments').value='';
+  document.getElementById('form-room-title').textContent=curRoom.name;
+  document.getElementById('form-win-sub').textContent=`${curWin.label} — from ${curWin.time}`;
+  document.getElementById('form-pills').innerHTML=WINDOWS.map(w=>`<div class="s-pill ${w.id===curWin.id?'active':''}">${w.label.split(' ')[0]}<br>${w.time}</div>`).join('');
+  document.getElementById('eq-rows').innerHTML=EQ.map(i=>buildRow('eq',i)).join('');
+  document.getElementById('cl-rows').innerHTML=CL.map(i=>buildRow('cl',i)).join('');
+  document.getElementById('st-rows').innerHTML=ST.map(i=>buildRow('st',i)).join('');
+  document.getElementById('sup-cmt').value='';
   formData={};
-  showScreen('form');
+  show('s-form');
 }
 
-function buildRow(section,item){
-  const key=`${section}_${item.replace(/\W/g,'_')}`;
-  return `<div class="form-row"><div class="form-row-label">${item}</div><div class="status-toggle"><button class="status-btn ok-btn" onclick="toggleStatus(this,'${key}','OK')">✅</button><button class="status-btn nok-btn" onclick="toggleStatus(this,'${key}','NOK')">❌</button></div></div>`;
+function buildRow(sec,item){
+  const k=`${sec}_${item.replace(/\W/g,'_')}`;
+  return `<div class="f-row"><div class="f-label">${item}</div><div class="tog"><button class="tog-btn ok" onclick="tog(this,'${k}','OK')">✅</button><button class="tog-btn nok" onclick="tog(this,'${k}','NOK')">❌</button></div></div>`;
 }
 
-function toggleStatus(btn,key,val){
-  btn.closest('.status-toggle').querySelectorAll('.status-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  formData[key]=val;
+function tog(btn,k,v){
+  btn.closest('.tog').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  formData[k]=v;
 }
 
 // ═══════════════════════════════════════════
 //  SUBMIT
 // ═══════════════════════════════════════════
 async function submitForm(){
-  const supName=document.getElementById('sup-name').value.trim();
-  if(!supName){ toast('⚠️ Please enter supervisor name'); return; }
+  const sn=document.getElementById('sup-name').value.trim();
+  if(!sn){toast('⚠️ Enter supervisor name');return;}
   const btn=document.getElementById('submit-btn');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>SUBMITTING...';
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>SUBMITTING...';
 
-  // Build equipment/cleaning/staff objects
-  const eq={}, cl={}, st={};
-  EQ_ITEMS.forEach(i=>{ const k=`eq_${i.replace(/\W/g,'_')}`; eq[i]=formData[k]||'N/A'; });
-  CL_ITEMS.forEach(i=>{ const k=`cl_${i.replace(/\W/g,'_')}`; cl[i]=formData[k]||'N/A'; });
-  ST_ITEMS.forEach(i=>{ const k=`st_${i.replace(/\W/g,'_')}`; st[i]=formData[k]||'N/A'; });
-
-  const cleaningIssues=CL_ITEMS.filter(i=>cl[i]==='NOK');
+  const eq={},cl={},st={};
+  EQ.forEach(i=>{const k=`eq_${i.replace(/\W/g,'_')}`;eq[i]=formData[k]||'N/A';});
+  CL.forEach(i=>{const k=`cl_${i.replace(/\W/g,'_')}`;cl[i]=formData[k]||'N/A';});
+  ST.forEach(i=>{const k=`st_${i.replace(/\W/g,'_')}`;st[i]=formData[k]||'N/A';});
+  const clIssues=CL.filter(i=>cl[i]==='NOK');
 
   const entry={
-    id:Date.now(), date:dateKey(now()), time:timeStr(now()),
-    roomId:currentRoom.id, roomName:currentRoom.name,
-    shiftId:currentShift.id, shiftLabel:currentShift.label,
-    supervisor:supName, comments:document.getElementById('sup-comments').value,
-    equipment:eq, cleaning:cl, staff:st,
-    hasIssues:cleaningIssues.length>0, cleaningIssues,
+    id:Date.now(),date:dateKey(now()),time:timeStr(now()),
+    roomId:curRoom.id,roomName:curRoom.name,
+    winId:curWin.id,windowId:curWin.id,windowLabel:curWin.label,
+    supervisor:sn,comments:document.getElementById('sup-cmt').value,
+    equipment:eq,cleaning:cl,staff:st,
+    hasIssues:clIssues.length>0,cleaningIssues:clIssues,
     synced:false,
   };
 
-  // Save locally first
   addLocal(entry);
 
-  // Try to sync to GAS
   let synced=false;
   if(GAS_URL){
-    const r=await gasCall('submitLog',{
-      roomId:entry.roomId, roomName:entry.roomName,
-      shiftId:entry.shiftId, shiftLabel:entry.shiftLabel,
-      supervisor:entry.supervisor, comments:entry.comments,
-      equipment:eq, cleaning:cl, staff:st,
+    const r=await gas('submitLog',{
+      roomId:entry.roomId,roomName:entry.roomName,
+      windowId:entry.windowId,windowLabel:entry.windowLabel,
+      supervisor:entry.supervisor,comments:entry.comments,
+      equipment:eq,cleaning:cl,staff:st,
     });
-    if(r&&r.ok){ synced=true; entry.synced=true; const logs=getLocal(); const idx=logs.findIndex(l=>l.id===entry.id); if(idx>=0){logs[idx].synced=true;saveLocal(logs);} }
+    if(r&&r.ok){synced=true;entry.synced=true;const logs=getLocal();const i=logs.findIndex(l=>l.id===entry.id);if(i>=0){logs[i].synced=true;saveLocal(logs);}}
   }
 
-  btn.disabled=false; btn.textContent='SUBMIT INSPECTION';
+  btn.disabled=false;btn.textContent='SUBMIT INSPECTION';
   lastEntry=entry;
-  showSuccess(entry, synced);
+  showSuccess(entry,synced);
 }
 
 // ═══════════════════════════════════════════
 //  SUCCESS
 // ═══════════════════════════════════════════
-function showSuccess(entry, synced){
-  document.getElementById('success-storage-mode').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally (no cloud connection)';
-  document.getElementById('success-sub-text').textContent=`${entry.roomName} — ${entry.shiftLabel} logged at ${entry.time}.`;
-  document.getElementById('success-details').innerHTML=`
-    <div class="success-detail-row"><span>Room</span><span>${entry.roomName}</span></div>
-    <div class="success-detail-row"><span>Shift</span><span>${entry.shiftLabel}</span></div>
-    <div class="success-detail-row"><span>Time</span><span>${entry.time}</span></div>
-    <div class="success-detail-row"><span>Supervisor</span><span>${entry.supervisor}</span></div>
-    <div class="success-detail-row"><span>Equipment</span><span>${Object.values(entry.equipment).filter(v=>v==='OK').length}/${Object.keys(entry.equipment).length} OK</span></div>
-    <div class="success-detail-row"><span>Cleaning</span><span class="flag-tag ${entry.hasIssues?'flag-issue':'flag-ok'}">${entry.hasIssues?entry.cleaningIssues.length+' Issue(s)':'✓ All OK'}</span></div>
-    <div class="success-detail-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>
+function showSuccess(e,synced){
+  document.getElementById('succ-sync-label').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally';
+  document.getElementById('succ-sub').textContent=`${e.roomName} — ${e.windowLabel} logged at ${e.time}.`;
+  document.getElementById('succ-detail').innerHTML=`
+    <div class="sd-row"><span>Room</span><span>${e.roomName}</span></div>
+    <div class="sd-row"><span>Window</span><span>${e.windowLabel}</span></div>
+    <div class="sd-row"><span>Time</span><span>${e.time}</span></div>
+    <div class="sd-row"><span>Supervisor</span><span>${e.supervisor}</span></div>
+    <div class="sd-row"><span>Equipment</span><span>${Object.values(e.equipment).filter(v=>v==='OK').length}/${Object.keys(e.equipment).length} OK</span></div>
+    <div class="sd-row"><span>Cleaning</span><span class="tag ${e.hasIssues?'tag-issue':'tag-ok'}">${e.hasIssues?e.cleaningIssues.length+' Issue(s)':'✓ All OK'}</span></div>
+    <div class="sd-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>
   `;
-  document.getElementById('wa-trigger-area').innerHTML=entry.hasIssues
-    ?`<button class="btn btn-whatsapp" style="margin-top:8px" onclick="openWAModal()">📱 Send WhatsApp Alert — Cleaning Issues</button>`
-    :'';
-  showScreen('success');
+  document.getElementById('wa-area').innerHTML=e.hasIssues
+    ?`<button class="btn btn-wa mt10" onclick="openWAModal()">📱 Send WhatsApp Alert — Cleaning Issues</button>`:'';
+  show('s-success');
 }
 
 // ═══════════════════════════════════════════
@@ -532,95 +677,80 @@ function showSuccess(entry, synced){
 // ═══════════════════════════════════════════
 function openWAModal(){
   if(!lastEntry) return;
-  const issueList=lastEntry.cleaningIssues.map(i=>`  • ${i}`).join('\n');
-  window._waMessage=`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*\n──────────────────────────\n📍 *Location:* ${lastEntry.roomName}\n🕐 *Shift:* ${lastEntry.shiftLabel} (${lastEntry.time})\n📅 *Date:* ${lastEntry.date}\n👤 *Logged By:* ${lastEntry.supervisor}\n\n⚠️ *Issues Found (CLEANING):*\n${issueList}\n\nPlease attend immediately and confirm resolution.\n──────────────────────────\nABC Operations — Verdun Mall`;
-  document.getElementById('wa-preview-text').textContent=window._waMessage;
-  document.getElementById('wa-modal').classList.add('open');
+  const il=lastEntry.cleaningIssues.map(i=>`  • ${i}`).join('\n');
+  window._wamsg=`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*\n──────────────────────────\n📍 *Location:* ${lastEntry.roomName}\n🕐 *Window:* ${lastEntry.windowLabel} (${lastEntry.time})\n📅 *Date:* ${lastEntry.date}\n👤 *Logged By:* ${lastEntry.supervisor}\n\n⚠️ *Issues Found (CLEANING):*\n${il}\n\nPlease attend immediately and confirm resolution.\n──────────────────────────\nABC Operations — Verdun Mall`;
+  document.getElementById('wa-prev').textContent=window._wamsg;
+  document.getElementById('wa-overlay').classList.add('open');
 }
-function openWhatsApp(){ if(!window._waMessage) return; window.open('https://wa.me/?text='+encodeURIComponent(window._waMessage),'_blank'); closeWAModal(); }
-function closeWAModal(){ document.getElementById('wa-modal').classList.remove('open'); }
+function openWA(){if(window._wamsg)window.open('https://wa.me/?text='+encodeURIComponent(window._wamsg),'_blank');closeWA();}
+function closeWA(){document.getElementById('wa-overlay').classList.remove('open');}
 
 // ═══════════════════════════════════════════
 //  ADMIN
 // ═══════════════════════════════════════════
-let currentTab='otps';
-function showAdmin(){ currentTab='otps'; renderAdmin(); showScreen('admin'); updateTabUI(); }
-function showAdminLogs(){ currentTab='logs'; renderAdmin(); showScreen('admin'); updateTabUI(); }
-function switchTab(tab){ currentTab=tab; updateTabUI(); renderAdmin(); }
-function updateTabUI(){ document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+currentTab).classList.add('active'); }
+let curAdminTab='logs';
+function showAdmin(){curAdminTab='logs';renderAdmin();show('s-admin');updateAdminTabs();}
+function switchTab(t){curAdminTab=t;updateAdminTabs();renderAdmin();}
+function updateAdminTabs(){document.querySelectorAll('.atab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+curAdminTab).classList.add('active');}
 
-async function renderAdmin(){
+function renderAdmin(){
   const el=document.getElementById('admin-content');
-  if(currentTab==='otps') el.innerHTML=renderOTPs();
-  else if(currentTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
-  else if(currentTab==='history') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
+  if(curAdminTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
+  else if(curAdminTab==='hist') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
+  else if(curAdminTab==='wins') el.innerHTML=renderWindows();
   else el.innerHTML=renderConfig();
 }
 
-function renderOTPs(){
-  const rows=ROOMS.map(r=>`<tr><td>${r.icon} ${r.name}</td><td class="otp-code">${OTP_DB[r.id]}</td><td style="color:var(--muted);font-size:10px">${r.level}/${r.core}</td></tr>`).join('');
-  return `<div class="admin-card"><div class="admin-card-title">🔐 OTP Database</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Print & laminate — place inside each restroom.</p>
-  <table class="otp-table"><thead><tr><th>RESTROOM</th><th>OTP CODE</th><th>LOCATION</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+function renderLogsTable(logs){
+  if(!logs.length) return `<div class="acard" style="text-align:center;padding:28px"><p style="font-size:30px">📋</p><p style="color:var(--muted);margin-top:10px;font-size:13px">No inspections logged yet</p></div>`;
+  const rows=logs.map(l=>`<tr>
+    <td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td>
+    <td>${l.roomName}</td>
+    <td style="color:var(--muted);font-size:10px">${l.windowLabel||l.winId}</td>
+    <td>${Object.values(l.equipment||{}).filter(v=>v==='OK').length}/${Object.keys(l.equipment||{}).length}</td>
+    <td><span class="tag ${l.hasIssues?'tag-issue':'tag-ok'}">${l.hasIssues?'ISSUE':'OK'}</span></td>
+    <td>${l.synced?'☁️':'💾'}</td>
+  </tr>`).join('');
+  return `<div class="acard"><div class="acard-title">📋 Logs (${logs.length})</div>
+  <table class="atable"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>WINDOW</th><th>EQ</th><th>CL</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
+  <button class="btn btn-ghost" style="font-size:12px;padding:10px" onclick="if(confirm('Clear all local logs?')){localStorage.removeItem('abc_rl');renderAdmin();toast('Cleared')}">🗑 Clear Local Logs</button>`;
 }
 
-function renderLogsTable(logs){
-  if(!logs.length) return `<div class="admin-card" style="text-align:center;padding:30px"><p style="font-size:32px">📋</p><p style="color:var(--muted);font-size:13px;margin-top:10px">No inspections logged yet</p></div>`;
-  const rows=logs.map(l=>{
-    const eqOk=Object.values(l.equipment||{}).filter(v=>v==='OK').length;
-    const eqT=Object.keys(l.equipment||{}).length;
-    return `<tr><td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td><td>${l.roomName}</td><td style="color:var(--muted)">${l.shiftLabel}</td><td>${eqOk}/${eqT}</td><td><span class="flag-tag ${l.hasIssues?'flag-issue':'flag-ok'}">${l.hasIssues?'ISSUE':'OK'}</span></td><td>${l.synced?'☁️':'💾'}</td></tr>`;
-  }).join('');
-  return `<div class="admin-card"><div class="admin-card-title">📋 Logs (${logs.length})</div>
-  <table class="logs-table"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>SHIFT</th><th>EQ</th><th>CL</th><th>SYNC</th></tr></thead><tbody>${rows}</tbody></table></div>
-  <button class="btn btn-outline" style="font-size:12px;padding:10px" onclick="if(confirm('Clear all?')){localStorage.removeItem('abc_restroom_logs');renderAdmin();toast('Cleared')}">🗑 Clear Local Logs</button>`;
+function renderWindows(){
+  const rows=WINDOWS.map(w=>`<tr>
+    <td><strong>${w.label}</strong></td>
+    <td>${w.start}:00 – ${w.end}:00</td>
+    <td style="color:var(--muted);font-size:10px">Email fires once at ${w.end}:00 if any room has no log in this window</td>
+  </tr>`).join('');
+  return `<div class="acard"><div class="acard-title">⏰ Alert Windows</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">A single email is sent to <strong style="color:var(--gold)">salaachi@abc.com.lb</strong> at the end of each window if any room was not inspected.</p>
+  <table class="atable"><thead><tr><th>WINDOW</th><th>TIME RANGE</th><th>TRIGGER</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function renderConfig(){
-  return `<div class="admin-card">
-    <div class="admin-card-title">⚙️ Backend Configuration</div>
-    <div class="supervisor-field"><label>GOOGLE APPS SCRIPT URL</label>
-    <input class="supervisor-input" id="cfg-gas-url" placeholder="https://script.google.com/macros/s/.../exec" value="${GAS_URL}"></div>
-    <div style="padding:14px 16px">
-      <button class="btn btn-primary" style="font-size:13px;padding:12px" onclick="saveConfig()">SAVE & TEST CONNECTION</button>
-    </div>
+  return `<div class="acard"><div class="acard-title">⚙️ Backend Status</div>
+  <div class="sd-row" style="padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06)"><span style="color:var(--muted);font-size:12px">GAS Connection</span><span style="color:${gasOk?'var(--success)':'var(--danger)'};font-size:12px">${gasOk?'✅ Connected':'❌ Offline'}</span></div>
+  <div class="sd-row" style="padding:8px 0"><span style="color:var(--muted);font-size:12px">Alert Email</span><span style="font-size:12px">salaachi@abc.com.lb</span></div>
   </div>
-  <div class="admin-card">
-    <div class="admin-card-title">📧 Alert Email</div>
-    <p style="font-size:13px;color:var(--white)">${ALERT_EMAIL}</p>
-    <p style="font-size:11px;color:var(--muted);margin-top:6px">Missed shift alerts sent via GAS backend. Triggers fire every 30 minutes.</p>
-  </div>`;
-}
-
-async function saveConfig(){
-  const url=document.getElementById('cfg-gas-url').value.trim();
-  if(url){ localStorage.setItem('abc_gas_url',url); toast('⏳ Testing connection...'); }
-  else { toast('⚠️ URL is empty'); return; }
-  // Test
-  try {
-    const res=await fetch(url,{method:'POST',body:JSON.stringify({action:'ping'})});
-    const j=await res.json();
-    if(j.ok){ gasConnected=true; toast('✅ Connected! Reload the page to apply.'); renderGASIndicator(); }
-    else { toast('❌ GAS returned error: '+j.error); }
-  } catch(e){ toast('❌ Connection failed. Check the URL.'); }
+  <div class="acard"><div class="acard-title">🔐 OTP Info</div>
+  <p style="font-size:12px;color:var(--muted);line-height:1.7">OTPs are generated server-side on every inspection attempt. Each code is unique, valid for 10 minutes, and tied to a session ID. The QR code only opens the app — it contains no OTP. Codes are never reused.</p></div>`;
 }
 
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
 window.addEventListener('load',()=>{
-  const saved=localStorage.getItem('abc_gas_url'); if(saved) { /* GAS_URL is const; user must edit file */ }
+  setupOTPInputs();
   initHome();
-  if(GAS_URL) pingGAS();
-  else renderGASIndicator();
+  pingGAS();
   setInterval(()=>{
-    if(document.getElementById('screen-home').classList.contains('active')){
-      document.getElementById('home-date-display').textContent=fullDate(now())+' — '+timeStr(now());
-      renderShiftBanner();
+    if(document.getElementById('s-home').classList.contains('active')){
+      document.getElementById('home-date').textContent=fullDate(now())+' — '+timeStr(now());
+      renderBanner();
     }
   },60000);
 });
-document.getElementById('wa-modal').addEventListener('click',function(e){ if(e.target===this) closeWAModal(); });
+document.getElementById('wa-overlay').addEventListener('click',function(e){if(e.target===this)closeWA();});
 </script>
 </body>
 </html>
