@@ -404,8 +404,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 const GAS_URL      = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
 const APP_PWD      = '2707';   // Supervisor PIN — opens inspection form via QR
 const ADMIN_PWD    = '2606';   // Admin PIN — opens Admin Panel
-const GPS_RADIUS_M     = 80;   // must be within this distance of calibrated point
-const GPS_MAX_ACCURACY = 60;   // reject if phone GPS accuracy is worse than this (too unreliable)
+const GPS_RADIUS_M     = 50;   // must be within 50m of calibrated point
+const GPS_MAX_ACCURACY = 50;   // reject if phone GPS accuracy is worse than this
 const CAL_KEY      = 'abc_room_coords_v2';
 
 // ── FACTORY-CALIBRATED COORDINATES (captured on-site 02 Jun 2026) ──
