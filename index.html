@@ -165,6 +165,31 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
 .atable td{padding:7px 6px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);vertical-align:top;}
 .atable tr:last-child td{border-bottom:none;}
 
+/* ── CALIBRATE ── */
+.atab{font-size:10px;}
+.cal-room-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;transition:border-color .2s;}
+.cal-room-card.calibrated{border-color:rgba(62,184,124,.4);}
+.cal-room-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.cal-room-name{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--white);}
+.cal-tag{font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:1px;}
+.cal-tag.done{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);}
+.cal-tag.pend{background:rgba(240,160,64,.12);color:var(--warning);border:1px solid rgba(240,160,64,.3);}
+.cal-coords{font-size:11px;color:var(--muted);margin-bottom:10px;font-family:monospace;line-height:1.7;}
+.cal-coords span{color:var(--gold);}
+.cal-btn{width:100%;padding:11px;border:none;border-radius:8px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.cal-btn.go{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
+.cal-btn.go:hover{opacity:.9;transform:translateY(-1px);}
+.cal-btn.go:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.cal-btn.rst{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:6px;}
+.cal-btn.rst:hover{border-color:var(--danger);color:var(--danger);}
+.cal-prog-wrap{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:14px;}
+.cal-prog-bar-bg{flex:1;background:rgba(201,168,76,.1);border-radius:4px;height:8px;overflow:hidden;}
+.cal-prog-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transition:width .4s ease;}
+.cal-prog-txt{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap;}
+.cal-note{background:rgba(201,168,76,.06);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px;}
+.cal-note strong{color:var(--gold);}
+.cal-scanning{font-size:11px;color:var(--warning);margin-top:6px;display:none;}
+
 /* ── WA MODAL ── */
 .wa-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
 .wa-overlay.open{display:flex;}
@@ -335,6 +360,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--w
       <button class="atab active" id="tab-logs" onclick="switchTab('logs')">TODAY</button>
       <button class="atab" id="tab-hist" onclick="switchTab('hist')">HISTORY</button>
       <button class="atab" id="tab-wins" onclick="switchTab('wins')">WINDOWS</button>
+      <button class="atab" id="tab-cal"  onclick="switchTab('cal')">📍 CALIBRATE</button>
       <button class="atab" id="tab-cfg"  onclick="switchTab('cfg')">CONFIG</button>
     </div>
     <div id="admin-content"></div>
@@ -507,6 +533,12 @@ function haversineM(lat1,lng1,lat2,lng2){
 
 function checkGPS(room){
   return new Promise((resolve)=>{
+    // If room not yet calibrated — skip GPS gate, log as 'uncalibrated'
+    if(!room._calibrated){
+      gpsData={lat:null,lng:null,accuracy:null,status:'uncalibrated'};
+      resolve({ok:true,reason:'uncalibrated',dist:null});
+      return;
+    }
     if(!navigator.geolocation){ resolve({ok:false,reason:'no_gps',dist:null}); return; }
     document.getElementById('gps-overlay').classList.add('open');
     document.getElementById('gps-gate-icon').textContent='📍';
@@ -714,6 +746,8 @@ function showForm(){
     gpsBadge=`<div class="gps-badge ok"><div class="gps-dot ok"></div><span style="color:var(--success)">GPS VERIFIED</span><span style="color:var(--muted);margin-left:6px">Accuracy ±${gpsData.accuracy}m</span></div>`;
   else if(gpsData.status==='overridden')
     gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS OVERRIDDEN</span><span style="color:var(--muted);margin-left:6px">Location not confirmed — logged</span></div>`;
+  else if(gpsData.status==='uncalibrated')
+    gpsBadge=`<div class="gps-badge warn"><div class="gps-dot warn"></div><span style="color:var(--warning)">GPS NOT CALIBRATED</span><span style="color:var(--muted);margin-left:6px">Calibrate this room in Admin → 📍 Calibrate</span></div>`;
   else if(gpsData.status==='denied')
     gpsBadge=`<div class="gps-badge err"><div class="gps-dot err"></div><span style="color:var(--danger)">GPS DENIED</span><span style="color:var(--muted);margin-left:6px">Permission not granted — logged</span></div>`;
   document.getElementById('gps-form-badge').innerHTML=gpsBadge;
@@ -784,7 +818,7 @@ async function submitForm(){
 function showSuccess(e,synced){
   document.getElementById('succ-sync-label').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally';
   document.getElementById('succ-sub').textContent=`${e.roomName} — ${e.windowLabel} logged at ${e.time}.`;
-  const gpsTag=e.gpsStatus==='obtained'?`<span class="tag tag-ok">GPS ✓</span>`:e.gpsStatus==='overridden'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">GPS Override</span>`:`<span class="tag tag-issue">GPS N/A</span>`;
+  const gpsTag=e.gpsStatus==='obtained'?`<span class="tag tag-ok">GPS ✓</span>`:e.gpsStatus==='overridden'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">GPS Override</span>`:e.gpsStatus==='uncalibrated'?`<span class="tag" style="background:rgba(240,160,64,.15);color:var(--warning);border:1px solid rgba(240,160,64,.3)">Not Calibrated</span>`:`<span class="tag tag-issue">GPS N/A</span>`;
   document.getElementById('succ-detail').innerHTML=`
     <div class="sd-row"><span>Room</span><span>${e.roomName}</span></div>
     <div class="sd-row"><span>Shift</span><span>${e.windowLabel}</span></div>
@@ -826,6 +860,7 @@ function renderAdmin(){
   if(curAdminTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
   else if(curAdminTab==='hist') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
   else if(curAdminTab==='wins') el.innerHTML=renderWindows();
+  else if(curAdminTab==='cal') el.innerHTML=renderCalibrate();
   else el.innerHTML=renderCfg();
 }
 
@@ -872,9 +907,164 @@ function renderCfg(){
 }
 
 // ════════════════════════════════════════════
+//  GPS CALIBRATION
+// ════════════════════════════════════════════
+
+// Storage key for saved coordinates
+const CAL_KEY = 'abc_room_coords';
+
+function getSavedCoords() {
+  return JSON.parse(localStorage.getItem(CAL_KEY) || '{}');
+}
+
+function saveCoords(roomId, lat, lng, accuracy) {
+  const all = getSavedCoords();
+  all[roomId] = { lat, lng, accuracy, calibratedAt: new Date().toISOString() };
+  localStorage.setItem(CAL_KEY, JSON.stringify(all));
+  // Also update the live ROOMS array so GPS checks use real coords immediately
+  const room = ROOMS.find(r => r.id === roomId);
+  if (room) { room.lat = lat; room.lng = lng; room._calibrated = true; }
+}
+
+function clearCoords(roomId) {
+  const all = getSavedCoords();
+  delete all[roomId];
+  localStorage.setItem(CAL_KEY, JSON.stringify(all));
+  // Reset room to dummy coords flag
+  const room = ROOMS.find(r => r.id === roomId);
+  if (room) { room._calibrated = false; }
+}
+
+function loadSavedCoords() {
+  // Called on app start — overwrite ROOMS with any saved calibrated coords
+  const all = getSavedCoords();
+  ROOMS.forEach(room => {
+    if (all[room.id]) {
+      room.lat = all[room.id].lat;
+      room.lng = all[room.id].lng;
+      room._calibrated = true;
+    }
+  });
+}
+
+function renderCalibrate() {
+  const saved = getSavedCoords();
+  const calibratedCount = Object.keys(saved).length;
+  const pct = Math.round((calibratedCount / ROOMS.length) * 100);
+
+  const progressBar = `
+    <div class="cal-prog-wrap">
+      <div class="cal-prog-bar-bg">
+        <div class="cal-prog-bar" style="width:${pct}%"></div>
+      </div>
+      <div class="cal-prog-txt">${calibratedCount}/${ROOMS.length} Calibrated</div>
+    </div>`;
+
+  const note = `
+    <div class="cal-note">
+      <strong>📍 How to calibrate:</strong><br>
+      Walk to each restroom physically and stand inside it. Tap <strong>Capture My Location</strong> — the app saves your exact GPS coordinates for that room. This takes about 2 minutes per floor.<br><br>
+      <strong>⚠️ Until a room is calibrated</strong>, GPS verification for that room is bypassed (the system uses a fallback radius from the mall center).
+    </div>`;
+
+  const roomCards = ROOMS.map(room => {
+    const cal = saved[room.id];
+    const isCalibrated = !!cal;
+    const calDate = cal ? new Date(cal.calibratedAt).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : null;
+
+    const coordsBlock = isCalibrated
+      ? `<div class="cal-coords">
+          Lat: <span>${cal.lat.toFixed(6)}</span>&nbsp;&nbsp;
+          Lng: <span>${cal.lng.toFixed(6)}</span>&nbsp;&nbsp;
+          Accuracy: <span>±${Math.round(cal.accuracy)}m</span><br>
+          <span style="font-size:10px;color:var(--muted)">Calibrated: ${calDate}</span>
+        </div>`
+      : `<div class="cal-coords" style="color:var(--warning)">Not calibrated — stand inside this restroom and tap capture.</div>`;
+
+    return `
+      <div class="cal-room-card ${isCalibrated ? 'calibrated' : ''}" id="calcard-${room.id}">
+        <div class="cal-room-hdr">
+          <div class="cal-room-name">${room.icon} ${room.name}</div>
+          <span class="cal-tag ${isCalibrated ? 'done' : 'pend'}">${isCalibrated ? '✓ SET' : 'PENDING'}</span>
+        </div>
+        ${coordsBlock}
+        <div class="cal-scanning" id="cal-scanning-${room.id}"><span class="spin"></span> Acquiring GPS signal...</div>
+        <button class="cal-btn go" id="cal-btn-${room.id}" onclick="captureLocation('${room.id}')">
+          📍 Capture My Location
+        </button>
+        ${isCalibrated ? `<button class="cal-btn rst" onclick="resetCalibration('${room.id}')">↺ Reset</button>` : ''}
+      </div>`;
+  }).join('');
+
+  const allDoneMsg = calibratedCount === ROOMS.length
+    ? `<div class="banner" style="margin-bottom:14px"><div class="dot on"></div><div class="ban-text"><div class="ban-label">✅ ALL ROOMS CALIBRATED</div>GPS verification is fully active for all 7 restrooms.</div></div>`
+    : '';
+
+  return allDoneMsg + progressBar + note + roomCards;
+}
+
+async function captureLocation(roomId) {
+  const btn = document.getElementById(`cal-btn-${roomId}`);
+  const scanning = document.getElementById(`cal-scanning-${roomId}`);
+
+  if (!navigator.geolocation) {
+    toast('❌ GPS not available on this device');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> CAPTURING...';
+  scanning.style.display = 'block';
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+
+      if (accuracy > 80) {
+        // GPS signal weak — warn but allow
+        toast(`⚠️ Weak signal (±${Math.round(accuracy)}m). Move to a window if possible, or recapture.`);
+      }
+
+      saveCoords(roomId, lat, lng, accuracy);
+
+      btn.disabled = false;
+      btn.innerHTML = '📍 Capture My Location';
+      scanning.style.display = 'none';
+
+      toast(`✅ ${ROOMS.find(r=>r.id===roomId)?.name} calibrated! Accuracy: ±${Math.round(accuracy)}m`);
+
+      // Re-render calibrate tab to show updated state
+      setTimeout(() => { if (curAdminTab === 'cal') renderAdmin(); }, 400);
+    },
+    (err) => {
+      btn.disabled = false;
+      btn.innerHTML = '📍 Capture My Location';
+      scanning.style.display = 'none';
+
+      const msgs = {
+        1: '❌ GPS permission denied. Enable location in browser settings.',
+        2: '❌ GPS position unavailable. Try moving to an open area.',
+        3: '❌ GPS timed out. Try again.',
+      };
+      toast(msgs[err.code] || '❌ GPS error. Try again.');
+    },
+    { timeout: 15000, enableHighAccuracy: true, maximumAge: 0 }
+  );
+}
+
+function resetCalibration(roomId) {
+  const room = ROOMS.find(r => r.id === roomId);
+  if (!confirm(`Reset calibration for ${room?.name}? GPS verification will be bypassed until recalibrated.`)) return;
+  clearCoords(roomId);
+  toast(`↺ ${room?.name} reset`);
+  if (curAdminTab === 'cal') renderAdmin();
+}
+
+// ════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════
 window.addEventListener('load',()=>{
+  loadSavedCoords(); // ← apply any saved calibrations immediately
   setupOTPInputs();
   setInterval(()=>{
     if(document.getElementById('s-home').classList.contains('active')){
