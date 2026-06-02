@@ -6,461 +6,104 @@
 <title>ABC Verdun — Restroom Inspection</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&display=swap');
-
-  :root {
-    --navy: #0a1628;
-    --navy-mid: #122040;
-    --navy-light: #1a2f57;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: #8a6d2e;
-    --white: #f5f7fa;
-    --muted: #8a9ab5;
-    --danger: #e05252;
-    --success: #3eb87c;
-    --warning: #f0a040;
-    --card-bg: #0f1e38;
-    --border: rgba(201,168,76,0.18);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Source Sans 3', sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ─── SCREENS ─── */
-  .screen { display: none; min-height: 100vh; }
-  .screen.active { display: flex; flex-direction: column; }
-
-  /* ─── HEADER ─── */
-  .header {
-    background: var(--navy-mid);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-logo {
-    width: 38px; height: 38px;
-    background: var(--gold);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700; font-size: 13px; color: var(--navy);
-    letter-spacing: 1px; flex-shrink: 0;
-  }
-  .header-info { flex: 1; }
-  .header-title { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; }
-  .header-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-  .header-back {
-    background: none; border: 1px solid var(--border);
-    color: var(--gold); font-size: 12px; font-family: 'Rajdhani', sans-serif;
-    font-weight: 600; letter-spacing: 1px; padding: 6px 12px; border-radius: 6px;
-    cursor: pointer; transition: all .2s;
-  }
-  .header-back:hover { background: var(--gold); color: var(--navy); }
-
-  /* ─── CONTENT WRAPPER ─── */
-  .content { flex: 1; padding: 20px; max-width: 520px; margin: 0 auto; width: 100%; }
-
-  /* ─── HOME SCREEN ─── */
-  .home-hero {
-    text-align: center;
-    padding: 30px 0 24px;
-  }
-  .home-logo {
-    width: 72px; height: 72px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Rajdhani', sans-serif; font-weight: 700;
-    font-size: 22px; color: var(--navy);
-    margin: 0 auto 16px;
-    box-shadow: 0 8px 32px rgba(201,168,76,0.25);
-  }
-  .home-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px; font-weight: 700;
-    color: var(--gold); letter-spacing: 1px;
-  }
-  .home-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
-
-  .shift-banner {
-    margin: 16px 0;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border-left: 4px solid var(--gold);
-    background: var(--card-bg);
-    display: flex; align-items: center; gap: 12px;
-  }
-  .shift-dot {
-    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-  }
-  .shift-dot.active { background: var(--success); box-shadow: 0 0 8px var(--success); }
-  .shift-dot.upcoming { background: var(--warning); }
-  .shift-dot.closed { background: var(--muted); }
-  .shift-text { font-size: 12px; color: var(--white); }
-  .shift-label { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 14px; color: var(--gold); }
-
-  .section-label {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px;
-    color: var(--muted); text-transform: uppercase;
-    margin: 20px 0 10px;
-  }
-
-  .room-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .room-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 12px;
-    cursor: pointer;
-    transition: all .25s;
-    position: relative;
-    overflow: hidden;
-  }
-  .room-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: var(--gold);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform .3s;
-  }
-  .room-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-  .room-card:hover::before { transform: scaleX(1); }
-  .room-card:active { transform: scale(0.97); }
-  .room-icon { font-size: 22px; margin-bottom: 8px; }
-  .room-name { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: var(--white); }
-  .room-status { font-size: 10px; color: var(--muted); margin-top: 3px; }
-  .room-badge {
-    position: absolute; top: 10px; right: 10px;
-    width: 8px; height: 8px; border-radius: 50%;
-  }
-  .room-badge.ok { background: var(--success); }
-  .room-badge.pending { background: var(--warning); animation: pulse 1.5s infinite; }
-  .room-badge.none { background: var(--muted); }
-
-  @keyframes pulse {
-    0%,100% { opacity: 1; } 50% { opacity: 0.3; }
-  }
-
-  /* ─── OTP SCREEN ─── */
-  .otp-room-tag {
-    text-align: center; padding: 28px 0 20px;
-  }
-  .otp-room-icon { font-size: 44px; margin-bottom: 10px; }
-  .otp-room-name { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); }
-  .otp-shift-badge {
-    display: inline-block; margin-top: 8px;
-    padding: 4px 14px; border-radius: 20px;
-    background: rgba(201,168,76,0.12); border: 1px solid var(--border);
-    font-size: 11px; color: var(--gold); font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 1px; font-weight: 600;
-  }
-
-  .otp-label {
-    text-align: center; font-size: 13px; color: var(--muted);
-    margin-bottom: 18px;
-  }
-  .otp-input-row {
-    display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;
-  }
-  .otp-digit {
-    width: 56px; height: 64px;
-    background: var(--card-bg);
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    color: var(--gold);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px; font-weight: 700;
-    text-align: center;
-    outline: none; transition: all .2s;
-    caret-color: var(--gold);
-  }
-  .otp-digit:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
-
-  .otp-hint {
-    background: rgba(201,168,76,0.07);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 12px; color: var(--muted);
-    text-align: center; margin-bottom: 20px;
-    line-height: 1.6;
-  }
-  .otp-hint strong { color: var(--gold); }
-
-  .otp-error {
-    text-align: center; color: var(--danger);
-    font-size: 13px; margin-bottom: 12px;
-    display: none;
-  }
-
-  /* ─── BUTTONS ─── */
-  .btn {
-    width: 100%; padding: 15px;
-    border: none; border-radius: 10px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px; font-weight: 700; letter-spacing: 1px;
-    cursor: pointer; transition: all .2s;
-    text-transform: uppercase;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-    color: var(--navy);
-  }
-  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.3); }
-  .btn-primary:active { transform: scale(0.98); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-outline {
-    background: transparent; border: 1px solid var(--border);
-    color: var(--muted); margin-top: 10px;
-  }
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-  .btn-danger {
-    background: linear-gradient(135deg, var(--danger), #c04040);
-    color: white;
-  }
-  .btn-whatsapp {
-    background: linear-gradient(135deg, #25d366, #128c3e);
-    color: white; display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
-
-  /* ─── FORM SCREEN ─── */
-  .shift-indicator {
-    display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap;
-  }
-  .shift-pill {
-    flex: 1; min-width: 0;
-    padding: 8px 6px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 12px; font-weight: 600; color: var(--muted);
-    background: var(--card-bg);
-  }
-  .shift-pill.active {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(201,168,76,0.1);
-  }
-
-  .form-section {
-    margin-bottom: 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .form-section-header {
-    padding: 12px 16px;
-    background: rgba(201,168,76,0.08);
-    border-bottom: 1px solid var(--border);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
-    color: var(--gold); text-transform: uppercase;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 80px;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(201,168,76,0.06);
-    gap: 10px;
-  }
-  .form-row:last-child { border-bottom: none; }
-  .form-row-label { font-size: 13px; color: var(--white); }
-  .status-toggle {
-    display: flex; gap: 4px;
-  }
-  .status-btn {
-    flex: 1; padding: 5px 4px;
-    border: 1px solid var(--border);
-    border-radius: 5px; cursor: pointer;
-    font-size: 16px; background: transparent;
-    transition: all .15s; text-align: center;
-  }
-  .status-btn.ok-btn.selected { background: rgba(62,184,124,0.2); border-color: var(--success); }
-  .status-btn.nok-btn.selected { background: rgba(224,82,82,0.2); border-color: var(--danger); }
-
-  .comments-area {
-    width: 100%; padding: 12px 16px;
-    background: transparent; border: none;
-    color: var(--white); font-family: 'Source Sans 3', sans-serif;
-    font-size: 13px; resize: none; outline: none;
-    min-height: 80px;
-  }
-  .comments-area::placeholder { color: var(--muted); }
-
-  .supervisor-field {
-    padding: 10px 16px; border-bottom: 1px solid rgba(201,168,76,0.06);
-  }
-  .supervisor-field:last-child { border-bottom: none; }
-  .supervisor-field label { font-size: 11px; color: var(--muted); letter-spacing: 1px; display: block; margin-bottom: 5px; }
-  .supervisor-input {
-    width: 100%; background: transparent; border: none;
-    border-bottom: 1px solid var(--border);
-    color: var(--white); font-size: 14px;
-    padding: 4px 0; outline: none; font-family: 'Source Sans 3', sans-serif;
-    transition: border-color .2s;
-  }
-  .supervisor-input:focus { border-color: var(--gold); }
-
-  /* ─── WHATSAPP MODAL ─── */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
-    z-index: 500; align-items: flex-end; justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal-sheet {
-    background: var(--navy-mid);
-    border: 1px solid var(--border);
-    border-bottom: none;
-    border-radius: 18px 18px 0 0;
-    padding: 20px;
-    width: 100%; max-width: 520px;
-    max-height: 80vh; overflow-y: auto;
-    animation: slideUp .3s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .modal-handle {
-    width: 36px; height: 4px;
-    background: var(--border); border-radius: 2px;
-    margin: 0 auto 16px;
-  }
-  .modal-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px; font-weight: 700; color: var(--gold);
-    margin-bottom: 4px;
-  }
-  .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-  .wa-preview {
-    background: #1a2f1a;
-    border: 1px solid #25d366;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 13px; color: #d4ffd4;
-    line-height: 1.7; margin-bottom: 16px;
-    white-space: pre-wrap;
-    font-family: 'Source Sans 3', sans-serif;
-  }
-  .modal-actions { display: flex; flex-direction: column; gap: 8px; }
-
-  /* ─── SUCCESS SCREEN ─── */
-  .success-content { text-align: center; padding: 40px 20px; }
-  .success-icon {
-    width: 80px; height: 80px;
-    background: rgba(62,184,124,0.15);
-    border: 2px solid var(--success);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px; margin: 0 auto 20px;
-    animation: popIn .4s ease;
-  }
-  @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .success-title { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; color: var(--success); }
-  .success-sub { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
-  .success-details {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px;
-    margin: 20px 0; text-align: left;
-  }
-  .success-detail-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(201,168,76,0.06); font-size: 13px; }
-  .success-detail-row:last-child { border-bottom: none; }
-  .success-detail-row span:first-child { color: var(--muted); }
-  .success-detail-row span:last-child { color: var(--white); font-weight: 600; }
-
-  /* ─── ADMIN SCREEN ─── */
-  .admin-card {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px; margin-bottom: 12px;
-  }
-  .admin-card-title { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
-  .otp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .otp-table th { color: var(--muted); padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); letter-spacing: 1px; font-size: 10px; text-transform: uppercase; }
-  .otp-table td { padding: 8px 8px; border-bottom: 1px solid rgba(201,168,76,0.05); color: var(--white); }
-  .otp-code { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
-
-  /* ─── REMINDER TOAST ─── */
-  .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: var(--navy-mid); border: 1px solid var(--gold);
-    border-radius: 10px; padding: 12px 20px;
-    font-size: 13px; color: var(--gold);
-    z-index: 999; display: none;
-    animation: fadeIn .3s ease;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    white-space: nowrap;
-  }
-  .toast.show { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } }
-
-  /* ─── MISC ─── */
-  .divider { height: 1px; background: var(--border); margin: 18px 0; }
-  .text-center { text-align: center; }
-  .text-muted { color: var(--muted); font-size: 12px; }
-  .mt-8 { margin-top: 8px; }
-  .flag-tag {
-    display: inline-block; padding: 2px 8px; border-radius: 4px;
-    font-size: 10px; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 1px;
-  }
-  .flag-ok { background: rgba(62,184,124,0.15); color: var(--success); border: 1px solid rgba(62,184,124,0.3); }
-  .flag-issue { background: rgba(224,82,82,0.15); color: var(--danger); border: 1px solid rgba(224,82,82,0.3); }
-
-  .logs-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  .logs-table th { color: var(--muted); padding: 6px 6px; text-align: left; border-bottom: 1px solid var(--border); font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
-  .logs-table td { padding: 7px 6px; border-bottom: 1px solid rgba(201,168,76,0.05); color: var(--white); vertical-align: top; }
-  .logs-table tr:last-child td { border-bottom: none; }
-
-  .qr-placeholder {
-    width: 80px; height: 80px;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; margin: 0 auto;
-    color: var(--muted);
-  }
-
-  .nav-tabs {
-    display: flex; gap: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px; overflow: hidden;
-    margin-bottom: 16px;
-  }
-  .nav-tab {
-    flex: 1; padding: 10px 6px;
-    background: none; border: none;
-    color: var(--muted); font-family: 'Rajdhani', sans-serif;
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    cursor: pointer; text-transform: uppercase; transition: all .2s;
-  }
-  .nav-tab.active { background: rgba(201,168,76,0.12); color: var(--gold); }
+  :root{--navy:#0a1628;--navy-mid:#122040;--navy-light:#1a2f57;--gold:#c9a84c;--gold-light:#e8c97a;--gold-dim:#8a6d2e;--white:#f5f7fa;--muted:#8a9ab5;--danger:#e05252;--success:#3eb87c;--warning:#f0a040;--card-bg:#0f1e38;--border:rgba(201,168,76,0.18);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Source Sans 3',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden;}
+  .screen{display:none;min-height:100vh;} .screen.active{display:flex;flex-direction:column;}
+  .header{background:var(--navy-mid);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;}
+  .header-logo{width:38px;height:38px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:13px;color:var(--navy);letter-spacing:1px;flex-shrink:0;}
+  .header-info{flex:1;} .header-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--gold);letter-spacing:.5px;} .header-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+  .header-back{background:none;border:1px solid var(--border);color:var(--gold);font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:1px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+  .header-back:hover{background:var(--gold);color:var(--navy);}
+  .content{flex:1;padding:20px;max-width:520px;margin:0 auto;width:100%;}
+  .home-hero{text-align:center;padding:30px 0 24px;}
+  .home-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:16px;display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:var(--navy);margin:0 auto 16px;box-shadow:0 8px 32px rgba(201,168,76,.25);}
+  .home-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--gold);letter-spacing:1px;} .home-sub{font-size:13px;color:var(--muted);margin-top:6px;}
+  .shift-banner{margin:16px 0;padding:12px 16px;border-radius:10px;border-left:4px solid var(--gold);background:var(--card-bg);display:flex;align-items:center;gap:12px;}
+  .shift-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .shift-dot.active{background:var(--success);box-shadow:0 0 8px var(--success);} .shift-dot.upcoming{background:var(--warning);} .shift-dot.closed{background:var(--muted);}
+  .shift-text{font-size:12px;color:var(--white);} .shift-label{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:var(--gold);}
+  .section-label{font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin:20px 0 10px;}
+  .room-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;}
+  .room-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:14px 12px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+  .room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+  .room-card:hover{border-color:var(--gold);transform:translateY(-2px);} .room-card:hover::before{transform:scaleX(1);} .room-card:active{transform:scale(.97);}
+  .room-icon{font-size:22px;margin-bottom:8px;} .room-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--white);} .room-status{font-size:10px;color:var(--muted);margin-top:3px;}
+  .room-badge{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;}
+  .room-badge.ok{background:var(--success);} .room-badge.pending{background:var(--warning);animation:pulse 1.5s infinite;} .room-badge.none{background:var(--muted);}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .otp-room-tag{text-align:center;padding:28px 0 20px;} .otp-room-icon{font-size:44px;margin-bottom:10px;} .otp-room-name{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);}
+  .otp-shift-badge{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:20px;background:rgba(201,168,76,.12);border:1px solid var(--border);font-size:11px;color:var(--gold);font-family:'Rajdhani',sans-serif;letter-spacing:1px;font-weight:600;}
+  .otp-label{text-align:center;font-size:13px;color:var(--muted);margin-bottom:18px;}
+  .otp-input-row{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+  .otp-digit{width:56px;height:64px;background:var(--card-bg);border:2px solid var(--border);border-radius:10px;color:var(--gold);font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;text-align:center;outline:none;transition:all .2s;caret-color:var(--gold);}
+  .otp-digit:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);}
+  .otp-hint{background:rgba(201,168,76,.07);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.6;}
+  .otp-hint strong{color:var(--gold);} .otp-error{text-align:center;color:var(--danger);font-size:13px;margin-bottom:12px;display:none;}
+  .btn{width:100%;padding:15px;border:none;border-radius:10px;font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s;text-transform:uppercase;}
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--navy);}
+  .btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,.3);} .btn-primary:active{transform:scale(.98);} .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px;}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-whatsapp{background:linear-gradient(135deg,#25d366,#128c3e);color:white;display:flex;align-items:center;justify-content:center;gap:10px;}
+  .shift-indicator{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+  .shift-pill{flex:1;min-width:0;padding:8px 6px;border-radius:8px;border:1px solid var(--border);text-align:center;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:var(--card-bg);}
+  .shift-pill.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
+  .form-section{margin-bottom:20px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+  .form-section-header{padding:12px 16px;background:rgba(201,168,76,.08);border-bottom:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+  .form-row{display:grid;grid-template-columns:1fr 80px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);gap:10px;}
+  .form-row:last-child{border-bottom:none;} .form-row-label{font-size:13px;color:var(--white);}
+  .status-toggle{display:flex;gap:4px;}
+  .status-btn{flex:1;padding:5px 4px;border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:16px;background:transparent;transition:all .15s;text-align:center;}
+  .status-btn.ok-btn.selected{background:rgba(62,184,124,.2);border-color:var(--success);} .status-btn.nok-btn.selected{background:rgba(224,82,82,.2);border-color:var(--danger);}
+  .comments-area{width:100%;padding:12px 16px;background:transparent;border:none;color:var(--white);font-family:'Source Sans 3',sans-serif;font-size:13px;resize:none;outline:none;min-height:80px;}
+  .comments-area::placeholder{color:var(--muted);}
+  .supervisor-field{padding:10px 16px;border-bottom:1px solid rgba(201,168,76,.06);} .supervisor-field:last-child{border-bottom:none;}
+  .supervisor-field label{font-size:11px;color:var(--muted);letter-spacing:1px;display:block;margin-bottom:5px;}
+  .supervisor-input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--white);font-size:14px;padding:4px 0;outline:none;font-family:'Source Sans 3',sans-serif;transition:border-color .2s;}
+  .supervisor-input:focus{border-color:var(--gold);}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:500;align-items:flex-end;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal-sheet{background:var(--navy-mid);border:1px solid var(--border);border-bottom:none;border-radius:18px 18px 0 0;padding:20px;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;animation:slideUp .3s ease;}
+  @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
+  .modal-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:4px;} .modal-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+  .wa-preview{background:#1a2f1a;border:1px solid #25d366;border-radius:10px;padding:14px;font-size:12px;color:#d4ffd4;line-height:1.7;margin-bottom:16px;white-space:pre-wrap;font-family:'Source Sans 3',sans-serif;}
+  .modal-actions{display:flex;flex-direction:column;gap:8px;}
+  .success-content{text-align:center;padding:40px 20px;}
+  .success-icon{width:80px;height:80px;background:rgba(62,184,124,.15);border:2px solid var(--success);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px;animation:popIn .4s ease;}
+  @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .success-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--success);} .success-sub{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.6;}
+  .success-details{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;text-align:left;}
+  .success-detail-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.06);font-size:13px;} .success-detail-row:last-child{border-bottom:none;}
+  .success-detail-row span:first-child{color:var(--muted);} .success-detail-row span:last-child{color:var(--white);font-weight:600;}
+  .admin-card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+  .admin-card-title{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--gold);margin-bottom:10px;}
+  .otp-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .otp-table th{color:var(--muted);padding:6px 8px;text-align:left;border-bottom:1px solid var(--border);letter-spacing:1px;font-size:10px;text-transform:uppercase;}
+  .otp-table td{padding:8px 8px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);}
+  .otp-code{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--gold);letter-spacing:2px;}
+  .flag-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-family:'Rajdhani',sans-serif;font-weight:700;letter-spacing:1px;}
+  .flag-ok{background:rgba(62,184,124,.15);color:var(--success);border:1px solid rgba(62,184,124,.3);} .flag-issue{background:rgba(224,82,82,.15);color:var(--danger);border:1px solid rgba(224,82,82,.3);}
+  .logs-table{width:100%;border-collapse:collapse;font-size:11px;}
+  .logs-table th{color:var(--muted);padding:6px 6px;text-align:left;border-bottom:1px solid var(--border);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
+  .logs-table td{padding:7px 6px;border-bottom:1px solid rgba(201,168,76,.05);color:var(--white);vertical-align:top;} .logs-table tr:last-child td{border-bottom:none;}
+  .nav-tabs{display:flex;gap:0;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
+  .nav-tab{flex:1;padding:10px 6px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all .2s;}
+  .nav-tab.active{background:rgba(201,168,76,.12);color:var(--gold);}
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(201,168,76,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy-mid);border:1px solid var(--gold);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--gold);z-index:999;display:none;animation:fadeToast .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.4);white-space:nowrap;}
+  .toast.show{display:block;} @keyframes fadeToast{from{opacity:0;transform:translateX(-50%) translateY(10px)}}
+  .gas-status{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;font-size:11px;margin-bottom:16px;border:1px solid var(--border);background:var(--card-bg);}
+  .gas-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .gas-dot.connected{background:var(--success);box-shadow:0 0 6px var(--success);} .gas-dot.local{background:var(--warning);} .gas-dot.error{background:var(--danger);}
+  .mt-8{margin-top:8px;}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 1: HOME
-══════════════════════════════════════════ -->
+<!-- ══ SCREEN 1: HOME ══ -->
 <div class="screen active" id="screen-home">
   <div class="header">
     <div class="header-logo">ABC</div>
@@ -476,20 +119,16 @@
       <div class="home-title">ABC VERDUN MALL</div>
       <div class="home-sub">Daily Restroom Inspection System</div>
     </div>
-
+    <div id="gas-indicator"></div>
     <div id="shift-status-banner"></div>
-
     <div class="section-label">Select Restroom to Inspect</div>
     <div class="room-grid" id="room-grid"></div>
-
     <button class="btn btn-outline" onclick="showAdminLogs()">📋 View Today's Logs</button>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 2: OTP VERIFICATION
-══════════════════════════════════════════ -->
+<!-- ══ SCREEN 2: OTP ══ -->
 <div class="screen" id="screen-otp">
   <div class="header">
     <button class="header-back" onclick="goHome()">← BACK</button>
@@ -504,30 +143,21 @@
       <div class="otp-room-name" id="otp-room-name">—</div>
       <div class="otp-shift-badge" id="otp-shift-label">—</div>
     </div>
-
     <p class="otp-label">Enter the 4-character OTP posted inside the restroom</p>
-
     <div class="otp-input-row">
       <input class="otp-digit" maxlength="1" id="otp-0" autocomplete="off">
       <input class="otp-digit" maxlength="1" id="otp-1" autocomplete="off">
       <input class="otp-digit" maxlength="1" id="otp-2" autocomplete="off">
       <input class="otp-digit" maxlength="1" id="otp-3" autocomplete="off">
     </div>
-
     <div class="otp-error" id="otp-error">❌ Invalid OTP. Please check and retry.</div>
-
-    <div class="otp-hint">
-      The OTP is posted on the <strong>laminated card</strong> inside the restroom. It is a unique 4-character code (3 digits + 1 letter).
-    </div>
-
-    <button class="btn btn-primary" onclick="verifyOTP()">VERIFY & PROCEED</button>
+    <div class="otp-hint">The OTP is on the <strong>laminated card</strong> inside the restroom — 3 digits + 1 letter.</div>
+    <button class="btn btn-primary" id="otp-submit-btn" onclick="verifyOTP()">VERIFY & PROCEED</button>
     <button class="btn btn-outline" onclick="goHome()">CANCEL</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 3: INSPECTION FORM
-══════════════════════════════════════════ -->
+<!-- ══ SCREEN 3: FORM ══ -->
 <div class="screen" id="screen-form">
   <div class="header">
     <button class="header-back" onclick="goHome()">← HOME</button>
@@ -537,28 +167,19 @@
     </div>
   </div>
   <div class="content">
-
     <div class="shift-indicator" id="form-shift-pills"></div>
-
-    <!-- SECTION 1: EQUIPMENT -->
     <div class="form-section">
       <div class="form-section-header">🔧 Equipment Description</div>
       <div id="eq-rows"></div>
     </div>
-
-    <!-- SECTION 2: CLEANING -->
     <div class="form-section">
       <div class="form-section-header">🧹 Cleaning</div>
       <div id="cl-rows"></div>
     </div>
-
-    <!-- SECTION 3: STAFF CLEANING -->
     <div class="form-section">
       <div class="form-section-header">👔 Staff Cleaning</div>
       <div id="st-rows"></div>
     </div>
-
-    <!-- SECTION 4: SUPERVISOR INFO -->
     <div class="form-section">
       <div class="form-section-header">📝 Supervisor Info</div>
       <div class="supervisor-field">
@@ -570,29 +191,26 @@
         <textarea class="comments-area" id="sup-comments" placeholder="Any additional remarks..."></textarea>
       </div>
     </div>
-
-    <button class="btn btn-primary" onclick="submitForm()">SUBMIT INSPECTION</button>
+    <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">SUBMIT INSPECTION</button>
     <button class="btn btn-outline mt-8" onclick="goHome()">CANCEL</button>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 4: SUCCESS
-══════════════════════════════════════════ -->
+<!-- ══ SCREEN 4: SUCCESS ══ -->
 <div class="screen" id="screen-success">
   <div class="header">
     <div class="header-logo">ABC</div>
     <div class="header-info">
       <div class="header-title">Inspection Logged</div>
-      <div class="header-sub">Submitted successfully</div>
+      <div class="header-sub" id="success-storage-mode">Saved to cloud</div>
     </div>
   </div>
   <div class="content">
     <div class="success-content">
       <div class="success-icon">✓</div>
       <div class="success-title">LOGGED</div>
-      <div class="success-sub" id="success-sub-text">Inspection has been recorded in the database.</div>
+      <div class="success-sub" id="success-sub-text">Inspection recorded.</div>
       <div class="success-details" id="success-details"></div>
       <div id="wa-trigger-area"></div>
       <button class="btn btn-primary" style="margin-top:12px" onclick="goHome()">BACK TO HOME</button>
@@ -600,32 +218,28 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCREEN 5: ADMIN / LOGS
-══════════════════════════════════════════ -->
+<!-- ══ SCREEN 5: ADMIN ══ -->
 <div class="screen" id="screen-admin">
   <div class="header">
     <button class="header-back" onclick="goHome()">← BACK</button>
     <div class="header-info">
       <div class="header-title">Admin Panel</div>
-      <div class="header-sub">OTPs & Inspection Logs</div>
+      <div class="header-sub">OTPs, Logs & Settings</div>
     </div>
   </div>
   <div class="content">
     <div class="nav-tabs">
-      <button class="nav-tab active" id="tab-otps" onclick="switchTab('otps')">OTP DATABASE</button>
-      <button class="nav-tab" id="tab-logs" onclick="switchTab('logs')">TODAY'S LOGS</button>
+      <button class="nav-tab active" id="tab-otps" onclick="switchTab('otps')">OTPs</button>
+      <button class="nav-tab" id="tab-logs" onclick="switchTab('logs')">TODAY</button>
       <button class="nav-tab" id="tab-history" onclick="switchTab('history')">HISTORY</button>
+      <button class="nav-tab" id="tab-config" onclick="switchTab('config')">CONFIG</button>
     </div>
-
     <div id="admin-content"></div>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     WHATSAPP MODAL
-══════════════════════════════════════════ -->
+<!-- ══ WHATSAPP MODAL ══ -->
 <div class="modal-overlay" id="wa-modal">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
@@ -633,9 +247,7 @@
     <div class="modal-sub">Send escalation to Cleaning Group on WhatsApp</div>
     <div class="wa-preview" id="wa-preview-text"></div>
     <div class="modal-actions">
-      <button class="btn btn-whatsapp" onclick="openWhatsApp()">
-        <span>📱</span> Open WhatsApp
-      </button>
+      <button class="btn btn-whatsapp" onclick="openWhatsApp()"><span>📱</span> Open WhatsApp</button>
       <button class="btn btn-outline" onclick="closeWAModal()">DISMISS</button>
     </div>
   </div>
@@ -645,540 +257,370 @@
 
 <script>
 // ═══════════════════════════════════════════
-//  DATA
+//  CONFIGURATION — UPDATE BEFORE DEPLOYMENT
 // ═══════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbypOqKVdQ4k4XxWsu8ZMW1SMm5O0_XiI2TS_Vvt-GUQ3OLhNWh_2G-lE5MEMqDs0Tzj/exec';
+// Example: 'https://script.google.com/macros/s/AKfycbxXXXXXX/exec'
 
 const ROOMS = [
-  { id: 'LG_CENTRAL',  name: 'LG Central',  level: 'LG', core: 'Central', icon: '🏢' },
-  { id: 'GF_EAST',     name: 'GF East',     level: 'GF', core: 'East',    icon: '🏬' },
-  { id: 'L1_CENTRAL',  name: 'L1 Central',  level: 'L1', core: 'Central', icon: '🏢' },
-  { id: 'L2_CENTRAL',  name: 'L2 Central',  level: 'L2', core: 'Central', icon: '🏢' },
-  { id: 'L3_EAST',     name: 'L3 East',     level: 'L3', core: 'East',    icon: '🏢' },
-  { id: 'L3_CENTRAL',  name: 'L3 Central',  level: 'L3', core: 'Central', icon: '🏢' },
-  { id: 'L4_CENTRAL',  name: 'L4 Central',  level: 'L4', core: 'Central', icon: '🏢' },
+  { id:'LG_CENTRAL', name:'LG Central',  level:'LG', core:'Central', icon:'🏢' },
+  { id:'GF_EAST',    name:'GF East',     level:'GF', core:'East',    icon:'🏬' },
+  { id:'L1_CENTRAL', name:'L1 Central',  level:'L1', core:'Central', icon:'🏢' },
+  { id:'L2_CENTRAL', name:'L2 Central',  level:'L2', core:'Central', icon:'🏢' },
+  { id:'L3_EAST',    name:'L3 East',     level:'L3', core:'East',    icon:'🏢' },
+  { id:'L3_CENTRAL', name:'L3 Central',  level:'L3', core:'Central', icon:'🏢' },
+  { id:'L4_CENTRAL', name:'L4 Central',  level:'L4', core:'Central', icon:'🏢' },
 ];
-
 const SHIFTS = [
-  { id: 'S1', label: 'Shift 1', time: '11:00', start: 10, end: 11 },
-  { id: 'S2', label: 'Shift 2', time: '13:00', start: 13, end: 17 },
-  { id: 'S3', label: 'Shift 3', time: '19:00', start: 19, end: 21 },
+  { id:'S1', label:'Shift 1', time:'10:00', start:10, end:11 },
+  { id:'S2', label:'Shift 2', time:'13:00', start:13, end:17 },
+  { id:'S3', label:'Shift 3', time:'19:00', start:19, end:21 },
 ];
-
-const EQ_ITEMS  = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
-const CL_ITEMS  = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
-const ST_ITEMS  = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
-
+const EQ_ITEMS = ['TAP','SIPHON','URINAL','LAVATORY','LAVATORY MIXER','SOAP DISPENSER','HAND DRYER','TOWEL BOX','HOOK','DOOR','LIGHT','TILE','JANITOR'];
+const CL_ITEMS = ['FLOOR','MIRROR','TOILET','LAVATORY','DUST BIN'];
+const ST_ITEMS = ['AVAILABLE','WEARING COSTUME','SHOES POLISHED, NO SLIPPERS','HAIR IS WELL DRESSED'];
+const OTP_DB   = { LG_CENTRAL:'4K27', GF_EAST:'81M3', L1_CENTRAL:'5N96', L2_CENTRAL:'23T7', L3_EAST:'64P1', L3_CENTRAL:'9R38', L4_CENTRAL:'15W6' };
 const ALERT_EMAIL = 'salaachi@abc.com.lb';
 
-// ─── OTP DATABASE ───
-// Format: 3 digits + 1 letter, unique per room
-// Pre-generated, unique, non-duplicated
-const OTP_DB = {
-  LG_CENTRAL: '4K27',
-  GF_EAST:    '81M3',
-  L1_CENTRAL: '5N96',
-  L2_CENTRAL: '23T7',
-  L3_EAST:    '64P1',
-  L3_CENTRAL: '9R38',
-  L4_CENTRAL: '15W6',
-};
+let currentRoom=null, currentShift=null, formData={}, lastEntry=null;
+let gasConnected = null; // null=unknown, true=connected, false=offline
+
+// ─── UTILS ───────────────────────────────
+function now(){ return new Date(); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function timeStr(d){ return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function dateKey(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function fullDate(d){ return d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'}); }
+function getCurrentShift(){ const h=now().getHours(); if(h>=10&&h<11) return SHIFTS[0]; if(h>=13&&h<17) return SHIFTS[1]; if(h>=19&&h<21) return SHIFTS[2]; return null; }
+function getActiveOrNearestShift(){
+  const cs=getCurrentShift(); if(cs) return cs;
+  const h=now().getHours();
+  if(h<10) return SHIFTS[0]; if(h<13) return SHIFTS[1]; if(h<19) return SHIFTS[2]; return SHIFTS[2];
+}
+
+// ─── LOCAL DB (fallback & cache) ─────────
+function getLocal(){ return JSON.parse(localStorage.getItem('abc_restroom_logs')||'[]'); }
+function saveLocal(logs){ localStorage.setItem('abc_restroom_logs',JSON.stringify(logs)); }
+function addLocal(entry){ const logs=getLocal(); logs.push(entry); saveLocal(logs); }
+function todayLocal(){ const dk=dateKey(now()); return getLocal().filter(l=>l.date===dk); }
+function isLoggedLocal(roomId,shiftId){ const dk=dateKey(now()); return getLocal().some(l=>l.date===dk&&l.roomId===roomId&&l.shiftId===shiftId); }
+
+// ─── GAS API ─────────────────────────────
+async function gasCall(action, body={}) {
+  if (!GAS_URL) return null;
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action, ...body }),
+    });
+    const json = await res.json();
+    gasConnected = true;
+    return json;
+  } catch(e) {
+    gasConnected = false;
+    return null;
+  }
+}
+
+async function pingGAS() {
+  const r = await gasCall('ping');
+  gasConnected = !!(r && r.ok);
+  renderGASIndicator();
+}
+
+function renderGASIndicator() {
+  const el = document.getElementById('gas-indicator');
+  if (!GAS_URL) {
+    el.innerHTML = `<div class="gas-status"><div class="gas-dot local"></div><span style="color:var(--warning)">LOCAL MODE</span><span style="color:var(--muted);margin-left:4px">— Add GAS_URL to enable cloud sync & email alerts</span></div>`;
+  } else if (gasConnected === true) {
+    el.innerHTML = `<div class="gas-status"><div class="gas-dot connected"></div><span style="color:var(--success)">CLOUD CONNECTED</span><span style="color:var(--muted);margin-left:4px">— Google Sheets sync active</span></div>`;
+  } else if (gasConnected === false) {
+    el.innerHTML = `<div class="gas-status"><div class="gas-dot error"></div><span style="color:var(--danger)">OFFLINE</span><span style="color:var(--muted);margin-left:4px">— Saving locally, will sync on reconnect</span></div>`;
+  } else {
+    el.innerHTML = `<div class="gas-status"><div class="gas-dot local"></div><span style="color:var(--muted)">Checking connection...</span></div>`;
+  }
+}
+
+// ─── TOAST ───────────────────────────────
+function toast(msg,dur=3000){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); window.scrollTo(0,0); }
+function goHome(){ currentRoom=null; currentShift=null; formData={}; lastEntry=null; initHome(); showScreen('home'); }
 
 // ═══════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════
-let currentRoom   = null;
-let currentShift  = null;
-let formData      = {};
-
-// ═══════════════════════════════════════════
-//  HELPERS
-// ═══════════════════════════════════════════
-function now()  { return new Date(); }
-function pad(n) { return String(n).padStart(2,'0'); }
-function timeStr(d) { return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function dateKey(d) { return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
-function fullDate(d) {
-  return d.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-}
-
-function getCurrentShift() {
-  const h = now().getHours();
-  if (h >= 10 && h < 11) return SHIFTS[0];
-  if (h >= 13 && h < 17) return SHIFTS[1];
-  if (h >= 19 && h < 21) return SHIFTS[2];
-  return null;
-}
-
-function getNextShift() {
-  const h = now().getHours();
-  if (h < 10) return SHIFTS[0];
-  if (h < 13) return SHIFTS[1];
-  if (h < 19) return SHIFTS[2];
-  return null;
-}
-
-function getDB() {
-  return JSON.parse(localStorage.getItem('abc_restroom_logs') || '[]');
-}
-function saveDB(logs) {
-  localStorage.setItem('abc_restroom_logs', JSON.stringify(logs));
-}
-
-function todayLogs() {
-  const dk = dateKey(now());
-  return getDB().filter(l => l.date === dk);
-}
-
-function roomShiftLogged(roomId, shiftId) {
-  const dk = dateKey(now());
-  return getDB().some(l => l.date === dk && l.roomId === roomId && l.shiftId === shiftId);
-}
-
-function toast(msg, dur=3000) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), dur);
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function goHome() {
-  currentRoom  = null;
-  currentShift = null;
-  formData     = {};
-  initHome();
-  showScreen('home');
-}
-
-// ═══════════════════════════════════════════
-//  HOME SCREEN
+//  HOME
 // ═══════════════════════════════════════════
 function initHome() {
-  const d = now();
-  document.getElementById('home-date-display').textContent = fullDate(d) + ' — ' + timeStr(d);
-
+  const d=now();
+  document.getElementById('home-date-display').textContent=fullDate(d)+' — '+timeStr(d);
+  renderGASIndicator();
   renderShiftBanner();
   renderRoomGrid();
-  checkMissedShifts();
 }
 
-function renderShiftBanner() {
-  const cs = getCurrentShift();
-  const ns = getNextShift();
-  const h  = now().getHours();
-  let html = '';
-
-  if (cs) {
-    html = `<div class="shift-banner"><div class="shift-dot active"></div><div class="shift-text"><div class="shift-label">🟢 ACTIVE WINDOW — ${cs.label}</div>Inspection window is open until ${cs.end}:00. Visit all restrooms now.</div></div>`;
-  } else if (ns) {
-    html = `<div class="shift-banner"><div class="shift-dot upcoming"></div><div class="shift-text"><div class="shift-label">⏳ NEXT — ${ns.label}</div>Next inspection window opens at ${ns.start}:00.</div></div>`;
-  } else {
-    html = `<div class="shift-banner"><div class="shift-dot closed"></div><div class="shift-text"><div class="shift-label">✅ ALL SHIFTS COMPLETE</div>All inspection windows for today have passed.</div></div>`;
-  }
-  document.getElementById('shift-status-banner').innerHTML = html;
+function renderShiftBanner(){
+  const cs=getCurrentShift(), h=now().getHours();
+  let ns=null;
+  if(h<10) ns=SHIFTS[0]; else if(h>=11&&h<13) ns=SHIFTS[1]; else if(h>=17&&h<19) ns=SHIFTS[2];
+  let html='';
+  if(cs) html=`<div class="shift-banner"><div class="shift-dot active"></div><div class="shift-text"><div class="shift-label">🟢 ACTIVE WINDOW — ${cs.label}</div>Inspection window open until ${cs.end}:00. Visit all restrooms now.</div></div>`;
+  else if(ns) html=`<div class="shift-banner"><div class="shift-dot upcoming"></div><div class="shift-text"><div class="shift-label">⏳ NEXT — ${ns.label}</div>Next window opens at ${ns.start}:00.</div></div>`;
+  else html=`<div class="shift-banner"><div class="shift-dot closed"></div><div class="shift-text"><div class="shift-label">✅ ALL SHIFTS COMPLETE</div>All inspection windows for today have passed.</div></div>`;
+  document.getElementById('shift-status-banner').innerHTML=html;
 }
 
-function renderRoomGrid() {
-  const cs = getCurrentShift();
-  const grid = document.getElementById('room-grid');
-  grid.innerHTML = ROOMS.map(r => {
-    let badge = 'none', statusTxt = 'No active window';
-
-    if (cs) {
-      const done = roomShiftLogged(r.id, cs.id);
-      badge = done ? 'ok' : 'pending';
-      statusTxt = done ? `${cs.label} ✓ Logged` : `${cs.label} — PENDING`;
-    } else {
-      // Check if any today
-      const todayDone = SHIFTS.filter(s => roomShiftLogged(r.id, s.id));
-      if (todayDone.length > 0) statusTxt = `${todayDone.length}/3 shifts logged today`;
-    }
-
-    return `<div class="room-card" onclick="selectRoom('${r.id}')">
-      <div class="room-badge ${badge}"></div>
-      <div class="room-icon">${r.icon}</div>
-      <div class="room-name">${r.name}</div>
-      <div class="room-status">${statusTxt}</div>
-    </div>`;
+function renderRoomGrid(){
+  const cs=getCurrentShift();
+  document.getElementById('room-grid').innerHTML=ROOMS.map(r=>{
+    let badge='none', statusTxt='No active window';
+    if(cs){ const done=isLoggedLocal(r.id,cs.id); badge=done?'ok':'pending'; statusTxt=done?`${cs.label} ✓ Logged`:`${cs.label} — PENDING`; }
+    else { const cnt=SHIFTS.filter(s=>isLoggedLocal(r.id,s.id)).length; if(cnt>0) statusTxt=`${cnt}/3 shifts today`; }
+    return `<div class="room-card" onclick="selectRoom('${r.id}')"><div class="room-badge ${badge}"></div><div class="room-icon">${r.icon}</div><div class="room-name">${r.name}</div><div class="room-status">${statusTxt}</div></div>`;
   }).join('');
 }
 
-function checkMissedShifts() {
-  // Check which shifts have passed and were not logged for any room
-  const h = now().getHours();
-  const pastShifts = SHIFTS.filter(s => h > s.end);
-  pastShifts.forEach(s => {
-    ROOMS.forEach(r => {
-      if (!roomShiftLogged(r.id, s.id)) {
-        scheduleMissedAlert(r, s);
-      }
-    });
-  });
+// ═══════════════════════════════════════════
+//  ROOM SELECT → OTP
+// ═══════════════════════════════════════════
+function selectRoom(roomId){
+  currentRoom=ROOMS.find(r=>r.id===roomId);
+  currentShift=getActiveOrNearestShift();
+  if(isLoggedLocal(currentRoom.id,currentShift.id)){ toast('⚠️ Already logged for current shift'); return; }
+  showOTPScreen();
 }
 
-function scheduleMissedAlert(room, shift) {
-  // In a real system this would call a backend; here we simulate via mailto
-  // The system flags this in localStorage
-  const key = `alert_${dateKey(now())}_${room.id}_${shift.id}`;
-  if (!localStorage.getItem(key)) {
-    localStorage.setItem(key, '1');
-    console.warn(`MISSED: ${room.name} - ${shift.label} — alert would fire to ${ALERT_EMAIL}`);
-  }
-}
-
-// ═══════════════════════════════════════════
-//  ROOM SELECTION
-// ═══════════════════════════════════════════
-function selectRoom(roomId) {
-  currentRoom  = ROOMS.find(r => r.id === roomId);
-  currentShift = getCurrentShift();
-
-  if (!currentShift) {
-    // Check if outside window — show warning but still allow
-    const h = now().getHours();
-    const anyShift = SHIFTS.find(s => h >= s.start - 2 && h <= s.end + 2);
-    if (anyShift) {
-      currentShift = anyShift;
-    } else {
-      currentShift = SHIFTS[0]; // default for demo
-    }
-  }
-
-  if (roomShiftLogged(currentRoom.id, currentShift.id)) {
-    toast('⚠️ This restroom is already logged for current shift');
-    return;
-  }
-
-  showOTP();
-}
-
-// ═══════════════════════════════════════════
-//  OTP SCREEN
-// ═══════════════════════════════════════════
-function showOTP() {
-  document.getElementById('otp-room-icon').textContent = currentRoom.icon;
-  document.getElementById('otp-room-name').textContent = currentRoom.name;
-  document.getElementById('otp-shift-label').textContent = currentShift
-    ? `${currentShift.label} — ${currentShift.time}` : 'Manual Entry';
-  document.getElementById('otp-error').style.display = 'none';
-
-  ['otp-0','otp-1','otp-2','otp-3'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = '';
-  });
-
+function showOTPScreen(){
+  document.getElementById('otp-room-icon').textContent=currentRoom.icon;
+  document.getElementById('otp-room-name').textContent=currentRoom.name;
+  document.getElementById('otp-shift-label').textContent=`${currentShift.label} — ${currentShift.time}`;
+  document.getElementById('otp-error').style.display='none';
+  document.getElementById('otp-submit-btn').disabled=false;
+  document.getElementById('otp-submit-btn').textContent='VERIFY & PROCEED';
+  ['otp-0','otp-1','otp-2','otp-3'].forEach(id=>document.getElementById(id).value='');
   setupOTPInputs();
   showScreen('otp');
-  setTimeout(() => document.getElementById('otp-0').focus(), 300);
+  setTimeout(()=>document.getElementById('otp-0').focus(),300);
 }
 
-function setupOTPInputs() {
-  const inputs = ['otp-0','otp-1','otp-2','otp-3'];
-  inputs.forEach((id, i) => {
-    const el = document.getElementById(id);
-    el.oninput = () => {
-      el.value = el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1);
-      if (el.value && i < 3) document.getElementById(inputs[i+1]).focus();
-    };
-    el.onkeydown = (e) => {
-      if (e.key === 'Backspace' && !el.value && i > 0) document.getElementById(inputs[i-1]).focus();
-    };
+function setupOTPInputs(){
+  const ids=['otp-0','otp-1','otp-2','otp-3'];
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.oninput=()=>{ el.value=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(-1); if(el.value&&i<3) document.getElementById(ids[i+1]).focus(); };
+    el.onkeydown=(e)=>{ if(e.key==='Backspace'&&!el.value&&i>0) document.getElementById(ids[i-1]).focus(); };
   });
 }
 
-function verifyOTP() {
-  const entered = ['otp-0','otp-1','otp-2','otp-3']
-    .map(id => document.getElementById(id).value.toUpperCase())
-    .join('');
+async function verifyOTP(){
+  const entered=['otp-0','otp-1','otp-2','otp-3'].map(id=>document.getElementById(id).value.toUpperCase()).join('');
+  const btn=document.getElementById('otp-submit-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>VERIFYING...';
 
-  const expected = (OTP_DB[currentRoom.id] || '').toUpperCase();
-
-  if (entered === expected) {
-    document.getElementById('otp-error').style.display = 'none';
-    showForm();
+  let valid=false;
+  // Try GAS first, fallback to local
+  if(GAS_URL){
+    const r=await gasCall('verifyOTP',{roomId:currentRoom.id,otp:entered});
+    if(r&&r.ok) valid=r.valid;
+    else valid=(entered===(OTP_DB[currentRoom.id]||'').toUpperCase());
   } else {
-    document.getElementById('otp-error').style.display = 'block';
-    document.getElementById('otp-0').focus();
-    ['otp-0','otp-1','otp-2','otp-3'].forEach(id => {
-      const el = document.getElementById(id);
-      el.style.borderColor = 'var(--danger)';
-      setTimeout(() => el.style.borderColor = '', 1500);
-    });
+    valid=(entered===(OTP_DB[currentRoom.id]||'').toUpperCase());
+  }
+
+  btn.disabled=false; btn.textContent='VERIFY & PROCEED';
+  if(valid){ document.getElementById('otp-error').style.display='none'; showForm(); }
+  else {
+    document.getElementById('otp-error').style.display='block';
+    ['otp-0','otp-1','otp-2','otp-3'].forEach(id=>{ const el=document.getElementById(id); el.style.borderColor='var(--danger)'; setTimeout(()=>el.style.borderColor='',1500); });
   }
 }
 
 // ═══════════════════════════════════════════
-//  FORM SCREEN
+//  FORM
 // ═══════════════════════════════════════════
-function showForm() {
-  document.getElementById('form-room-title').textContent = currentRoom.name;
-  document.getElementById('form-shift-sub').textContent =
-    currentShift ? `${currentShift.label} — ${currentShift.time} window` : '';
-
-  // Shift pills
-  const pills = SHIFTS.map(s =>
-    `<div class="shift-pill ${currentShift && s.id === currentShift.id ? 'active' : ''}">${s.label}<br>${s.time}</div>`
-  ).join('');
-  document.getElementById('form-shift-pills').innerHTML = pills;
-
-  // Build rows
-  document.getElementById('eq-rows').innerHTML = EQ_ITEMS.map(item => buildRow('eq', item)).join('');
-  document.getElementById('cl-rows').innerHTML = CL_ITEMS.map(item => buildRow('cl', item)).join('');
-  document.getElementById('st-rows').innerHTML = ST_ITEMS.map(item => buildRow('st', item)).join('');
-
+function showForm(){
+  document.getElementById('form-room-title').textContent=currentRoom.name;
+  document.getElementById('form-shift-sub').textContent=`${currentShift.label} — ${currentShift.time} window`;
+  document.getElementById('form-shift-pills').innerHTML=SHIFTS.map(s=>`<div class="shift-pill ${s.id===currentShift.id?'active':''}">${s.label}<br>${s.time}</div>`).join('');
+  document.getElementById('eq-rows').innerHTML=EQ_ITEMS.map(i=>buildRow('eq',i)).join('');
+  document.getElementById('cl-rows').innerHTML=CL_ITEMS.map(i=>buildRow('cl',i)).join('');
+  document.getElementById('st-rows').innerHTML=ST_ITEMS.map(i=>buildRow('st',i)).join('');
+  document.getElementById('sup-comments').value='';
+  formData={};
   showScreen('form');
 }
 
-function buildRow(section, item) {
-  const key = `${section}_${item.replace(/[^A-Z]/g,'_')}`;
-  return `<div class="form-row">
-    <div class="form-row-label">${item}</div>
-    <div class="status-toggle">
-      <button class="status-btn ok-btn" data-key="${key}" data-val="OK" onclick="toggleStatus(this,'${key}','OK')">✅</button>
-      <button class="status-btn nok-btn" data-key="${key}" data-val="NOK" onclick="toggleStatus(this,'${key}','NOK')">❌</button>
-    </div>
-  </div>`;
+function buildRow(section,item){
+  const key=`${section}_${item.replace(/\W/g,'_')}`;
+  return `<div class="form-row"><div class="form-row-label">${item}</div><div class="status-toggle"><button class="status-btn ok-btn" onclick="toggleStatus(this,'${key}','OK')">✅</button><button class="status-btn nok-btn" onclick="toggleStatus(this,'${key}','NOK')">❌</button></div></div>`;
 }
 
-function toggleStatus(btn, key, val) {
-  // Deselect siblings
-  const row = btn.closest('.status-toggle');
-  row.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
+function toggleStatus(btn,key,val){
+  btn.closest('.status-toggle').querySelectorAll('.status-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
-  formData[key] = val;
+  formData[key]=val;
 }
 
 // ═══════════════════════════════════════════
 //  SUBMIT
 // ═══════════════════════════════════════════
-function submitForm() {
-  const supName = document.getElementById('sup-name').value.trim();
-  if (!supName) { toast('⚠️ Please enter supervisor name'); return; }
+async function submitForm(){
+  const supName=document.getElementById('sup-name').value.trim();
+  if(!supName){ toast('⚠️ Please enter supervisor name'); return; }
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>SUBMITTING...';
 
-  const entry = {
-    id:        Date.now(),
-    date:      dateKey(now()),
-    time:      timeStr(now()),
-    roomId:    currentRoom.id,
-    roomName:  currentRoom.name,
-    shiftId:   currentShift ? currentShift.id : 'MANUAL',
-    shiftLabel: currentShift ? currentShift.label : 'Manual',
-    supervisor: supName,
-    comments:  document.getElementById('sup-comments').value,
-    equipment: {},
-    cleaning:  {},
-    staff:     {},
-    hasIssues: false,
-    cleaningIssues: [],
+  // Build equipment/cleaning/staff objects
+  const eq={}, cl={}, st={};
+  EQ_ITEMS.forEach(i=>{ const k=`eq_${i.replace(/\W/g,'_')}`; eq[i]=formData[k]||'N/A'; });
+  CL_ITEMS.forEach(i=>{ const k=`cl_${i.replace(/\W/g,'_')}`; cl[i]=formData[k]||'N/A'; });
+  ST_ITEMS.forEach(i=>{ const k=`st_${i.replace(/\W/g,'_')}`; st[i]=formData[k]||'N/A'; });
+
+  const cleaningIssues=CL_ITEMS.filter(i=>cl[i]==='NOK');
+
+  const entry={
+    id:Date.now(), date:dateKey(now()), time:timeStr(now()),
+    roomId:currentRoom.id, roomName:currentRoom.name,
+    shiftId:currentShift.id, shiftLabel:currentShift.label,
+    supervisor:supName, comments:document.getElementById('sup-comments').value,
+    equipment:eq, cleaning:cl, staff:st,
+    hasIssues:cleaningIssues.length>0, cleaningIssues,
+    synced:false,
   };
 
-  // Parse formData
-  let cleaningIssues = [];
-  EQ_ITEMS.forEach(item => {
-    const key = `eq_${item.replace(/[^A-Z]/g,'_')}`;
-    entry.equipment[item] = formData[key] || 'N/A';
-  });
-  CL_ITEMS.forEach(item => {
-    const key = `cl_${item.replace(/[^A-Z]/g,'_')}`;
-    entry.cleaning[item] = formData[key] || 'N/A';
-    if (formData[key] === 'NOK') cleaningIssues.push(item);
-  });
-  ST_ITEMS.forEach(item => {
-    const key = `st_${item.replace(/[^A-Z]/g,'_')}`;
-    entry.staff[item] = formData[key] || 'N/A';
-  });
+  // Save locally first
+  addLocal(entry);
 
-  entry.cleaningIssues = cleaningIssues;
-  entry.hasIssues = cleaningIssues.length > 0;
+  // Try to sync to GAS
+  let synced=false;
+  if(GAS_URL){
+    const r=await gasCall('submitLog',{
+      roomId:entry.roomId, roomName:entry.roomName,
+      shiftId:entry.shiftId, shiftLabel:entry.shiftLabel,
+      supervisor:entry.supervisor, comments:entry.comments,
+      equipment:eq, cleaning:cl, staff:st,
+    });
+    if(r&&r.ok){ synced=true; entry.synced=true; const logs=getLocal(); const idx=logs.findIndex(l=>l.id===entry.id); if(idx>=0){logs[idx].synced=true;saveLocal(logs);} }
+  }
 
-  const logs = getDB();
-  logs.push(entry);
-  saveDB(logs);
-
-  showSuccess(entry);
+  btn.disabled=false; btn.textContent='SUBMIT INSPECTION';
+  lastEntry=entry;
+  showSuccess(entry, synced);
 }
 
 // ═══════════════════════════════════════════
-//  SUCCESS SCREEN
+//  SUCCESS
 // ═══════════════════════════════════════════
-function showSuccess(entry) {
-  document.getElementById('success-sub-text').textContent =
-    `${entry.roomName} — ${entry.shiftLabel} inspection recorded at ${entry.time}.`;
-
-  document.getElementById('success-details').innerHTML = `
+function showSuccess(entry, synced){
+  document.getElementById('success-storage-mode').textContent=synced?'✅ Saved to Google Sheets':'💾 Saved locally (no cloud connection)';
+  document.getElementById('success-sub-text').textContent=`${entry.roomName} — ${entry.shiftLabel} logged at ${entry.time}.`;
+  document.getElementById('success-details').innerHTML=`
     <div class="success-detail-row"><span>Room</span><span>${entry.roomName}</span></div>
     <div class="success-detail-row"><span>Shift</span><span>${entry.shiftLabel}</span></div>
     <div class="success-detail-row"><span>Time</span><span>${entry.time}</span></div>
     <div class="success-detail-row"><span>Supervisor</span><span>${entry.supervisor}</span></div>
-    <div class="success-detail-row"><span>Equipment Items</span><span>${Object.values(entry.equipment).filter(v=>v==='OK').length}/${Object.keys(entry.equipment).length} OK</span></div>
-    <div class="success-detail-row"><span>Cleaning</span><span class="${entry.hasIssues?'flag-issue':'flag-ok'}" style="padding:2px 8px;border-radius:4px">${entry.hasIssues ? entry.cleaningIssues.length+' Issue(s)' : '✓ All OK'}</span></div>
+    <div class="success-detail-row"><span>Equipment</span><span>${Object.values(entry.equipment).filter(v=>v==='OK').length}/${Object.keys(entry.equipment).length} OK</span></div>
+    <div class="success-detail-row"><span>Cleaning</span><span class="flag-tag ${entry.hasIssues?'flag-issue':'flag-ok'}">${entry.hasIssues?entry.cleaningIssues.length+' Issue(s)':'✓ All OK'}</span></div>
+    <div class="success-detail-row"><span>Cloud Sync</span><span style="color:${synced?'var(--success)':'var(--warning)'}">${synced?'✅ Synced':'⚠️ Local only'}</span></div>
   `;
-
-  let waArea = '';
-  if (entry.hasIssues) {
-    waArea = `<button class="btn btn-whatsapp" style="margin-top:8px" onclick="openWAModal('${entry.id}')">
-      📱 Send WhatsApp Alert — Cleaning Issues
-    </button>`;
-  }
-  document.getElementById('wa-trigger-area').innerHTML = waArea;
-
+  document.getElementById('wa-trigger-area').innerHTML=entry.hasIssues
+    ?`<button class="btn btn-whatsapp" style="margin-top:8px" onclick="openWAModal()">📱 Send WhatsApp Alert — Cleaning Issues</button>`
+    :'';
   showScreen('success');
 }
 
 // ═══════════════════════════════════════════
 //  WHATSAPP
 // ═══════════════════════════════════════════
-function openWAModal(entryId) {
-  const logs = getDB();
-  const entry = logs.find(l => l.id == entryId);
-  if (!entry) return;
-
-  const issueList = entry.cleaningIssues.map(i => `  • ${i}`).join('\n');
-  const msg =
-`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*
-──────────────────────────
-📍 *Location:* ${entry.roomName}
-🕐 *Shift:* ${entry.shiftLabel} (${entry.time})
-📅 *Date:* ${entry.date}
-👤 *Logged By:* ${entry.supervisor}
-
-⚠️ *Issues Found in CLEANING Section:*
-${issueList}
-
-Please attend to the above items immediately and confirm once resolved.
-──────────────────────────
-ABC Operations — Verdun Mall`;
-
-  document.getElementById('wa-preview-text').textContent = msg;
+function openWAModal(){
+  if(!lastEntry) return;
+  const issueList=lastEntry.cleaningIssues.map(i=>`  • ${i}`).join('\n');
+  window._waMessage=`🔴 *CLEANING ISSUE ALERT — ABC Verdun Mall*\n──────────────────────────\n📍 *Location:* ${lastEntry.roomName}\n🕐 *Shift:* ${lastEntry.shiftLabel} (${lastEntry.time})\n📅 *Date:* ${lastEntry.date}\n👤 *Logged By:* ${lastEntry.supervisor}\n\n⚠️ *Issues Found (CLEANING):*\n${issueList}\n\nPlease attend immediately and confirm resolution.\n──────────────────────────\nABC Operations — Verdun Mall`;
+  document.getElementById('wa-preview-text').textContent=window._waMessage;
   document.getElementById('wa-modal').classList.add('open');
-
-  // Store message for copy
-  window._waMessage = msg;
 }
-
-function openWhatsApp() {
-  if (!window._waMessage) return;
-  const encoded = encodeURIComponent(window._waMessage);
-  window.open(`https://wa.me/?text=${encoded}`, '_blank');
-  closeWAModal();
-}
-
-function closeWAModal() {
-  document.getElementById('wa-modal').classList.remove('open');
-}
+function openWhatsApp(){ if(!window._waMessage) return; window.open('https://wa.me/?text='+encodeURIComponent(window._waMessage),'_blank'); closeWAModal(); }
+function closeWAModal(){ document.getElementById('wa-modal').classList.remove('open'); }
 
 // ═══════════════════════════════════════════
-//  ADMIN / LOGS SCREEN
+//  ADMIN
 // ═══════════════════════════════════════════
-let currentTab = 'otps';
+let currentTab='otps';
+function showAdmin(){ currentTab='otps'; renderAdmin(); showScreen('admin'); updateTabUI(); }
+function showAdminLogs(){ currentTab='logs'; renderAdmin(); showScreen('admin'); updateTabUI(); }
+function switchTab(tab){ currentTab=tab; updateTabUI(); renderAdmin(); }
+function updateTabUI(){ document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active')); document.getElementById('tab-'+currentTab).classList.add('active'); }
 
-function showAdmin() { renderAdmin(); showScreen('admin'); }
-function showAdminLogs() { currentTab='logs'; renderAdmin(); showScreen('admin'); updateTabUI(); }
-
-function switchTab(tab) {
-  currentTab = tab;
-  updateTabUI();
-  renderAdmin();
+async function renderAdmin(){
+  const el=document.getElementById('admin-content');
+  if(currentTab==='otps') el.innerHTML=renderOTPs();
+  else if(currentTab==='logs') el.innerHTML=renderLogsTable(todayLocal());
+  else if(currentTab==='history') el.innerHTML=renderLogsTable(getLocal().slice(-100).reverse());
+  else el.innerHTML=renderConfig();
 }
 
-function updateTabUI() {
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + currentTab).classList.add('active');
+function renderOTPs(){
+  const rows=ROOMS.map(r=>`<tr><td>${r.icon} ${r.name}</td><td class="otp-code">${OTP_DB[r.id]}</td><td style="color:var(--muted);font-size:10px">${r.level}/${r.core}</td></tr>`).join('');
+  return `<div class="admin-card"><div class="admin-card-title">🔐 OTP Database</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Print & laminate — place inside each restroom.</p>
+  <table class="otp-table"><thead><tr><th>RESTROOM</th><th>OTP CODE</th><th>LOCATION</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function renderAdmin() {
-  const el = document.getElementById('admin-content');
-  if (currentTab === 'otps') el.innerHTML = renderOTPTable();
-  else if (currentTab === 'logs') el.innerHTML = renderLogsTable(todayLogs());
-  else el.innerHTML = renderLogsTable(getDB().slice(-50).reverse());
-}
-
-function renderOTPTable() {
-  const rows = ROOMS.map(r => {
-    const otp = OTP_DB[r.id];
-    return `<tr>
-      <td>${r.icon} ${r.name}</td>
-      <td class="otp-code">${otp}</td>
-      <td style="color:var(--muted);font-size:10px">${r.level} / ${r.core}</td>
-    </tr>`;
+function renderLogsTable(logs){
+  if(!logs.length) return `<div class="admin-card" style="text-align:center;padding:30px"><p style="font-size:32px">📋</p><p style="color:var(--muted);font-size:13px;margin-top:10px">No inspections logged yet</p></div>`;
+  const rows=logs.map(l=>{
+    const eqOk=Object.values(l.equipment||{}).filter(v=>v==='OK').length;
+    const eqT=Object.keys(l.equipment||{}).length;
+    return `<tr><td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td><td>${l.roomName}</td><td style="color:var(--muted)">${l.shiftLabel}</td><td>${eqOk}/${eqT}</td><td><span class="flag-tag ${l.hasIssues?'flag-issue':'flag-ok'}">${l.hasIssues?'ISSUE':'OK'}</span></td><td>${l.synced?'☁️':'💾'}</td></tr>`;
   }).join('');
+  return `<div class="admin-card"><div class="admin-card-title">📋 Logs (${logs.length})</div>
+  <table class="logs-table"><thead><tr><th>DATE/TIME</th><th>ROOM</th><th>SHIFT</th><th>EQ</th><th>CL</th><th>SYNC</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <button class="btn btn-outline" style="font-size:12px;padding:10px" onclick="if(confirm('Clear all?')){localStorage.removeItem('abc_restroom_logs');renderAdmin();toast('Cleared')}">🗑 Clear Local Logs</button>`;
+}
+
+function renderConfig(){
   return `<div class="admin-card">
-    <div class="admin-card-title">🔐 OTP Database</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:12px">Print and laminate these codes to place in each restroom. Each code is unique and non-duplicated.</p>
-    <table class="otp-table">
-      <thead><tr><th>RESTROOM</th><th>OTP CODE</th><th>LOCATION</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
+    <div class="admin-card-title">⚙️ Backend Configuration</div>
+    <div class="supervisor-field"><label>GOOGLE APPS SCRIPT URL</label>
+    <input class="supervisor-input" id="cfg-gas-url" placeholder="https://script.google.com/macros/s/.../exec" value="${GAS_URL}"></div>
+    <div style="padding:14px 16px">
+      <button class="btn btn-primary" style="font-size:13px;padding:12px" onclick="saveConfig()">SAVE & TEST CONNECTION</button>
+    </div>
   </div>
   <div class="admin-card">
     <div class="admin-card-title">📧 Alert Email</div>
-    <p style="font-size:12px;color:var(--white)">${ALERT_EMAIL}</p>
-    <p style="font-size:11px;color:var(--muted);margin-top:6px">Missed shift alerts are sent to this address. Connect a backend (Apps Script) to fully automate email dispatch.</p>
+    <p style="font-size:13px;color:var(--white)">${ALERT_EMAIL}</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:6px">Missed shift alerts sent via GAS backend. Triggers fire every 30 minutes.</p>
   </div>`;
 }
 
-function renderLogsTable(logs) {
-  if (!logs.length) {
-    return `<div class="admin-card" style="text-align:center;padding:30px">
-      <p style="font-size:32px">📋</p>
-      <p style="color:var(--muted);font-size:13px;margin-top:10px">No inspections logged yet</p>
-    </div>`;
-  }
-
-  const rows = logs.map(l => {
-    const eqOk = Object.values(l.equipment||{}).filter(v=>v==='OK').length;
-    const eqTotal = Object.keys(l.equipment||{}).length;
-    const hasIssue = l.hasIssues;
-    return `<tr>
-      <td style="white-space:nowrap">${l.date}<br><span style="color:var(--muted)">${l.time}</span></td>
-      <td>${l.roomName}</td>
-      <td style="color:var(--muted)">${l.shiftLabel}</td>
-      <td>${eqOk}/${eqTotal}</td>
-      <td><span class="flag-tag ${hasIssue?'flag-issue':'flag-ok'}">${hasIssue?'ISSUE':'OK'}</span></td>
-    </tr>`;
-  }).join('');
-
-  return `<div class="admin-card">
-    <div class="admin-card-title">📋 Inspection Logs</div>
-    <table class="logs-table">
-      <thead><tr><th>DATE/TIME</th><th>ROOM</th><th>SHIFT</th><th>EQ</th><th>CLEAN</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>
-  <button class="btn btn-outline" style="font-size:12px;padding:10px" onclick="clearLogs()">🗑 Clear All Logs</button>`;
-}
-
-function clearLogs() {
-  if (confirm('Clear all inspection logs? This cannot be undone.')) {
-    localStorage.removeItem('abc_restroom_logs');
-    renderAdmin();
-    toast('Logs cleared');
-  }
+async function saveConfig(){
+  const url=document.getElementById('cfg-gas-url').value.trim();
+  if(url){ localStorage.setItem('abc_gas_url',url); toast('⏳ Testing connection...'); }
+  else { toast('⚠️ URL is empty'); return; }
+  // Test
+  try {
+    const res=await fetch(url,{method:'POST',body:JSON.stringify({action:'ping'})});
+    const j=await res.json();
+    if(j.ok){ gasConnected=true; toast('✅ Connected! Reload the page to apply.'); renderGASIndicator(); }
+    else { toast('❌ GAS returned error: '+j.error); }
+  } catch(e){ toast('❌ Connection failed. Check the URL.'); }
 }
 
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
-window.addEventListener('load', () => {
+window.addEventListener('load',()=>{
+  const saved=localStorage.getItem('abc_gas_url'); if(saved) { /* GAS_URL is const; user must edit file */ }
   initHome();
-  // Refresh time every minute
-  setInterval(() => {
-    if (document.getElementById('screen-home').classList.contains('active')) {
-      document.getElementById('home-date-display').textContent = fullDate(now()) + ' — ' + timeStr(now());
+  if(GAS_URL) pingGAS();
+  else renderGASIndicator();
+  setInterval(()=>{
+    if(document.getElementById('screen-home').classList.contains('active')){
+      document.getElementById('home-date-display').textContent=fullDate(now())+' — '+timeStr(now());
       renderShiftBanner();
     }
-  }, 60000);
+  },60000);
 });
-
-// Close modal on overlay click
-document.getElementById('wa-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeWAModal();
-});
+document.getElementById('wa-modal').addEventListener('click',function(e){ if(e.target===this) closeWAModal(); });
 </script>
 </body>
 </html>
